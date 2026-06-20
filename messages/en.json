@@ -1,0 +1,39 @@
+{
+	"common": {
+		"appName": "Saraha",
+		"loading": "Loading...",
+		"error": "An error occurred",
+		"success": "Success",
+		"cancel": "Cancel",
+		"save": "Save",
+		"delete": "Delete",
+		"edit": "Edit",
+		"close": "Close"
+	},
+	"auth": {
+		"login": "Login",
+		"signup": "Sign Up",
+		"logout": "Logout",
+		"email": "Email",
+		"password": "Password",
+		"confirmPassword": "Confirm Password",
+		"forgotPassword": "Forgot Password?",
+		"noAccount": "Don't have an account?",
+		"hasAccount": "Already have an account?",
+		"signInWithGoogle": "Sign in with Google"
+	},
+	"theme": {
+		"violet": "Neon Violet",
+		"emerald": "Emerald Cyber",
+		"sunset": "Sunset Glow",
+		"ocean": "Ocean Breeze",
+		"light": "Light Mode",
+		"dark": "Dark Mode"
+	},
+	"dashboard": {
+		"messages": "Messages",
+		"profile": "Profile",
+		"settings": "Settings",
+		"notifications": "Notifications"
+	}
+}

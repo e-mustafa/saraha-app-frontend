@@ -1,0 +1,39 @@
+{
+	"common": {
+		"appName": "سراة",
+		"loading": "جاري التحميل...",
+		"error": "حدث خطأ",
+		"success": "نجح",
+		"cancel": "إلغاء",
+		"save": "حفظ",
+		"delete": "حذف",
+		"edit": "تعديل",
+		"close": "إغلاق"
+	},
+	"auth": {
+		"login": "تسجيل الدخول",
+		"signup": "إنشاء حساب",
+		"logout": "تسجيل الخروج",
+		"email": "البريد الإلكتروني",
+		"password": "كلمة المرور",
+		"confirmPassword": "تأكيد كلمة المرور",
+		"forgotPassword": "نسيت كلمة المرور؟",
+		"noAccount": "ليس لديك حساب؟",
+		"hasAccount": "لديك حساب بالفعل؟",
+		"signInWithGoogle": "تسجيل الدخول بواسطة جوجل"
+	},
+	"theme": {
+		"violet": "بنفسجي نيون",
+		"emerald": "زمردي سيبر",
+		"sunset": "وهج الغروب",
+		"ocean": "نسيم المحيط",
+		"light": "الوضع الفاتح",
+		"dark": "الوضع الداكن"
+	},
+	"dashboard": {
+		"messages": "الرسائل",
+		"profile": "الملف الشخصي",
+		"settings": "الإعدادات",
+		"notifications": "الإشعارات"
+	}
+}
