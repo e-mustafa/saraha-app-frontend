@@ -1,7 +1,8 @@
+import { APP_CONFIGS } from '@/shared/config/app-configs';
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
-type Theme = 'violet' | 'emerald' | 'sunset' | 'ocean';
+export type Theme = 'violet' | 'emerald' | 'sunset' | 'ocean';
 type Language = 'ar' | 'en';
 
 interface AppState {
@@ -16,11 +17,16 @@ export const useAppStore = create<AppState>()(
 		(set) => ({
 			theme: 'violet',
 			language: 'en',
-			setTheme: (theme) => set({ theme }),
+			setTheme: (theme) => {
+				set({ theme });
+				if (typeof window !== 'undefined') {
+					document.documentElement.setAttribute('data-theme', theme);
+				}
+			},
 			setLanguage: (language) => set({ language }),
 		}),
 		{
-			name: 'saraha-app-storage',
-		}
-	)
+			name: `${APP_CONFIGS.name}-app-storage`,
+		},
+	),
 );

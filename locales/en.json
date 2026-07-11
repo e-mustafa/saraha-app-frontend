@@ -1,0 +1,72 @@
+{
+	"common": {
+		"appName": "Saraha",
+		"loading": "Loading...",
+		"error": "An error occurred",
+		"success": "Success",
+		"cancel": "Cancel",
+		"save": "Save",
+		"delete": "Delete",
+		"edit": "Edit",
+		"close": "Close"
+	},
+	"errors": {
+		"email_required": "Email is required",
+		"invalid_email": "Invalid email address",
+		"password_min": "Password must be at least 6 characters",
+		"passwords_mismatch": "Passwords do not match",
+		"firstName_min": "First name must be at least 3 characters",
+		"firstName_max": "First name must be less than 30 characters",
+		"lastName_min": "Last name must be at least 2 characters",
+		"lastName_max": "Last name must be less than 30 characters",
+		"username_min": "Username must be at least 3 characters",
+		"username_max": "Username must be less than 30 characters",
+		"message_required": "Message cannot be empty",
+		"message_max": "Message must be less than 500 characters",
+		"invalid_url": "Invalid URL"
+	},
+	"auth": {
+		"login": "Login",
+		"signup": "Sign Up",
+		"logout": "Logout",
+		"email": "Email",
+		"password": "Password",
+		"confirmPassword": "Confirm Password",
+		"forgotPassword": "Forgot Password?",
+		"noAccount": "Don't have an account?",
+		"hasAccount": "Already have an account?",
+		"signInWithGoogle": "Sign in with Google",
+		"firstName": "First Name",
+		"lastName": "Last Name",
+		"username": "Username"
+	},
+	"theme2": {
+		"violet": "Neon Violet",
+		"emerald": "Emerald Cyber",
+		"sunset": "Sunset Glow",
+		"ocean": "Ocean Breeze",
+		"light": "Light Mode",
+		"dark": "Dark Mode"
+	},
+	"Theme": {
+		"accentColor": "Accent Color",
+		"displayMode": "Display Mode",
+		"colors": {
+			"violet": "Luxury Violet",
+			"emerald": "Quiet Emerald",
+			"sunset": "Warm Sunset",
+			"ocean": "Ocean Blue"
+		},
+		"modes": {
+			"light": "Light",
+			"dark": "Dark",
+			"system": "System"
+		}
+	},
+	"dashboard": {
+		"messages": "Messages",
+		"profile": "Profile",
+		"settings": "Settings",
+		"notifications": "Notifications"
+	}
+}

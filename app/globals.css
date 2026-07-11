@@ -1,79 +1,202 @@
 @import 'tailwindcss';
+@import 'tw-animate-css';
+@import 'shadcn/tailwind.css';
+
+@custom-variant dark (&:is(.dark *));
 
 @theme {
+	/* ربط متغيرات البراند المخصصة */
 	--color-brand-primary: var(--brand-primary);
 	--color-brand-secondary: var(--brand-secondary);
 	--color-bg-main: var(--bg-main);
 	--color-card-glass: var(--card-glass);
-	--color-background: var(--bg-main);
+
+	/* ربط متغيرات Shadcn الأساسية بـ Tailwind v4 */
+	--color-background: var(--background);
 	--color-foreground: var(--foreground);
-	--font-sans: var(--font-geist-sans);
-	--font-mono: var(--font-geist-mono);
+	--color-primary: var(--primary);
+	--color-primary-foreground: var(--primary-foreground);
+	--color-card: var(--card);
+	--color-card-foreground: var(--card-foreground);
+	--color-popover: var(--popover);
+	--color-popover-foreground: var(--popover-foreground);
+	--color-secondary: var(--secondary);
+	--color-secondary-foreground: var(--secondary-foreground);
+	--color-muted: var(--muted);
+	--color-muted-foreground: var(--muted-foreground);
+	--color-accent: var(--accent);
+	--color-accent-foreground: var(--accent-foreground);
+	--color-destructive: var(--destructive);
+	--color-border: var(--border);
+	--color-input: var(--input);
+	--color-ring: var(--ring);
+
+	--radius-sm: calc(var(--radius) * 0.6);
+	--radius-md: calc(var(--radius) * 0.8);
+	--radius-lg: var(--radius);
+
+	/* تسجيل الخطوط داخل ثيم تيلويند 4 */
+	--font-sans: var(--font-geist-sans), sans-serif;
+	--font-arabic: var(--font-noto-sans-arabic), sans-serif;
 }
 
-/* Theme Variances */
-[data-theme='violet'] {
+/* ========================================================
+   الأشكال الأساسية والافتراضية للثيمات (Default: Violet)
+   ======================================================== */
+:root {
 	--brand-primary: #7c3aed;
 	--brand-secondary: #db2777;
-	--bg-main: #090514;
-	--card-glass: rgba(255, 255, 255, 0.03);
-	--foreground: #ededed;
+	--bg-main: oklch(0.98 0.01 273); /* خلفية مريحة مشوبة بالبنفسجي الخفيف بدلاً من الأبيض الفاقع */
+
+	--background: oklch(1 0 0);
+	--foreground: oklch(0.12 0.02 273);
+	--card: oklch(1 0 0);
+	--card-foreground: oklch(0.12 0.02 273);
+	--popover: oklch(1 0 0);
+	--popover-foreground: oklch(0.12 0.02 273);
+	--primary: oklch(0.5 0.22 273); /* Violet متزن */
+	--primary-foreground: oklch(0.99 0 0);
+	--secondary: oklch(0.96 0.01 273);
+	--secondary-foreground: oklch(0.2 0.05 273);
+	--muted: oklch(0.96 0.01 273);
+	--muted-foreground: oklch(0.5 0.03 273);
+	--accent: oklch(0.96 0.02 273);
+	--accent-foreground: oklch(0.2 0.05 273);
+	--destructive: oklch(0.58 0.22 24);
+
+	/* جعل الحدود متناسقة تلقائياً مع الثيم الحالي */
+	--border: oklch(0.5 0.22 273 /0.2);
+	--input: oklch(0.5 0.22 273 / 0.3);
+	--ring: oklch(0.5 0.22 273 / 0.4); /* حلقة التركيز تأخذ لون البريمري بشفافية احترافية 15% */
+	--card-glass: rgba(255, 255, 255, 0.7);
+	--radius: 0.625rem; /* 10px تعطي طابع مودرن ممتاز للمكونات */
 }
 
-[data-theme='emerald'] {
+.dark {
+	--brand-primary: #a78bfa;
+	--brand-secondary: #f472b6;
+	--bg-main: oklch(0.08 0.02 273); /* خلفية داكنة غنية وعميقة */
+
+	--background: oklch(0.12 0.02 273);
+	--foreground: oklch(0.98 0.01 273);
+	--card: oklch(0.14 0.02 273);
+	--card-foreground: oklch(0.98 0.01 273);
+	--popover: oklch(0.14 0.02 273);
+	--popover-foreground: oklch(0.98 0.01 273);
+	--primary: oklch(0.5 0.22 273);
+	--primary-foreground: oklch(0.12 0.02 273);
+	--secondary: oklch(0.18 0.02 273);
+	--secondary-foreground: oklch(0.98 0.01 273);
+	--muted: oklch(0.18 0.02 273);
+	--muted-foreground: oklch(0.65 0.02 273);
+	--accent: oklch(0.18 0.02 273);
+	--accent-foreground: oklch(0.98 0.01 273);
+	--destructive: oklch(62% 0.25 27.84);
+
+	/* حدود داكنة متناسقة */
+	--border: oklch(0.5 0.22 273 /0.2);
+	--input: oklch(0.5 0.22 273 / 0.3);
+	--ring: oklch(0.5 0.22 273 / 0.4);
+	--card-glass: rgba(15, 10, 25, 0.4);
+}
+
+/* ========================================================
+   تخصيص الـ Overrides لكل ثيم (تحديث الألوان والحدود ديناميكياً)
+   ======================================================== */
+
+/* --- EMERALD (Z-Index: 160) --- */
+html[data-theme='emerald'] {
 	--brand-primary: #059669;
 	--brand-secondary: #10b981;
-	--bg-main: #022c22;
-	--card-glass: rgba(5, 150, 105, 0.05);
-	--foreground: #ededed;
+	--bg-main: oklch(0.98 0.01 160);
+	--primary: oklch(0.52 0.15 160);
+	--foreground: oklch(0.12 0.02 160);
+	--border: oklch(0.52 0.15 160/0.2); /* حدود متماشية مع الأخضر */
+	--input: oklch(0.52 0.15 160/0.3);
+	--ring: oklch(0.52 0.15 160 / 0.4);
+	--card-glass: rgba(240, 253, 244, 0.7);
+}
+html.dark[data-theme='emerald'] {
+	--bg-main: oklch(0.07 0.02 160);
+	--background: oklch(0.11 0.02 160);
+	--card: oklch(0.13 0.02 160);
+	--primary: oklch(0.52 0.15 160);
+	--foreground: oklch(0.98 0.01 160);
+	--border: oklch(50.352% 0.07328 157.949);
+	--input: oklch(46.383% 0.06319 158.819);
+	--ring: oklch(0.64 0.14 160 / 0.3);
+	--card-glass: rgba(15, 10, 25, 0.2);
 }
 
-[data-theme='sunset'] {
+/* --- SUNSET (Z-Index: 32) --- */
+html[data-theme='sunset'] {
 	--brand-primary: #ea580c;
 	--brand-secondary: #dc2626;
-	--bg-main: #1a0a0a;
-	--card-glass: rgba(234, 88, 12, 0.05);
-	--foreground: #ededed;
+	--bg-main: oklch(0.98 0.01 32);
+	--primary: oklch(0.56 0.19 32);
+	--foreground: oklch(0.13 0.03 32);
+	--border: oklch(0.56 0.19 32 /0.2); /* حدود متماشية مع البرتقالي */
+	--input: oklch(0.56 0.19 32 / 0.3);
+	--ring: oklch(0.56 0.19 32 / 0.4);
+	--card-glass: rgba(255, 247, 237, 0.7);
+}
+html.dark[data-theme='sunset'] {
+	--bg-main: oklch(0.08 0.02 32);
+	--background: oklch(0.12 0.02 32);
+	--card: oklch(0.14 0.02 32);
+	--primary: oklch(0.56 0.19 32);
+	--foreground: oklch(0.98 0.01 32);
+	--border: oklch(0.56 0.19 32 / 0.2);
+	--input: oklch(0.56 0.19 32 / 0.3);
+	--ring: oklch(0.56 0.19 32 / 0.4);
+	--card-glass: rgba(15, 10, 25, 0.2);
 }
 
-[data-theme='ocean'] {
+/* --- OCEAN (Z-Index: 252) --- */
+html[data-theme='ocean'] {
 	--brand-primary: #2563eb;
 	--brand-secondary: #06b6d4;
-	--bg-main: #0a1628;
-	--card-glass: rgba(37, 99, 235, 0.05);
-	--foreground: #ededed;
+	--bg-main: oklch(0.97 0.01 252);
+	--primary: oklch(0.51 0.19 252);
+	--foreground: oklch(0.12 0.03 252);
+	--border: oklch(0.51 0.19 252 / 0.2); /* حدود متماشية مع الأزرق */
+	--input: oklch(0.51 0.19 252 / 0.3);
+	--ring: oklch(0.51 0.19 252 / 0.4);
+	--card-glass: rgba(240, 249, 255, 0.7);
+}
+html.dark[data-theme='ocean'] {
+	--bg-main: oklch(0.08 0.02 252);
+	--background: oklch(0.12 0.02 252);
+	--card: oklch(0.14 0.02 252);
+	--primary: oklch(0.51 0.19 252);
+	--foreground: oklch(0.98 0.01 252);
+	--border: oklch(0.51 0.19 252 / 0.2);
+	--input: oklch(0.51 0.19 252 / 0.3);
+	--ring: oklch(0.51 0.19 252 / 0.4);
+	--card-glass: rgba(15, 10, 25, 0.2);
 }
 
-/* Light Mode configurations for each theme */
-.light [data-theme='violet'] {
-	--bg-main: #f9f5ff;
-	--card-glass: rgba(255, 255, 255, 0.7);
-	--foreground: #171717;
+@layer base {
+	* {
+		@apply border-border outline-ring/50;
+	}
+
+	body {
+		@apply bg-background text-foreground transition-colors duration-300 min-h-full flex flex-col
+		bg-linear-to-br from-brand-primary/10 via-brand-secondary/5 to-transparent bg-fixed;
+		background-color: var(--bg-main);
+		/* تعيين الخط الافتراضي كـ Geist للمستند بأكمله */
+		font-family: var(--font-sans);
+	}
+
+	/* عند التحول للغة العربية يتم استبدال الخط تلقائياً ودون أي تدخل برامجي */
+	[dir='rtl'] body {
+		font-family: var(--font-arabic);
+	}
 }
 
-.light [data-theme='emerald'] {
-	--bg-main: #f0fdf4;
-	--card-glass: rgba(5, 150, 105, 0.1);
-	--foreground: #171717;
-}
-
-.light [data-theme='sunset'] {
-	--bg-main: #fff7ed;
-	--card-glass: rgba(234, 88, 12, 0.1);
-	--foreground: #171717;
-}
-
-.light [data-theme='ocean'] {
-	--bg-main: #f0f9ff;
-	--card-glass: rgba(37, 99, 235, 0.1);
-	--foreground: #171717;
-}
-
-body {
-	background: var(--bg-main);
-	color: var(--foreground);
-	font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
-	transition:
-		background-color 0.3s ease,
-		color 0.3s ease;
+@layer utilities {
+	.bg-card-blur {
+		@apply bg-black/20 bg-linear-to-br from-brand-primary/10 to-brand-secondary/10 backdrop-blur-xs;
+	}
 }

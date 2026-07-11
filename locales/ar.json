@@ -1,0 +1,296 @@
+{
+	"common": {
+		"appName": "صراحة",
+		"loading": "جاري التحميل...",
+		"error": "حدث خطأ غير متوقع",
+		"success": "تمت العملية بنجاح",
+		"cancel": "إلغاء",
+		"save": "حفظ",
+		"saveChanges": "حفظ التغييرات",
+		"delete": "حذف",
+		"clearAll": "حذف الكل",
+		"edit": "تعديل",
+		"close": "إغلاق",
+		"copied": "تم النسخ!",
+		"underDev": "عذراً، هذا الجزء تحت التطوير"
+	},
+	"navbar": {
+		"userMenu": {
+			"profile": "الملف الشخصي",
+			"messages": "الرسائل",
+			"settings": "الإعدادات",
+			"logout": "تسجيل الخروج",
+			"logoutFromAll": "تسجيل الخروج من جميع الأجهزة"
+		},
+		"notifications": {
+			"title": "الإشعارات",
+			"count": "{count, plural, =0 {لا توجد إشعارات} one {إشعار واحد} two {إشعاراتان} few {{count} إشعارات} many {{count} إشعار} other {{count} إشعار}}",
+			"empty": "لا توجد إشعارات"
+		}
+	},
+	"themes": {
+		"accentColor": "لون الهوية البصرية",
+		"displayMode": "وضع العرض",
+		"toggleTheme": "تبديل المظهر",
+		"modes": {
+			"light": "مظهر مضيء",
+			"dark": "مظهر مظلم",
+			"system": "حسب النظام"
+		},
+		"palettes": {
+			"violet": "بنفسجي نيون",
+			"emerald": "زمردي سيبر",
+			"sunset": "وهج الغروب",
+			"ocean": "نسيم المحيط"
+		}
+	},
+	"settings": {
+		"title": "الإعدادات",
+		"description": "قم بتخصيص تجربتك وحسابك الشخصي",
+		"languageTitle": "اللغة",
+		"themeTitle": "السمة",
+		"accentColor": "لون الهوية البصرية",
+		"displayMode": "وضع العرض",
+		"notificationsToggle": "تفعيل الإشعارات",
+		"alerts": {
+			"themePaletteChanged": "تم تغيير لون الهوية البصرية إلى {theme}",
+			"displayModeSet": "تم تعيين مظهر الشاشة إلى {mode}",
+			"languageSet": "تم تعيين اللغة إلى {language}"
+		}
+	},
+
+	"public": {
+		"defaultBio": "أرسل لي نقدًا بناءً أو رسالة سرية دون أن أعرف هويتك!",
+		"notFoundTitle": "الحساب غير موجود",
+		"notFoundDescription": "عذراً، الرابط الذي تحاول زيارته غير صحيح أو قد يكون صاحب الحساب قام بتغيير اسم المستخدم الخاص به.",
+		"createNewAccount": "أنشئ حسابك الخاص"
+	},
+
+	"auth": {
+		"welcome": "مرحباً بك في صراحة 👋",
+		"logoutAll": "تسجيل الخروج من جميع الأجهزة",
+
+		"login": {
+			"title": "مرحبا بعودتك",
+			"description": "سجل الدخول إلى حسابك للمتابعة استعراض رسائلك",
+			"button": "تسجيل الدخول",
+			"forgotPassword": "نسيت كلمة المرور؟",
+			"rememberMe": "تذكرني"
+		},
+		"social": {
+			"orContinueWith": "أو تابع باستخدام",
+			"facebookAccount": "حساب فيسبوك",
+			"googleAccount": "حساب جوجل"
+		},
+		"logout": {
+			"success": "تم تسجيل الخروج بنجاح",
+			"error": "فشل في تسجيل الخروج"
+		},
+		"register": {
+			"title": "إنشاء حساب جديد",
+			"description": "أنشئ حسابك الآن وابدأ في استقبال الآراء السرية",
+			"button": "إنشاء الحساب"
+		},
+		"steps": {
+			"verifyTitle": "التحقق من الحساب",
+			"verifyDescription": "أدخل رمز التحقق المرسل إلى بريدك الإلكتروني",
+			"verifyButton": "تحقق الآن",
+			"resendCode": "إعادة إرسال الرمز"
+		},
+		"forgotPassword": {
+			"title": "استعادة كلمة المرور",
+			"description": "أدخل بريدك الإلكتروني لإرسال رابط إعادة التعيين",
+			"button": "إرسال رابط الاستعادة"
+		},
+		"resetPassword": {
+			"title": "إعادة تعيين كلمة المرور",
+			"description": "أدخل كلمة المرور الجديدة القوية لحسابك",
+			"button": "تحديث كلمة المرور"
+		},
+		"changePassword": {
+			"title": "تغيير كلمة المرور",
+			"description": "أدخل كلمة المرور الجديدة القوية لحسابك",
+			"button": "تحديث كلمة المرور",
+			"success": "تم تغيير كلمة المرور بنجاح",
+			"error": "فشل في تغيير كلمة المرور"
+		},
+		"requestChangeEmail": {
+			"title": "طلب تغيير البريد الإلكتروني",
+			"description": "أدخل بريدك الإلكتروني الجديد لتأكيد التغيير"
+		},
+		"changeEmail": {
+			"title": "تغيير البريد الإلكتروني",
+			"description": "أدخل رمز التحقق المرسل إلى بريدك الإلكتروني الجديد",
+			"button": "تغيير البريد الإلكتروني"
+		},
+		"revertEmail": {
+			"title": "استعادة البريد الإلكتروني",
+			"description": "هل أنت متأكد من استعادة بريدك الإلكتروني؟",
+			"button": "استعادة الايميل"
+		},
+		"navigation": {
+			"noAccount": "ليس لديك حساب؟",
+			"hasAccount": "لديك حساب بالفعل؟",
+			"backToLogin": "العودة لتسجيل الدخول",
+			"backHome": "العودة للرئيسية"
+		}
+	},
+	"messages": {
+		"title": "صندوق الرسائل",
+		"count": "{count, plural, =0 {لا توجد رسائل بعد} one {رسالة واحدة جديدة} two {رسالتان جديدتان} few {{count} رسائل جديدة} many {{count} رسالة جديدة} other {{count} رسالة}}",
+		"receivedAt": "استلمت {time}",
+		"anonymousSender": "مجهول الهوية",
+		"privateMessage": "رسالة سرية",
+		"revealIdentity": "ظاهر",
+		"writeMessage": "اكتب صراحتك هُنا...",
+		"confidential": "سرية",
+		"public": "رسالة عامة",
+		"publicMessagesTitle": "الرسائل العامة المدرجة في الحساب",
+		"tabs": {
+			"inbox": "الواردة",
+			"sent": "الصادرة",
+			"favorites": "المفضلة",
+			"public": "العامة"
+		},
+		"pagination": {
+			"of": "من",
+			"page": "صفحة",
+			"previous": "السابق",
+			"next": "التالي"
+		},
+		"actions": {
+			"favorite": "تفضيل",
+			"unfavorite": "إزالة من المفضلة",
+			"shareAsImage": "مشاركة كصورة",
+			"report": "إبلاغ عن محتوى مسيء",
+			"block": "حظر هذا المرسل"
+		},
+		"send": {
+			"title": "أرسل رسالة سرية إلى {name}",
+			"description": "اجعل نقدك بناءً وصادقاً دون أن يعرف أحد هويتك",
+			"placeholder": "اكتب رسالتك الصادقة هنا...",
+			"button": "إرسال بصراحة",
+			"sending": "جاري الإرسال...",
+			"success": "تم إرسال رسالتك بنجاح وبسرية تامة!"
+		},
+
+		"attachments": {
+			"title": "الملفات المرفقة",
+			"dragAndDropText": "اسحب وأفلت الصور/الفيديو هنا أو اضغط للتصفح",
+			"dragAndDropLimit": "الحد الأقصى 4 ملفات (ميديا فقط)",
+			"textareaPlaceholder": "اكتب رسالتك بكل صراحة وأمانة..."
+		},
+		"errors": {
+			"emptyMessage": "لا يمكنك إرسال رسالة فارغة",
+			"maxFilesWarning": "يمكنك رفع حتى 4 ملفات ميديا فقط",
+			"messageSent": "حدث خطأ أثناء إرسال الرسالة"
+		},
+		"deleteDialog": {
+			"title": "حذف الرسالة",
+			"description": "هل أنت متأكد من حذف هذه الرسالة؟",
+			"confirm": "حذف",
+			"cancel": "إلغاء"
+		}
+	},
+	"profile": {
+		"shareTitle": "رابطك الشخصي لاستقبال الرسائل",
+		"shareDescription": "انشر هذا الرابط على منصات التواصل الاجتماعي الخاصة بك للحصول على آراء سرية وصادقة",
+		"copyLink": "نسخ الرابط الشخصي",
+		"deleteAccount": "حذف الحساب نهائياً",
+		"deleteSuccess": "تم حذف الحساب والبيانات بنجاح",
+		"copiedSuccess": "تم نسخ رابط صراحة الخاص بك بنجاح!",
+		"copyFailed": "فشل نسخ الرابط",
+		"visitors": "الزوار",
+		"images":{
+			"coverDeleted": "تم حذف صورة الغلاف بنجاح"
+		}
+	},
+	"forms": {
+		"labels": {
+			"email": "البريد الإلكتروني",
+			"newEmail": "البريد الإلكتروني الجديد",
+			"oldPassword": "كلمة المرور الحالية",
+			"newPassword": "كلمة المرور الجديدة",
+			"password": "كلمة المرور",
+			"confirmPassword": "تأكيد كلمة المرور",
+			"firstName": "الاسم الأول",
+			"lastName": "اسم العائلة",
+			"username": "اسم المستخدم",
+			"gender": "الجنس",
+			"male": "ذكر",
+			"female": "أنثى",
+			"bio": "النبذة التعريفية",
+			"phone": "رقم الهاتف",
+			"birthdate": "تاريخ الميلاد",
+			"otp": "رمز التحقق",
+			"age": "العمر"
+		},
+		"placeholders": {
+			"firstName": "ادخل اسمك الأول...",
+			"lastName": "ادخل اسمك الاخير...",
+			"email": "ادخل الايميل مثل name@example.com",
+			"newEmail": "ادخل الايميل الجديد مثل name@example.com",
+			"password": "ادخل كلمة المرور",
+			"oldPassword": "ادخل كلمة المرور الحالية",
+			"confirmPassword": "اعد ادخال كلمة المرور...",
+			"newPassword": "ادخل كلمة المرور الجديدة...",
+			"username": "ادخل اسم المستخدم",
+			"bio": "اكتب شيئاً عن نفسك...",
+			"phone": "ادخل رقم الهاتف 01xx xxx xxxx",
+			"birthdate": "اختر تاريخ الميلاد"
+		},
+		"upload": {
+			"editAvatar": "تعديل الصورة الشخصية",
+			"editCover": "تعديل صورة الغلاف",
+			"addCover": "إضافة غلاف",
+			"avatarSingleDesc": "يمكنك رفع صورة واحدة فقط لصورة الملف الشخصي",
+			"coverSingleDesc": "يمكنك رفع صورة واحدة فقط لصورة الغلاف",
+			"clickOrDrag": "انقر أو اسحب الملف إلى هنا لرفعه",
+			"allowedTypes": "الصيغ المدعومة: JPG, PNG, WEBP, GIF",
+			"uploading": "جاري رفع الملف...",
+			"failed": "عذراً، فشل رفع الملف",
+			"success": "تم رفع الملف بنجاح"
+		},
+		"validation": {
+			"required": "هذا الحقل مطلوب",
+			"invalidUrl": "الرابط المدخل غير صالح",
+			"email": {
+				"required": "البريد الإلكتروني مطلوب للعملية",
+				"invalid": "صيغة البريد الإلكتروني غير صحيحة"
+			},
+			"password": {
+				"min": "يجب أن تتكون كلمة المرور من {min} أحرف على الأقل",
+				"mismatch": "كلمتا المرور غير متطابقتين"
+			},
+			"username": {
+				"min": "اسم المستخدم قصير جداً (الأدنى {min} أحرف)",
+				"max": "اسم المستخدم تجاوز الحد الأقصى ({max} حرف)",
+				"taken": "اسم المستخدم هذا محجوز مسبقاً"
+			},
+			"message": {
+				"required": "لا يمكن إرسال رسالة فارغة",
+				"max": "الحد الأقصى لطول الرسالة هو {max} حرف"
+			}
+		}
+	},
+	"notFoundPage": {
+		"title": "عذراً، هذه الصفحة غير موجودة",
+		"description": "قد يكون الرابط الذي اتبعته خاطئاً أو أن الصفحة تم نقلها",
+		"backHome": "العودة للرئيسية"
+	},
+	"zod": {
+		"errors": {
+			"invalid_type": "نوع البيانات المدخلة غير صحيح",
+			"invalid_string": {
+				"email": "البريد الإلكتروني غير صالح",
+				"url": "الرابط المدخل غير صالح"
+			},
+			"too_small": {
+				"string": "يجب أن يتكون هذا الحقل من {minimum} أحرف على الأقل"
+			},
+			"too_big": {
+				"string": "الحد الأقصى المسموح به هو {maximum} حرف فقط"
+			}
+		}
+	}
+}
