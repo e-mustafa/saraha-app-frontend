@@ -6,7 +6,6 @@ export const defaultValuesVerifyAccount = {
 	email: '',
 };
 
-// Default schemas without translations (for type inference)
 export const verifyAccountSchema = z.object({
 	otp: z.string().min(6, 'forms.validation.otp_min'),
 	email: fieldsValidation.email,

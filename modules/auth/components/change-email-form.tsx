@@ -27,13 +27,12 @@ export default function ChangeEmailForm() {
 	const { mutate, isPending } = useMutation({
 		mutationFn: async (data: ChangeEmailInput) => {
 			const response = await apiClient.patch<IResponse>('/auth/change-email', data);
-			console.log('ChangeEmail response', response);
 			return response;
 		},
 		onSuccess: () => router.push(APP_ROUTES.profile),
 		onError: (error: IResponse<ChangeEmailInput>) => {
-			if (error?.errors) {
-				setFieldErrors(error.errors, form);
+			if (error?.errors?.body) {
+				setFieldErrors(error.errors.body, form);
 			}
 		},
 	});
@@ -78,16 +77,38 @@ export default function ChangeEmailForm() {
 				)}
 			/>
 
-			<Button
-				type='submit'
-				disabled={form.formState.isSubmitting || isPending}
-				variant='default'
-				size='lg'
-				form='form-rhf'
-				className='flex-1'
-			>
-				{t('auth.changeEmail.button')}
-			</Button>
+			<Field orientation='horizontal' className='w-full pt-6'>
+				<Button
+					type='submit'
+					disabled={form.formState.isSubmitting || isPending}
+					variant='default'
+					size='lg'
+					form='form-rhf'
+					className='flex-2'
+				>
+					{t('auth.changeEmail.button')}
+				</Button>
+
+				<Button
+					type='button'
+					variant='secondary'
+					size='lg'
+					onClick={() => router.push(APP_ROUTES.requestChangeEmail)}
+					className='flex-1'
+				>
+					{t('common.retry')}
+				</Button>
+
+				<Button
+					type='button'
+					variant='outline'
+					size='lg'
+					onClick={() => router.push(APP_ROUTES.profile)}
+					className='flex-1'
+				>
+					{t('common.cancel')}
+				</Button>
+			</Field>
 		</form>
 	);
 }

@@ -51,7 +51,7 @@ class ApiClient {
 
 		if (!response.ok) {
 			const errorData = await response.json().catch(() => ({}));
-			// هنا يتم رمي كائن ApiError المحتوي على الأخطاء بالتفصيل
+			// throw error with details by ApiError
 			throw new ApiError(errorData.message || `Error: ${response.status}`, response.status, errorData.errors);
 		}
 

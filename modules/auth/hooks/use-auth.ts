@@ -13,43 +13,45 @@ export function useAuth() {
 	const {
 		data: user,
 		isLoading,
-		error,
+		// error,
 	} = useQuery({
 		queryKey: ['authUser', 'profile'],
 		queryFn: async () => {
-			// الطلب يمر عبر الـ Proxy ليأخذ الـ Authorization Header تلقائياً
+			// request will be sent through the proxy to include the Authorization header automatically
 			const response = await apiClient.get<IResponse<UserProfile>>('/users/profile');
-			return response.data as UserProfile; // نفترض أن البيانات تعود هنا
+			return response.data as UserProfile;
 		},
 		meta: { showErrorToast: false },
-		// إعدادات هامة لأفضل تجربة مستخدم:
-		staleTime: 1000 * 60 * 15, // البيانات تعتبر طازجة لمدة 15 دقيقة ولا يعاد طلبها طالما يتنقل المستخدم
-		gcTime: 1000 * 60 * 60, // الاحتفاظ بالبيانات في الكاش المخفي لمدة ساعة
-		retry: false, // إذا فشل الطلب (مثلا 401) لا تعيد المحاولة لتجنب الضغط على السيرفر
+		// staleTime: 15 minutes - data is considered fresh for 15 minutes, no need to refetch while user navigates
+		// gcTime: 1 hour - keep data in cache for 1 hour even when not in use
+		// retry: false - don't retry on failure (e.g., 401) to avoid server pressure
+		staleTime: 1000 * 60 * 15,
+		gcTime: 1000 * 60 * 60,
+		retry: false,
 	});
 
-	// 2. دالة تسجيل الخروج كـ Mutation لإدارة حالات الأزرار والـ UI
+	// logout mutation function
 	const logoutMutation = useMutation({
 		mutationFn: async (fromAll: boolean = false) => {
 			return await logoutAction(fromAll);
 		},
 		onSuccess: (res) => {
 			if (res.success) {
-				// ✨ السحر هنا: تنظيف كاش الـ React Query بالكامل لمنع تسريب أي بيانات للمستخدم القادم
+				// ✨ clear all React Query cache to avoid data leakage
 				queryClient.clear();
 
-				// توجيه فوري لصفحة تسجيل الدخول
+				// ✨ redirect to login page immediately
 				router.push(APP_ROUTES.login);
 
-				// عمل refresh خفيف لتحديث السيرفر كومبوننتس (Server Components) لكي تشعر بحذف الكوكيز
+				// ✨ refresh to update server components (Server Components) to feel the cookie deletion
 				router.refresh();
 			} else {
 				// toast.error(res.message);
 			}
 		},
-		onError: () => {
-			// toast.error('حدث خطأ أثناء محاولة تسجيل الخروج');
-		},
+		// onError: () => {
+		// 	// toast.error('حدث خطأ أثناء محاولة تسجيل الخروج');
+		// },
 	});
 
 	return {
@@ -57,8 +59,7 @@ export function useAuth() {
 		isLoading,
 		isAuthed: !!user,
 
-		// تصدير دالة تسجيل الخروج وحالة التحميل الخاصة بها للـ UI
 		logout: logoutMutation.mutate,
-		isLoggingOut: logoutMutation.isPending, // استخدامها لعمل Loading spinner في زر الخروج
+		isLoggingOut: logoutMutation.isPending,
 	};
 }

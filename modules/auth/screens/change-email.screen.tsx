@@ -3,7 +3,6 @@ import { CardContent, CardDescription, CardHeader, CardTitle } from '@/shared/co
 import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
 import FormSectionSkeleton from '../components/form-section-skeleton';
-import NavigationLinks from '../components/navigation-links';
 
 // dynamic import to avoid SSR issues
 const ChangeEmailForm = dynamic(() => import('../components/change-email-form'), {
@@ -24,8 +23,6 @@ export default function ChangeEmailScreen() {
 			<CardContent>
 				<ChangeEmailForm />
 			</CardContent>
-
-			<NavigationLinks />
 		</>
 	);
 }

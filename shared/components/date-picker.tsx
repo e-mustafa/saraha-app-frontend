@@ -25,7 +25,6 @@ export function DatePicker({ value, onChange }: { value?: Date | string; onChang
 	// const [date, setDate] = useState<Date | undefined>(value ? new Date(value) : undefined);
 	const locale = useLocale();
 	const [dir] = useState<'ltr' | 'rtl'>(locale == 'ar' ? 'rtl' : 'ltr');
-	console.log('locale', locale);
 
 	// const dateFnsLocale = locale === 'ar' ? dateFnsLocales[locale as keyof typeof dateFnsLocales] : undefined;
 	// const dayPickerLocale = locale === 'ar' ? arSADayPicker : undefined;
@@ -56,6 +55,7 @@ export function DatePicker({ value, onChange }: { value?: Date | string; onChang
 					dir={dir}
 					locale={locale === 'ar' ? arSADayPicker : undefined}
 					required={false}
+					captionLayout='dropdown'
 				/>
 			</PopoverContent>
 		</Popover>

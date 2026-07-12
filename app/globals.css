@@ -73,8 +73,11 @@
 }
 
 .dark {
-	--brand-primary: #a78bfa;
-	--brand-secondary: #f472b6;
+	/* --brand-primary: #a78bfa;
+	--brand-secondary: #f472b6; */
+	--brand-primary: #7c3aed;
+	--brand-secondary: #db2777;
+	
 	--bg-main: oklch(0.08 0.02 273); /* خلفية داكنة غنية وعميقة */
 
 	--background: oklch(0.12 0.02 273);
@@ -83,8 +86,8 @@
 	--card-foreground: oklch(0.98 0.01 273);
 	--popover: oklch(0.14 0.02 273);
 	--popover-foreground: oklch(0.98 0.01 273);
-	--primary: oklch(0.5 0.22 273);
-	--primary-foreground: oklch(0.12 0.02 273);
+	--primary: oklch(47.385% 0.30065 273.871 / 0.831);
+	--primary-foreground: oklch(88.239% 0.05682 279.685);
 	--secondary: oklch(0.18 0.02 273);
 	--secondary-foreground: oklch(0.98 0.01 273);
 	--muted: oklch(0.18 0.02 273);

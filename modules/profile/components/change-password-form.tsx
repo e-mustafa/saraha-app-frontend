@@ -15,7 +15,6 @@ import { EyeIcon, EyeOffIcon, Loader2Icon, LockIcon } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { startTransition, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { toast } from 'sonner';
 import { IResponse } from '../../auth/types';
 import { ChangePasswordInput, changePasswordSchema, defaultValuesChangePassword } from '../schemas/change-password.schema';
 
@@ -40,22 +39,21 @@ export default function ChangePasswordForm() {
 				isConfirmed: newPassword === form.watch('confirmPassword'),
 			});
 		},
-		onSuccess: (res) => {
-			toast.success(res.message || t('auth.changePassword.success'));
+		onSuccess: () => {
+			// toast.success(res.message || t('auth.changePassword.success'));
 			router.push(APP_ROUTES.login);
 		},
 		onError: (error) => {
 			if (error.errors) {
 				setFieldErrors(error.errors, form);
 			}
-			toast.error(error.message || t('auth.changePassword.error'));
+			// toast.error(error.message || t('auth.changePassword.error'));
 		},
 	});
 
 	const onSubmit = (data: ChangePasswordInput) => {
 		startTransition(async () => {
 			// const result = await changePasswordAction(data);
-			// console.log('change password form result', result);
 			changePasswordMutation(data);
 
 			// formResponse(result, form, {

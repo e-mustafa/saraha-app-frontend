@@ -15,6 +15,7 @@ import {
 	Edit3Icon,
 	Loader2Icon,
 	LockIcon,
+	MailIcon,
 	PlusIcon,
 	Trash2Icon,
 } from 'lucide-react';
@@ -58,7 +59,6 @@ export default function UserProfileComponent() {
 	// 1. Mutation لحذف صورة الغلاف من الباك اند وتحديث الكاش
 	const { mutate: deleteCover, isPending: isDeletingCover } = useMutation({
 		mutationFn: async (coverUrl: string) => {
-			console.log('coverUrl', coverUrl);
 			// const body = coverUrl ? { image: coverUrl } : undefined;
 			const response = await apiClient.delete(
 				`/users/${coverUrl ? 'profile-covers' : 'profile-avatar'}`,
@@ -161,7 +161,8 @@ export default function UserProfileComponent() {
 						<Button
 							type='button'
 							size='sm'
-							className='bg-white/80 hover:bg-white text-black backdrop-blur-md gap-1.5'
+							variant='outline'
+							className='text-white/80 hover:bg-white backdrop-blur-md gap-1.5'
 							onClick={() => setUploadTarget('cover')}
 						>
 							<PlusIcon className='w-4 h-4' /> <span>{t('forms.upload.addCover')}</span>
@@ -253,9 +254,9 @@ export default function UserProfileComponent() {
 								type='button'
 								variant='outline'
 								className='text-brand-primary'
-								onClick={() => router.push(APP_ROUTES.changeEmail || '/user/change-email')}
+								onClick={() => router.push(APP_ROUTES.requestChangeEmail || '/user/request-change-email')}
 							>
-								<LockIcon className='w-4 h-4 mr-2' /> {t('auth.changeEmail.title')}
+								<MailIcon className='w-4 h-4 mr-2' /> {t('auth.changeEmail.title')}
 							</Button>
 						</>
 					) : (

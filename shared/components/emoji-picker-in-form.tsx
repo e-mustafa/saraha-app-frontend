@@ -22,7 +22,6 @@ const EmojiPickerExample = () => {
 
 	const handleSubmit = (e: React.FormEvent) => {
 		e.preventDefault();
-		console.log('Form submitted:', { message, selectedEmoji });
 		alert(`Message: ${message}`);
 	};
 

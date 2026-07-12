@@ -1,6 +1,5 @@
 import { routing } from '@/i18n/routing';
 import { AuthErrorWatcher } from '@/providers/auth-error-watcher';
-import { ZodConfigInitializer } from '@/providers/zod-config-initializer';
 import { APP_CONFIGS } from '@/shared/config/app-configs';
 import { DirectionProvider } from '@radix-ui/react-direction';
 import { hasLocale, NextIntlClientProvider } from 'next-intl';
@@ -35,8 +34,6 @@ type LocaleLayoutProps = {
 
 export default async function LocaleLayout({ children, params }: LocaleLayoutProps) {
 	let { locale } = await params;
-	console.log('locale---', locale);
-	console.log('routing.defaultLocale---', routing.defaultLocale);
 
 	if (!hasLocale(routing.locales, locale)) {
 		// notFound();
@@ -80,10 +77,8 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
 				<RootProvider locale={locale} direction={direction}>
 					<NextIntlClientProvider messages={messages}>
 						<DirectionProvider dir={direction}>
-							<ZodConfigInitializer>
 								{children}
 								<AuthErrorWatcher />
-							</ZodConfigInitializer>
 						</DirectionProvider>
 					</NextIntlClientProvider>
 				</RootProvider>

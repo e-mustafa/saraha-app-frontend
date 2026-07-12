@@ -38,17 +38,16 @@ export function Navbar() {
 	const pathname = usePathname();
 	// const { theme: mode, setTheme: setMode } = useTheme();
 
-	const { user, isLoading, isAuthenticated, logout, isLoggingOut } = useAuth();
-	console.log('user**', user);
+	const { user, isLoading, isAuthed, logout, isLoggingOut } = useAuth();
 
 	// حساب الصورة الافتراضية بناءً على الجنس في حال عدم رفع صورة
 	const avatarUrl = user?.avatar || (user?.gender === 1 ? defaultImages.avatarFemale : defaultImages.avatarMale);
 
 	// محاكاة لقائمة الإشعارات التجريبية
-	const notifications = [
-		{ id: 1, text: t('demo.noti1'), time: '2m ago' },
-		{ id: 2, text: t('demo.noti2'), time: '1h ago' },
-	];
+	// const notifications = [
+	// 	{ id: 1, text: t('demo.noti1'), time: '2m ago' },
+	// 	{ id: 2, text: t('demo.noti2'), time: '1h ago' },
+	// ];
 
 	// دالة تبديل اللغة الاحترافية مع الحفاظ على نفس المسار الحالي
 	const toggleLanguage = () => {
@@ -122,7 +121,7 @@ export function Navbar() {
 					</Button> */}
 
 					{/* 6. دروب داون الإشعارات الديناميكية */}
-					<DropdownMenu>
+					{/* <DropdownMenu>
 						<DropdownMenuTrigger asChild>
 							<Button
 								variant='ghost'
@@ -156,7 +155,7 @@ export function Navbar() {
 								</div>
 							)}
 						</DropdownMenuContent>
-					</DropdownMenu>
+					</DropdownMenu> */}
 
 					{/* 7. دروب داون ملف المستخدم (الملف الشخصي / تسجيل الدخول) */}
 					<DropdownMenu>

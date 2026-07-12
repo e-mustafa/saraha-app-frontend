@@ -36,15 +36,12 @@ export default function UserMessages() {
 			const response = await apiClient.get<IResponse<Message[]>>(
 				`/messages/?type=${activeTab}&page=${currentPage}&limit=10`,
 			);
-			console.log('response', response.data);
 			return response;
 		},
 		// staleTime: 1000 * 60 * 2, // دقيقتين لمنع التكرار غير الضروري
 	});
 
 	const { data: messages, metadata } = data || {};
-	console.log('messages', messages);
-	console.log('metadata', metadata);
 
 	// const profileLink = getTenantUrl('mustafa', '/ar');
 	// const currentUrl = getAppUrl();

@@ -20,7 +20,6 @@ export function GoogleLoginButton() {
 				// await signIn('google', { redirectTo: '/dashboard' });
 
 				const result = await loginWithGoogleAction();
-				console.log('GoogleLogin result', result);
 				toast.success(result.message);
 			} catch (error: unknown) {
 				console.error('Login failed:', error);

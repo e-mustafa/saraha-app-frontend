@@ -6,6 +6,8 @@ import { useMemo } from 'react';
 import { Label } from '@/shared/components/ui/label';
 import { Separator } from '@/shared/components/ui/separator';
 import { cn } from '@/shared/utils/utils';
+import { tranErr } from '@/shared/utils/validations/translate.utils';
+import { _Translator } from 'next-intl';
 
 function FieldSet({ className, ...props }: React.ComponentProps<'fieldset'>) {
 	return (
@@ -166,7 +168,7 @@ function FieldError({
 	...props
 }: React.ComponentProps<'div'> & {
 	errors?: Array<{ message?: string } | undefined>;
-	t?: (key: string) => string;
+	t?: _Translator;
 }) {
 	const content = useMemo(() => {
 		if (children) {
@@ -180,13 +182,13 @@ function FieldError({
 		const uniqueErrors = [...new Map(errors.map((error) => [error?.message, error])).values()];
 
 		if (uniqueErrors?.length == 1) {
-			return t?.(uniqueErrors[0]?.message || '') || uniqueErrors[0]?.message;
+			return t ? tranErr(uniqueErrors[0]?.message || '', t) : uniqueErrors[0]?.message;
 		}
 
 		return (
 			<ul className='ml-4 flex list-disc flex-col gap-1'>
 				{uniqueErrors.map(
-					(error, index) => error?.message && <li key={index}>{t?.(error.message) || error.message}</li>,
+					(error, index) => error?.message && <li key={index}>{t ? tranErr(error.message, t) : error.message}</li>,
 				)}
 			</ul>
 		);

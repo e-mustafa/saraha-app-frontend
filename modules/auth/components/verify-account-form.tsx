@@ -58,11 +58,9 @@ export default function VerifyAccountForm() {
 	});
 
 	const onSubmit = async (data: VerifyAccountInput) => {
-		console.log('data', data);
 		verifyAccount({ ...data, email });
 		// startTransition(async () => {
 		// 	const email = searchParams.get('email') || '';
-		// 	console.log('Submitting verification for email:', email);
 		// 	const result = await verifyAccountAction({ ...data, email });
 
 		// 	formResponse(result, form, {

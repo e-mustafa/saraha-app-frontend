@@ -1,6 +1,7 @@
-import { getTranslations } from 'next-intl/server';
+// import { getTranslations } from 'next-intl/server';
 import { ZodSchema } from 'zod';
-import { getZodErrorMap } from './zodErrorMap';
+// import { $ZodErrorMap, $ZodIssue } from 'zod/v4/core';
+// import { getZodCustomError } from './zodErrorMap';
 
 export type ValidationResult<T> =
 	| {
@@ -14,20 +15,20 @@ export type ValidationResult<T> =
 			ok: false;
 			status: number;
 			data: T;
-			form_errors: Partial<Record<keyof T, string[]>>;
+			errors: Partial<Record<keyof T, string[]>>;
 	  };
 
 export async function ValidateFormAction<T>(schema: ZodSchema<T>, formData: unknown): Promise<ValidationResult<T>> {
-	// process FormData to Object if it is FormData
 	const rawData = formData instanceof FormData ? Object.fromEntries(formData.entries()) : formData;
 
-	// get translation function for current request (server side)
-	const t = await getTranslations();
+	// const t = await getTranslations();
 
-	// execute validation with local error map for Zod v4
-	const { success, data, error } = schema.safeParse(rawData, {
-		error: getZodErrorMap(t),
-	});
+	// تنفيذ التحقق مع تمرير دالة الأخطاء الجديدة لـ Zod v4
+	const { success, data, error } = await schema.safeParse(
+		rawData,
+		// { error: getZodCustomError(t) as $ZodErrorMap<$ZodIssue> }
+		// { errorMap: getZodCustomError(t) as $ZodErrorMap<$ZodIssue> },
+	);
 
 	if (!success) {
 		return {
@@ -35,8 +36,7 @@ export async function ValidateFormAction<T>(schema: ZodSchema<T>, formData: unkn
 			ok: false,
 			status: 400,
 			data: rawData as T,
-			// flatten errors and make them match the schema keys
-			form_errors: error.flatten().fieldErrors as Partial<Record<keyof T, string[]>>,
+			errors: error.flatten().fieldErrors as Partial<Record<keyof T, string[]>>,
 		};
 	}
 

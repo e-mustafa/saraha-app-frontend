@@ -6,55 +6,70 @@ import { Button } from '@/shared/components/ui/button';
 import { Input } from '@/shared/components/ui/input';
 import { RadioGroup, RadioGroupItem } from '@/shared/components/ui/radio-group';
 import { Textarea } from '@/shared/components/ui/textarea';
-import { configEnv } from '@/shared/config/env';
 import { IResponse } from '@/shared/types/index';
 import { apiClient } from '@/shared/utils/apiClient';
 import { setFieldErrors } from '@/shared/utils/validations/field-errors';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useMutation } from '@tanstack/react-query';
-import { CalendarIcon, MailIcon, PhoneIcon, User2Icon } from 'lucide-react';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { CalendarIcon, PhoneIcon, User2Icon } from 'lucide-react';
 import { useTranslations } from 'next-intl';
-import { Controller, useForm } from 'react-hook-form';
+import { Controller, Resolver, useForm } from 'react-hook-form';
 import { defaultValuesProfile, ProfileInput, profileSchema } from '../schemas/profile.schema';
 
-export default function ProfileForm({
-	initialData,
-	onSuccess,
-	onClose,
-}: {
+interface ProfileFormProps {
 	initialData?: ProfileInput;
 	onClose?: () => void;
 	onSuccess?: () => void;
-}) {
+}
+
+export default function ProfileForm({ initialData, onSuccess, onClose }: ProfileFormProps) {
 	const t = useTranslations();
+	const queryClient = useQueryClient();
+
+	// const formattedInitialValues: ProfileInput = {
+	// 	...defaultValuesProfile,
+	// 	...initialData,
+	// 	// تحويل التاريخ النصي القادم من الباك إند إلى كائن Date حقيقي فوراً
+	// 	birthdate: initialData?.birthdate ? new Date(initialData.birthdate) : undefined,
+	// 	// التأكد من أن الجنس رقمي دائماً
+	// 	gender: initialData?.gender !== undefined ? Number(initialData.gender) : 0,
+	// };
 
 	const form = useForm<ProfileInput>({
-		resolver: zodResolver(profileSchema),
-		defaultValues: initialData || defaultValuesProfile,
+		resolver: zodResolver(profileSchema) as Resolver<ProfileInput>,
+		values: initialData, // formattedInitialValues,
+		defaultValues: defaultValuesProfile,
 		mode: 'all',
 	});
 
 	const { mutate, isPending } = useMutation({
 		mutationKey: ['profile'],
 		mutationFn: async (data: ProfileInput) => {
-			const response = await apiClient.patch<IResponse<ProfileInput>>(`${configEnv.apiBaseUrl}/profile`, data);
+			const response = await apiClient.patch<IResponse<ProfileInput>>(`/users/profile`, data);
 			return response;
 		},
+
+		onSuccess: (res) => {
+			queryClient.setQueryData(['profile'], () => {
+				return res.data;
+			});
+			if (res.success) onSuccess?.();
+		},
 		onError: (error: IResponse<ProfileInput>) => {
-			if (error.errors) setFieldErrors(error.errors, form);
+			if (error?.errors?.body) setFieldErrors(error?.errors?.body, form);
 		},
 	});
 
-	const { mutate: checkUsername, isPending: isCheckingUsername } = useMutation({
-		mutationKey: ['profile'],
-		mutationFn: async (data: ProfileInput) => {
-			const response = await apiClient.patch<IResponse<ProfileInput>>(`${configEnv.apiBaseUrl}/users/profile`, data);
-			return response;
-		},
-		onError: (error: IResponse<ProfileInput>) => {
-			if (error.errors) setFieldErrors(error.errors, form);
-		},
-	});
+	// const { mutate: checkUsername, isPending: isCheckingUsername } = useMutation({
+	// 	mutationKey: ['profile'],
+	// 	mutationFn: async (data: ProfileInput) => {
+	// 		const response = await apiClient.patch<IResponse<ProfileInput>>(`${configEnv.apiBaseUrl}/users/profile`, data);
+	// 		return response;
+	// 	},
+	// 	onError: (error: IResponse<ProfileInput>) => {
+	// 		if (error?.errors?.body) setFieldErrors(error?.errors?.body, form);
+	// 	},
+	// });
 
 	// const onSubmit = (data: ProfileInput) => {
 	// 	startTransition(async () => {
@@ -68,8 +83,15 @@ export default function ProfileForm({
 	// 	});
 	// };
 
+	const onSubmit = (data: ProfileInput) => {
+		if (!form.formState.isDirty) {
+			// onClose?.();
+		}
+		mutate(data);
+	};
+
 	return (
-		<form id='form-profile-update' onSubmit={form.handleSubmit((data) => mutate(data))} className='animate-fadeIn'>
+		<form id='form-profile-update' onSubmit={form.handleSubmit(onSubmit)} className='animate-fadeIn'>
 			<div className='grid grid-cols-1 sm:grid-cols-2 gap-6'>
 				<Controller
 					name='firstName'
@@ -112,7 +134,7 @@ export default function ProfileForm({
 						<Field data-invalid={fieldState.invalid}>
 							<FieldLabel htmlFor='profile-username'>{t('forms.labels.username')}</FieldLabel>
 							<div className='relative'>
-								<div className='absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none'>
+								<div className='absolute inset-y-0 inset-s-0 flex items-center ps-3 pointer-events-none'>
 									<User2Icon className='w-4 h-4 text-muted-foreground' />
 								</div>
 								<Input
@@ -128,14 +150,14 @@ export default function ProfileForm({
 					)}
 				/>
 
-				<Controller
+				{/* <Controller
 					name='email'
 					control={form.control}
 					render={({ field, fieldState }) => (
 						<Field data-invalid={fieldState.invalid} className='flex-1'>
 							<FieldLabel htmlFor='profile-email'>{t('forms.labels.email')}</FieldLabel>
 							<div className='relative'>
-								<div className='absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none'>
+								<div className='absolute inset-y-0 inset-s-0 flex items-center ps-3 pointer-events-none'>
 									<MailIcon className='w-4 h-4 text-muted-foreground' />
 								</div>
 								<Input
@@ -150,7 +172,7 @@ export default function ProfileForm({
 							{fieldState.invalid && <FieldError errors={[fieldState.error]} t={t} />}
 						</Field>
 					)}
-				/>
+				/> */}
 
 				<Controller
 					name='phone'
@@ -159,7 +181,7 @@ export default function ProfileForm({
 						<Field data-invalid={fieldState.invalid} className='flex-1'>
 							<FieldLabel htmlFor='profile-phone'>{t('forms.labels.phone')}</FieldLabel>
 							<div className='relative'>
-								<div className='absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none'>
+								<div className='absolute inset-y-0 inset-s-0 flex items-center ps-3 pointer-events-none'>
 									<PhoneIcon className='w-4 h-4 text-muted-foreground' />
 								</div>
 								<Input
@@ -194,24 +216,6 @@ export default function ProfileForm({
 				/>
 
 				<Controller
-					name='bio'
-					control={form.control}
-					render={({ field, fieldState }) => (
-						<Field data-invalid={fieldState.invalid}>
-							<FieldLabel htmlFor='profile-bio'>{t('forms.labels.bio') || 'Bio'}</FieldLabel>
-							<Textarea
-								{...field}
-								id='profile-bio'
-								rows={4}
-								placeholder={t('forms.placeholders.bio')}
-								className='resize-none'
-							/>
-							{fieldState.invalid && <FieldError errors={[fieldState.error]} t={t} />}
-						</Field>
-					)}
-				/>
-
-				<Controller
 					name='gender'
 					control={form.control}
 					render={({ field, fieldState }) => (
@@ -222,8 +226,12 @@ export default function ProfileForm({
 							<RadioGroup
 								className='flex'
 								name={field.name}
-								value={String(field.value)}
-								onValueChange={field.onChange}
+								// تحويل آمن: إذا كانت القيمة undefined نمرر نصاً فارغاً
+								value={field.value !== undefined ? String(field.value) : ''}
+								// نلتقط النص القادم من المكون ونحوله فوراً إلى رقم لـ React Hook Form
+								onValueChange={(val) => field.onChange(Number(val))}
+								// value={String(field.value)}
+								// onValueChange={field.onChange}
 							>
 								<FieldLabel htmlFor={`form-rhf-radiogroup-male`}>
 									<Field orientation='horizontal' data-invalid={fieldState.invalid}>
@@ -252,16 +260,34 @@ export default function ProfileForm({
 						</FieldSet>
 					)}
 				/>
+
+				<Controller
+					name='bio'
+					control={form.control}
+					render={({ field, fieldState }) => (
+						<Field data-invalid={fieldState.invalid}>
+							<FieldLabel htmlFor='profile-bio'>{t('forms.labels.bio') || 'Bio'}</FieldLabel>
+							<Textarea
+								{...field}
+								id='profile-bio'
+								rows={4}
+								placeholder={t('forms.placeholders.bio')}
+								className='resize-none'
+							/>
+							{fieldState.invalid && <FieldError errors={[fieldState.error]} t={t} />}
+						</Field>
+					)}
+				/>
 			</div>
 
 			<div className='flex gap-4 mt-4 justify-center'>
 				<Button
 					type='submit'
-					variant='default'
 					size='lg'
 					form='form-profile-update'
 					disabled={isPending}
-					className='bg-brand-primary flex hover:bg-brand-primary/90 text-white transition-all shadow-md'
+					className='px-10'
+					// className='bg-brand-primary flex hover:bg-brand-primary/90 text-white transition-all shadow-md'
 				>
 					{isPending ? t('common.loading') : t('common.saveChanges')}
 				</Button>
@@ -274,7 +300,8 @@ export default function ProfileForm({
 						form.reset(initialData);
 						onClose?.();
 					}}
-					className='bg-brand-primary flex hover:bg-brand-primary/90 text-white transition-all shadow-md'
+					className='px-10'
+					// className='bg-brand-primary flex hover:bg-brand-primary/90 text-white transition-all shadow-md'
 				>
 					{t('common.cancel') || 'Cancel'}
 				</Button>

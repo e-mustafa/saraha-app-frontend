@@ -9,11 +9,6 @@ export default getRequestConfig(async ({ requestLocale }) => {
 	const requested = await requestLocale;
 	const locale = hasLocale(routing.locales, requested) ? requested : routing.defaultLocale;
 
-	// const store = await cookies();
-	// const localeFromStore = store.get('locale')?.value;
-	// console.log('localeFromStore', localeFromStore);
-	// const lang = locale || localeFromStore || (await requestLocale) || 'en';
-
 	// if (!locale || !locales.includes(locale)) {
 	if (!locale) {
 		// || !locales.includes(locale)) {

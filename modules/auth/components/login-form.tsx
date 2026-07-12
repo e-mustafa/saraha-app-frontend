@@ -31,7 +31,6 @@ export default function LoginForm() {
 	const onSubmit = (data: LoginInput) => {
 		startTransition(async () => {
 			const result = await loginAction(data);
-			console.log('login form result', result);
 
 			formResponse(result, form, {
 				onSuccess: () => {
@@ -42,8 +41,6 @@ export default function LoginForm() {
 			});
 		});
 	};
-
-	console.log('window.location', window.location);
 
 	return (
 		<form id='form-rhf' onSubmit={form.handleSubmit(onSubmit)}>

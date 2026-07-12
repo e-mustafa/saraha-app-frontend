@@ -1,6 +1,6 @@
 export class ApiError extends Error {
 	status: number;
-	errors?: Record<string, string>; // أو حسب شكل الأخطاء القادمة من الباك إند لديك
+	errors?: Record<string, string>;
 
 	constructor(message: string, status: number, errors?: Record<string, string>) {
 		super(message);

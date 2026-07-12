@@ -17,7 +17,6 @@ const getData = async () => {
 		// }
 
 		const data = await response.json();
-		console.log('res data', data);
 		return data;
 	} catch (error) {
 		console.error('Error fetching profile:', error);

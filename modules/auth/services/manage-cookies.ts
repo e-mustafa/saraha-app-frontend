@@ -30,7 +30,6 @@ export const getFromCookies = async (key = 'access-token'): Promise<string | und
 
 export const setCookiesTokens = async (data: TokensType, rememberMe = false) => {
 	'use server';
-	console.log('setCookiesTokens data', data);
 	const { refreshToken, refreshExpiration, accessToken, accessExpiration, tokenId } = data || {};
 	const cookiePeriod = refreshExpiration || configTokens.exp.refreshToken;
 
@@ -93,28 +92,3 @@ export async function getCookiesTokens(): Promise<CookiesTokens> {
 		};
 	}
 }
-
-// export async function getCookies<T extends string>(
-// 	keys: T[] = (Object.values(configTokens.keys) as T[]) || [],
-// ): Promise<Record<T, string>> {
-// 	'use server';
-// 	const cookiesStore = await cookies();
-
-// 	const data = {} as Record<T, string>;
-// 	const formatKey = (key: T) => {
-// 		if (key.includes('')) {
-// 			// return key.split('-').map((e, i)=> )
-// 			return key
-// 				.split('-')
-// 				.reduce((acc: string, e: string, i: number) =>
-// 					acc.concat(i > 0 ? `${e.charAt(0).toUpperCase}${e.slice(1).toLowerCase}` : e),
-// 				);
-// 		}
-// 	};
-
-// 	keys.forEach((key) => (data[formatKey(key) as T] = cookiesStore.get(key)?.value || ''));
-
-// 	console.log('tokens data', data);
-
-// 	return data;
-// }

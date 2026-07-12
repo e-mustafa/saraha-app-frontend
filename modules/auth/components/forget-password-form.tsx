@@ -27,8 +27,7 @@ export default function ForgetPasswordForm() {
 	const onSubmit = (data: ForgetPasswordInput) => {
 		startTransition(async () => {
 			const result = await forgetPasswordAction(data);
-			console.log('forget password form result', result);
-
+			
 			formResponse(result, form, {
 				onSuccess: () => {
 					router.push(APP_ROUTES.login);

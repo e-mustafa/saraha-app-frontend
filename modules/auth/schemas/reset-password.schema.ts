@@ -8,7 +8,6 @@ export const defaultValuesResetPassword = {
 	logoutAll: false,
 };
 
-// Default schemas without translations (for type inference)
 export const resetPasswordSchema = z
 	.object({
 		token: z.string(),

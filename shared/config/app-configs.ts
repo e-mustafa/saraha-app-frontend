@@ -11,14 +11,17 @@ export const APP_ROUTES = {
 	register: '/auth/register',
 	verifyAccount: '/auth/verify-account',
 	forgetPassword: '/auth/forget-password',
-	
+
+	changeEmail: '/auth/change-email',
+	revertEmail: '/auth/revert-email',
+
 	// user routes
 	profile: '/user/profile',
 	messages: '/user/messages',
 	settings: '/user/settings',
 	changePassword: '/user/change-password',
-	changeEmail: '/user/change-email',
-	
+	requestChangeEmail: '/user/request-change-email',
+
 	// visitor routes
 	visitor: '/u',
 };

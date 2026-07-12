@@ -1,72 +1,302 @@
 {
 	"common": {
-		"appName": "Saraha",
+		"appName": "Sarahah",
 		"loading": "Loading...",
-		"error": "An error occurred",
-		"success": "Success",
+		"error": "An unexpected error occurred",
+		"success": "Operation completed successfully",
 		"cancel": "Cancel",
+		"retry": "Retry",
 		"save": "Save",
+		"saveChanges": "Save Changes",
 		"delete": "Delete",
+		"clearAll": "Clear All",
 		"edit": "Edit",
-		"close": "Close"
+		"close": "Close",
+		"copied": "Copied!",
+		"underDev": "Sorry, this section is under development"
 	},
-	"errors": {
-		"email_required": "Email is required",
-		"invalid_email": "Invalid email address",
-		"password_min": "Password must be at least 6 characters",
-		"passwords_mismatch": "Passwords do not match",
-		"firstName_min": "First name must be at least 3 characters",
-		"firstName_max": "First name must be less than 30 characters",
-		"lastName_min": "Last name must be at least 2 characters",
-		"lastName_max": "Last name must be less than 30 characters",
-		"username_min": "Username must be at least 3 characters",
-		"username_max": "Username must be less than 30 characters",
-		"message_required": "Message cannot be empty",
-		"message_max": "Message must be less than 500 characters",
-		"invalid_url": "Invalid URL"
-	},
-	"auth": {
-		"login": "Login",
-		"signup": "Sign Up",
-		"logout": "Logout",
-		"email": "Email",
-		"password": "Password",
-		"confirmPassword": "Confirm Password",
-		"forgotPassword": "Forgot Password?",
-		"noAccount": "Don't have an account?",
-		"hasAccount": "Already have an account?",
-		"signInWithGoogle": "Sign in with Google",
-		"firstName": "First Name",
-		"lastName": "Last Name",
-		"username": "Username"
-	},
-	"theme2": {
-		"violet": "Neon Violet",
-		"emerald": "Emerald Cyber",
-		"sunset": "Sunset Glow",
-		"ocean": "Ocean Breeze",
-		"light": "Light Mode",
-		"dark": "Dark Mode"
-	},
-	"Theme": {
-		"accentColor": "Accent Color",
-		"displayMode": "Display Mode",
-		"colors": {
-			"violet": "Luxury Violet",
-			"emerald": "Quiet Emerald",
-			"sunset": "Warm Sunset",
-			"ocean": "Ocean Blue"
+	"navbar": {
+		"userMenu": {
+			"profile": "Profile",
+			"messages": "Messages",
+			"settings": "Settings",
+			"logout": "Log Out",
+			"logoutFromAll": "Log Out from All Devices"
 		},
-		"modes": {
-			"light": "Light",
-			"dark": "Dark",
-			"system": "System"
+		"notifications": {
+			"title": "Notifications",
+			"count": "{count, plural, =0 {No notifications} one {One notification} other {{count} notifications}}",
+			"empty": "No notifications"
 		}
 	},
-	"dashboard": {
-		"messages": "Messages",
-		"profile": "Profile",
-		"settings": "Settings",
-		"notifications": "Notifications"
+	"themes": {
+		"accentColor": "Accent Color",
+		"displayMode": "Display Mode",
+		"toggleTheme": "Toggle Theme",
+		"modes": {
+			"light": "Light Mode",
+			"dark": "Dark Mode",
+			"system": "System Default"
+		},
+		"palettes": {
+			"violet": "Neon Violet",
+			"emerald": "Cyber Emerald",
+			"sunset": "Sunset Glow",
+			"ocean": "Ocean Breeze"
+		}
+	},
+	"settings": {
+		"title": "Settings",
+		"description": "Customize your experience and personal account",
+		"languageTitle": "Language",
+		"themeTitle": "Theme",
+		"accentColor": "Accent Color",
+		"displayMode": "Display Mode",
+		"notificationsToggle": "Enable Notifications",
+		"alerts": {
+			"themePaletteChanged": "Accent color changed to {theme}",
+			"displayModeSet": "Display mode set to {mode}",
+			"languageSet": "Language set to {language}"
+		}
+	},
+	"public": {
+		"defaultBio": "Send me a constructive critique or a secret message without knowing my identity!",
+		"notFoundTitle": "Account Not Found",
+		"notFoundDescription": "Sorry, the link you are trying to visit is incorrect or the account owner has changed their username.",
+		"createNewAccount": "Create your own account"
+	},
+	"auth": {
+		"welcome": "Welcome to Sarahah 👋",
+		"logoutAll": "Log out from all devices",
+		"login": {
+			"title": "Welcome Back",
+			"description": "Log in to your account to continue viewing your messages",
+			"button": "Log In",
+			"forgotPassword": "Forgot Password?",
+			"rememberMe": "Remember Me"
+		},
+		"social": {
+			"orContinueWith": "Or continue with",
+			"facebookAccount": "Facebook Account",
+			"googleAccount": "Google Account"
+		},
+		"logout": {
+			"success": "Logged out successfully",
+			"error": "Failed to log out"
+		},
+		"register": {
+			"title": "Create New Account",
+			"description": "Create your account now and start receiving secret feedback",
+			"button": "Create Account"
+		},
+		"steps": {
+			"verifyTitle": "Account Verification",
+			"verifyDescription": "Enter the verification code sent to your email",
+			"verifyButton": "Verify Now",
+			"resendCode": "Resend Code"
+		},
+		"forgotPassword": {
+			"title": "Password Recovery",
+			"description": "Enter your email to send the reset link",
+			"button": "Send Reset Link"
+		},
+		"resetPassword": {
+			"title": "Reset Password",
+			"description": "Enter a strong new password for your account",
+			"button": "Update Password"
+		},
+		"changePassword": {
+			"title": "Change Password",
+			"description": "Enter a strong new password for your account",
+			"button": "Update Password",
+			"success": "Password changed successfully",
+			"error": "Failed to change password"
+		},
+		"requestChangeEmail": {
+			"title": "Request Email Change",
+			"description": "Enter your new email to confirm the change"
+		},
+		"changeEmail": {
+			"title": "Change Email",
+			"description": "Enter the verification code sent to your new email",
+			"button": "Change Email"
+		},
+		"revertEmail": {
+			"title": "Revert Email",
+			"description": "Are you sure you want to revert to your previous email?",
+			"button": "Revert Email"
+		},
+		"navigation": {
+			"noAccount": "Don't have an account?",
+			"hasAccount": "Already have an account?",
+			"backToLogin": "Back to Login",
+			"backHome": "Back to Home"
+		}
+	},
+	"messages": {
+		"title": "Inbox",
+		"count": "{count, plural, =0 {No messages yet} one {One new message} other {{count} new messages}}",
+		"receivedAt": "Received {time}",
+		"anonymousSender": "Anonymous",
+		"privateMessage": "Secret Message",
+		"revealIdentity": "Visible",
+		"writeMessage": "Write your honest message here...",
+		"confidential": "Confidential",
+		"public": "Public Message",
+		"publicMessagesTitle": "Public messages listed on the account",
+		"tabs": {
+			"inbox": "Inbox",
+			"sent": "Sent",
+			"favorites": "Favorites",
+			"public": "Public"
+		},
+		"pagination": {
+			"of": "of",
+			"page": "Page",
+			"previous": "Previous",
+			"next": "Next"
+		},
+		"actions": {
+			"favorite": "Favorite",
+			"unfavorite": "Remove from Favorites",
+			"shareAsImage": "Share as Image",
+			"report": "Report abusive content",
+			"block": "Block this sender"
+		},
+		"send": {
+			"title": "Send a secret message to {name}",
+			"description": "Make your critique constructive and honest without anyone knowing your identity",
+			"placeholder": "Write your honest message here...",
+			"button": "Send Honestly",
+			"sending": "Sending...",
+			"success": "Your message has been sent successfully and with absolute confidentiality!"
+		},
+		"attachments": {
+			"title": "Attached Files",
+			"dragAndDropText": "Drag and drop images/videos here or click to browse",
+			"dragAndDropLimit": "Maximum 4 files (media only)",
+			"textareaPlaceholder": "Write your message with complete honesty and sincerity..."
+		},
+		"errors": {
+			"emptyMessage": "You cannot send an empty message",
+			"maxFilesWarning": "You can upload up to 4 media files only",
+			"messageSent": "An error occurred while sending the message"
+		},
+		"deleteDialog": {
+			"title": "Delete Message",
+			"description": "Are you sure you want to delete this message?",
+			"confirm": "Delete",
+			"cancel": "Cancel"
+		}
+	},
+	"profile": {
+		"shareTitle": "Your personal link to receive messages",
+		"shareDescription": "Share this link on your social media platforms to get secret and honest feedback",
+		"copyLink": "Copy Personal Link",
+		"deleteAccount": "Permanently Delete Account",
+		"deleteSuccess": "Account and data deleted successfully",
+		"copiedSuccess": "Your Sarahah link has been copied successfully!",
+		"copyFailed": "Failed to copy link",
+		"visitors": "Visitors",
+		"images": {
+			"coverDeleted": "Cover photo deleted successfully"
+		}
+	},
+	"forms": {
+		"labels": {
+			"email": "Email",
+			"newEmail": "New Email",
+			"oldPassword": "Current Password",
+			"newPassword": "New Password",
+			"password": "Password",
+			"confirmPassword": "Confirm Password",
+			"firstName": "First Name",
+			"lastName": "Last Name",
+			"username": "Username",
+			"gender": "Gender",
+			"male": "Male",
+			"female": "Female",
+			"bio": "Bio",
+			"phone": "Phone Number",
+			"birthdate": "Date of Birth",
+			"otp": "Verification Code",
+			"age": "Age"
+		},
+		"placeholders": {
+			"firstName": "Enter your first name...",
+			"lastName": "Enter your last name...",
+			"email": "Enter email e.g., name@example.com",
+			"newEmail": "Enter new email e.g., name@example.com",
+			"password": "Enter password",
+			"oldPassword": "Enter current password",
+			"confirmPassword": "Re-enter password...",
+			"newPassword": "Enter new password...",
+			"username": "Enter username",
+			"bio": "Write something about yourself...",
+			"phone": "Enter phone number 01xx xxx xxxx",
+			"birthdate": "Select date of birth"
+		},
+		"upload": {
+			"editAvatar": "Edit Profile Picture",
+			"editCover": "Edit Cover Photo",
+			"addCover": "Add Cover",
+			"avatarSingleDesc": "You can upload only one image for your profile picture",
+			"coverSingleDesc": "You can upload only one image for your cover photo",
+			"clickOrDrag": "Click or drag file here to upload",
+			"allowedTypes": "Supported formats: JPG, PNG, WEBP, GIF",
+			"uploading": "Uploading file...",
+			"failed": "Sorry, file upload failed",
+			"success": "File uploaded successfully"
+		},
+		"validation": {
+			"required": "This field is required",
+			"invalidUrl": "The entered URL is invalid",
+			"firstName": {
+				"min": "First name is too short (minimum {min} characters)",
+				"minimum": "First name is too short (minimum {min} characters)",
+				"max": "First name is too long (maximum {max} characters)"
+			},
+			"lastName": {
+				"min": "Last name is too short (minimum {min} characters)",
+				"minimum": "Last name is too short (minimum {min} characters)",
+				"max": "Last name is too long (maximum {max} characters)"
+			},
+			"email": {
+				"required": "Email is required",
+				"invalid": "Invalid email format"
+			},
+			"password": {
+				"min": "Password must be at least {min} characters long",
+				"mismatch": "Passwords do not match"
+			},
+			"username": {
+				"min": "Username is too short (minimum {min} characters)",
+				"max": "Username exceeds the maximum limit ({max} characters)",
+				"taken": "This username is already taken"
+			},
+			"birthdate": {
+				"required": "Date of birth is required",
+				"max": "Date of birth cannot be in the future",
+				"underAge": "You must be 18 years old or older"
+			},
+			"message": {
+				"required": "Cannot send an empty message",
+				"max": "Maximum message length is {max} characters"
+			},
+			"otp": {
+				"min": "Verification code must be at least {min} digits"
+			},
+			"phone": {
+				"min": "Phone number must be at least {min} digits"
+			},
+			"bio": {
+				"max": "Maximum bio length is {max} characters"
+			}
+		}
+	},
+	"notFoundPage": {
+		"title": "Sorry, this page does not exist",
+		"description": "The link you followed may be broken or the page has been moved",
+		"backHome": "Back to Home"
 	}
 }

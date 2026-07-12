@@ -1,16 +1,52 @@
 import z from 'zod';
+import { msgKey } from './translate.utils';
 
 export const fieldsValidation = {
-	firstName: z.string().min(3, 'forms.validation.firstName_min').max(30, 'forms.validation.firstName_max').trim(),
-	lastName: z.string().min(2, 'forms.validation.lastName_min').max(30, 'forms.validation.lastName_max').trim(),
+	firstName: z
+		.string()
+		.min(2, msgKey('forms.validation.firstName.min', { min: 2 }))
+		.max(50, msgKey('forms.validation.firstName.max', { max: 50 })),
+	lastName: z
+		.string()
+		.min(2, msgKey('forms.validation.lastName.min', { min: 2 }))
+		.max(50, msgKey('forms.validation.lastName.max', { max: 50 })),
 	username: z
 		.string()
-		.min(3, 'forms.validation.username_min')
-		.max(30, 'forms.validation.username_max')
+		.min(3, msgKey('forms.validation.username.min', { min: 3 }))
+		.max(25, msgKey('forms.validation.username.max', { max: 25 }))
 		.trim()
 		.toLowerCase(),
-	email: z.email('forms.validation.invalid_email').min(1, 'forms.validation.email_required').trim().toLowerCase(),
-	password: z.string().min(6, 'forms.validation.password_min'),
-	confirmPassword: z.string().min(6, 'forms.validation.password_min'),
-	otp: z.string().min(6, 'forms.validation.otp_min'),
+	email: z.email(msgKey('forms.validation.email.invalid')).trim().toLowerCase(),
+
+	password: z.string().min(6, 'forms.validation.password.min'),
+	confirmPassword: z.string().min(6, 'forms.validation.password.mismatch'),
+
+	gender: z.number().min(0).max(1),
+	birthdate: z.coerce
+		.date()
+		.max(new Date(), msgKey('forms.validation.birthdate.max'))
+		.refine(
+			(date) => {
+				if (!date) return true;
+
+				const today = new Date();
+				const cutoffDate = new Date(today.getFullYear() - 18, today.getMonth(), today.getDate());
+				return date <= cutoffDate;
+			},
+			{ message: msgKey('forms.validation.birthdate.underAge') }, // 'zod.date'  },
+		)
+		.optional(),
+
+	phone: z
+		.string()
+		.min(10, msgKey('forms.validation.phone.min', { min: 10 }))
+		.optional(),
+	bio: z
+		.string()
+		.max(160, msgKey('forms.validation.bio.max', { max: 160 }))
+		.optional(),
+
+	avatar: z.string().optional(),
+	covers: z.array(z.string()).optional(),
+	otp: z.string().min(6, 'forms.validation.otp.min'),
 };

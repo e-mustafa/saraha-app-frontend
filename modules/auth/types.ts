@@ -2,7 +2,7 @@
 // 	success?: boolean;
 // 	token?: string;
 // 	message?: string;
-// 	form_errors?: string;
+// 	errors?: string;
 // 	errors?: Record<string, string>;
 // 	data?: T;
 // }

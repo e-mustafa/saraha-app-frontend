@@ -30,8 +30,7 @@ export default function MessageCard({ message, tab, isAuthed }: { message: Messa
 	const hasMedia = message.attachments && message.attachments.length > 0;
 	// const person = tab === 'inbox' ? 'from' : tab === 'sent' ? 'to' : 'from';
 	const person = tab === MessageTypeEnum.SENT ? 'to' : 'from';
-	const {id, avatar, name, username, isLive } = (message[person as keyof Message] as Person) || {};
-	console.log('person id', id);
+	const { id, avatar, name, username, isLive } = (message[person as keyof Message] as Person) || {};
 
 	const { mutate, isPending } = useMarkMessageFavorite();
 	const { mutate: deleteMessage, isPending: isDeleting } = useDeleteMessage();

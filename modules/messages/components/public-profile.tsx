@@ -43,7 +43,6 @@ interface PublicProfileProps {
 export default function PublicProfile({ username }: PublicProfileProps) {
 	const t = useTranslations();
 	const fileInputRef = useRef<HTMLInputElement>(null);
-	console.log('username', username);
 
 	// Form states
 	const [messageText, setMessageText] = useState('');

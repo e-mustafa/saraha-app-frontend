@@ -20,7 +20,7 @@ export const changePasswordSchema = z
 		logoutAll: z.boolean(),
 	})
 	.refine((data) => data.newPassword === data.confirmPassword, {
-		message: 'forms.validation.passwords_mismatch',
+		message: 'forms.validation.password.mismatch',
 		path: ['confirmPassword'],
 	})
 	// refine if password and confirmPassword are the same isConfirmed = true

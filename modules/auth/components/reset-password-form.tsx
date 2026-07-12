@@ -39,7 +39,6 @@ export default function ResetPasswordForm() {
 	const onSubmit = (data: ResetPasswordInput) => {
 		startTransition(async () => {
 			const result = await resetPasswordAction(data);
-			console.log('reset password form result', result);
 
 			formResponse(result, form, {
 				onSuccess: () => {

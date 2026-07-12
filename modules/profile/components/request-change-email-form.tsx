@@ -32,20 +32,18 @@ export default function RequestChangeEmailForm() {
 	const { mutate, isPending } = useMutation({
 		mutationFn: async (data: RequestChangeEmailInput) => {
 			const response = await apiClient.post<IResponse>('/auth/request-change-email', data);
-			console.log('RequestChangeEmail response', response);
 			return response;
 		},
-		onSuccess: () => router.push(APP_ROUTES.profile),
+		onSuccess: () => router.push(APP_ROUTES.changeEmail),
 		onError: (error: IResponse<RequestChangeEmailInput>) => {
-			if (error?.errors) {
-				setFieldErrors(error.errors, form);
+			if (error?.errors?.body) {
+				setFieldErrors(error.errors.body, form);
 			}
 		},
 	});
 
 	// const onSubmit = async (data: RequestChangeEmailInput) => {
 	// 	const result = await mutate(data);
-	// 	console.log('forget password form result', result);
 
 	// formResponse(result, form, {
 	// 	onSuccess: () => {
@@ -100,7 +98,6 @@ export default function RequestChangeEmailForm() {
 									aria-invalid={fieldState.invalid}
 									placeholder={t('forms.placeholders.email')}
 									autoComplete='email'
-									autoFocus
 									className='ps-10'
 								/>
 							</div>
@@ -122,7 +119,7 @@ export default function RequestChangeEmailForm() {
 				>
 					{t('auth.forgotPassword.button')}
 				</Button>
-				
+
 				<Button
 					type='button'
 					variant='outline'

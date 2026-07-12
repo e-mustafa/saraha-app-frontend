@@ -9,7 +9,6 @@ import { toast } from 'sonner';
 export default function UserSection({ user }: { user: Partial<UserProfile> }) {
 	const t = useTranslations();
 	const [copied, setCopied] = useState(false);
-	console.log('UserMessages user', user);
 
 	const handleCopyUsername = async () => {
 		try {
@@ -67,7 +66,7 @@ export default function UserSection({ user }: { user: Partial<UserProfile> }) {
 
 			<div className='w-full flex gap-6 justify-start'>
 				{user?.visitCount && user?.visitCount > 0 ? (
-					<div className='p-2 border border-border/40 bg-accent rounded-lg text-sm text-muted-foreground'>
+					<div className='p-2 border border-border bg-accent/70 rounded-lg text-sm text-muted-foreground'>
 						{`${t('profile.visitors')}: ${user?.visitCount || 0}`}
 					</div>
 				) : null}

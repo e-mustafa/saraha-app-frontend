@@ -1,7 +1,7 @@
-import { IResponse } from '@/modules/auth';
 import { setFieldErrors } from '@/shared/utils/validations/field-errors';
 import { UseFormReturn } from 'react-hook-form';
 import { toast } from 'sonner';
+import { IResponse } from '../types/index';
 
 type TFormResponseParams<T> = {
 	successMessage?: string;
@@ -18,7 +18,7 @@ export function formResponse<T extends Record<string, unknown>>(
 	// set form errors from result
 	if (!result.success) {
 		if (result?.errors) {
-			setFieldErrors(result.errors, form);
+			setFieldErrors(result.errors.body, form);
 
 			// const bodyErrors = Object.keys(result?.errors?.body || {});
 			// const errors = result?.errors?.body;

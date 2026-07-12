@@ -1,7 +1,7 @@
 'use server';
 import { configEnv } from '@/shared/config/env';
 import { ValidateFormAction } from '@/shared/utils/validations/validation-schema';
-import { getLocale } from 'next-intl/server';
+import { getLocale, getTranslations } from 'next-intl/server';
 import { redirect } from 'next/navigation';
 import { ForgetPasswordInput, forgetPasswordSchema } from './schemas/forget-password.schema';
 import { LoginInput, loginSchema } from './schemas/login.schema';
@@ -12,14 +12,15 @@ import { deleteCookies, getCookiesTokens, setCookiesTokens } from './services/ma
 import { IResponse } from './types';
 
 const API_BASE_URL = configEnv.apiBaseUrl + '/auth';
+const t = await getTranslations('api.errors');
 
 export async function registerAction(data: RegisterInput) {
 	const validationResult = await ValidateFormAction(registerSchema, data);
 	if (!validationResult.success) {
 		return {
 			...validationResult, // return data to show in form
-			form_errors: JSON.stringify(validationResult.form_errors),
-			message: 'api.errors.inputs_validation',
+			errors: { body: JSON.stringify(validationResult.errors) },
+			message: t('inputs_validation'),
 		};
 	}
 
@@ -60,8 +61,8 @@ export async function verifyAccountAction(data: VerifyAccountInput & { email: st
 	if (!validationResult.success) {
 		return {
 			...validationResult, // return data to show in form
-			form_errors: JSON.stringify(validationResult.form_errors),
-			message: 'api.errors.inputs_validation',
+			errors: { body: JSON.stringify(validationResult.errors) },
+			message: t('inputs_validation'),
 		};
 	}
 
@@ -103,8 +104,8 @@ export async function loginAction(data: LoginInput): Promise<IResponse> {
 	if (!validationResult.success) {
 		return {
 			...validationResult,
-			form_errors: JSON.stringify(validationResult.form_errors),
-			message: 'api.errors.inputs_validation',
+			errors: { body: JSON.stringify(validationResult.errors) },
+			message: t('inputs_validation'),
 		};
 	}
 
@@ -169,8 +170,8 @@ export async function forgetPasswordAction(data: ForgetPasswordInput): Promise<I
 	if (!validationResult.success) {
 		return {
 			...validationResult,
-			form_errors: JSON.stringify(validationResult.form_errors),
-			message: 'api.errors.inputs_validation',
+			errors: { body: JSON.stringify(validationResult.errors) },
+			message: t('inputs_validation'),
 		};
 	}
 
@@ -212,8 +213,8 @@ export async function resetPasswordAction(data: ResetPasswordInput): Promise<IRe
 	if (!validationResult.success) {
 		return {
 			...validationResult,
-			form_errors: JSON.stringify(validationResult.form_errors),
-			message: 'api.errors.inputs_validation',
+			errors: { body: JSON.stringify(validationResult.errors) },
+			message: t('inputs_validation'),
 		};
 	}
 
@@ -257,7 +258,7 @@ export async function resetPasswordAction(data: ResetPasswordInput): Promise<IRe
 // 	if (!validationResult.success) {
 // 		return {
 // 			...validationResult,
-// 			form_errors: JSON.stringify(validationResult.form_errors),
+// 			errors: JSON.stringify(validationResult.errors),
 // 			message: 'api.errors.inputs_validation',
 // 		};
 // 	}
@@ -297,7 +298,7 @@ export async function resetPasswordAction(data: ResetPasswordInput): Promise<IRe
 
 export async function logoutAction(fromAll = false): Promise<IResponse> {
 	try {
-		// 1. جلب التوكن الحالي لإرساله إلى الباك إند لكي يعرف مَن يسجل خروجه
+		// get cookies tokens and send to backend for authentication
 		const { accessToken, refreshToken } = await getCookiesTokens();
 
 		const result = await fetch(`${API_BASE_URL}/${fromAll ? 'logout-all' : 'logout'}`, {
@@ -309,9 +310,8 @@ export async function logoutAction(fromAll = false): Promise<IResponse> {
 			},
 		});
 
-		// تجنب حدوث كراش إذا كانت الاستجابة فارغة
+		// avoid crash if response is empty
 		const resultData = await result.json().catch(() => ({}));
-		console.log('resultData', resultData);
 
 		if (!result.ok || resultData.success === false) {
 			return {
@@ -321,7 +321,7 @@ export async function logoutAction(fromAll = false): Promise<IResponse> {
 			};
 		}
 
-		// 2. بعد نجاح الحذف من السيرفر، نحذف الكوكيز محلياً من المتصفح
+		// After successful deletion from the server, delete cookies locally
 		await deleteCookies();
 
 		return {

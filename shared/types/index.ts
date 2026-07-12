@@ -17,12 +17,15 @@ export interface IMetadata {
 	hasPrevPage: boolean;
 }
 
+export type FieldsError<T> = Partial<Record<keyof T, string | string[]>>;
+export type backendErrors<T> = { [key: string]: FieldsError<T> };
+
 export interface IResponse<T = unknown> {
 	success: boolean;
 	message?: string;
 	data?: T | T[];
 	// errors?: Record<string, string | string[]>;
-	errors?: Partial<Record<keyof T, string | string[]>>;
+	errors?: backendErrors<T>; //| FieldsError<T>;
 	metadata?: IMetadata;
 }
 
@@ -61,7 +64,7 @@ export interface IResponse<T = unknown> {
 // 	success?: boolean;
 // 	token?: string;
 // 	message?: string;
-// 	form_errors?: string;
+// 	errors?: string;
 // 	errors?: Record<string, string>;
 // 	data?: T;
 // }
@@ -70,7 +73,7 @@ export interface IResponse<T = unknown> {
 // 	success: boolean;
 // 	token?: string;
 // 	message?: string;
-// 	form_errors?: string;
+// 	errors?: string;
 // 	errors?: Record<string, string>;
 // 	data?: T;
 // }
