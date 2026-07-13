@@ -14,6 +14,7 @@ import { useTranslations } from 'next-intl';
 import { useSearchParams } from 'next/navigation';
 import { Controller, useForm } from 'react-hook-form';
 import { toast } from 'sonner';
+import { useAuth } from '../hooks/use-auth';
 import { ResendOtpInput, VerifyAccountInput, verifyAccountSchema } from '../schemas/verify-account.schema';
 import { IResponse } from '../types';
 
@@ -24,9 +25,11 @@ export default function VerifyAccountForm() {
 	const email = searchParams.get('email') || '';
 	// const [isPendingVerify, startTransition] = useTransition(); // Server Action
 
+	const { user } = useAuth();
+
 	const form = useForm<VerifyAccountInput>({
 		resolver: zodResolver(verifyAccountSchema),
-		defaultValues: { otp: '', email },
+		defaultValues: { otp: '', email: email || user?.email || '' },
 		mode: 'all',
 	});
 
@@ -46,14 +49,14 @@ export default function VerifyAccountForm() {
 
 	const { mutate: resendOtp, isPending: isResending } = useMutation<IResponse<null>, ApiError, ResendOtpInput>({
 		mutationFn: async (data) => {
-			return apiClient.post<IResponse<null>, ResendOtpInput>('/auth/resend-otp', data);
+			return apiClient.post<IResponse<null>, ResendOtpInput>('/auth/resend-otp', { email: email || user?.email || '' });
 		},
 		onError: (error) => {
 			console.error('Resend OTP error:', error);
-			toast.error(error.message || 'Failed to resend OTP');
+			// toast.error(error.message || 'Failed to resend OTP');
 		},
 		onSuccess: (res) => {
-			toast.success(res.message || 'OTP resent successfully');
+			// toast.success(res.message || 'OTP resent successfully');
 		},
 	});
 
@@ -113,19 +116,21 @@ export default function VerifyAccountForm() {
 					</Field>
 				)}
 			/>
-
-			<Field orientation='responsive' className='w-full pt-6'>
+			<div className='flex pt-4 justify-end'>
 				<Button
 					type='button'
 					variant='outline'
-					size='lg'
+					size='sm'
 					onClick={() => resendOtp({ email })}
 					disabled={isResending || isVerifying}
+					className='w-fit'
 				>
 					<RefreshCwIcon className={`w-4 h-4 ${isResending ? 'animate-spin' : ''}`} />
 					{t('auth.steps.resendCode')}
 				</Button>
-				<Button type='submit' variant='default' size='lg' form='form-verify-account'>
+			</div>
+			<Field orientation='horizontal' className='w-full pt-6'>
+				<Button type='submit' variant='default' size='lg' form='form-verify-account' className='flex-2'>
 					{isVerifying ? (
 						<>
 							{t('common.loading')}
@@ -134,6 +139,16 @@ export default function VerifyAccountForm() {
 					) : (
 						t('auth.steps.verifyButton')
 					)}
+				</Button>
+				<Button
+					type='button'
+					variant='outline'
+					size='lg'
+					onClick={() => router.back()}
+					className='px-10 flex-1'
+					// className='bg-brand-primary flex hover:bg-brand-primary/90 text-white transition-all shadow-md'
+				>
+					{t('common.cancel') || 'Cancel'}
 				</Button>
 			</Field>
 		</form>
