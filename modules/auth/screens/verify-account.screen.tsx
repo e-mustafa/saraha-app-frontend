@@ -8,8 +8,8 @@ export default function VerifyAccountScreen() {
 	return (
 		<>
 			<CardHeader className='text-center'>
-				<CardTitle className='text-2xl'>{t('verifyAccountTitle')}</CardTitle>
-				<CardDescription className='text-lg'>{t('verifyAccountDescription')}</CardDescription>
+				<CardTitle className='text-2xl'>{t('steps.verifyTitle')}</CardTitle>
+				<CardDescription>{t('steps.verifyDescription')}</CardDescription>
 			</CardHeader>
 
 			<CardContent>

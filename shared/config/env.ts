@@ -3,8 +3,6 @@ export const configEnv = {
 	apiBaseUrl: process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:3000/api/v1',
 	apiDomain: process.env.NEXT_PUBLIC_API_DOMAIN || 'http://localhost:3000',
 	environment: process.env.NEXT_PUBLIC_ENVIRONMENT || 'development',
-	enableMocks: process.env.NEXT_PUBLIC_ENABLE_MOCKS === 'false',
-
 	googleClientId: process.env.GOOGLE_CLIENT_ID || '',
 	googleClientSecret: process.env.GOOGLE_CLIENT_SECRET || '',
 

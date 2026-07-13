@@ -9,7 +9,7 @@ export default function RevertEmailScreen() {
 		<>
 			<CardHeader className='text-center'>
 				<CardTitle className='text-2xl'>{t('revertEmail.title')}</CardTitle>
-				<CardDescription className='text-lg'>{t('revertEmail.description')}</CardDescription>
+				<CardDescription>{t('revertEmail.description')}</CardDescription>
 			</CardHeader>
 
 			<CardContent>

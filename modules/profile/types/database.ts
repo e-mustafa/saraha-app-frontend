@@ -6,4 +6,5 @@ export type UserProfile = ProfileInput & {
 	name?: string;
 	age?: number;
 	visitCount: number;
+	verified: null | Date
 };

@@ -20,7 +20,7 @@ export default function ResetPasswordScreen() {
 		<>
 			<CardHeader className='text-center'>
 				<CardTitle className='text-2xl'>{t('resetPassword.title')}</CardTitle>
-				<CardDescription className='text-lg'>{t('resetPassword.description')}</CardDescription>
+				<CardDescription>{t('resetPassword.description')}</CardDescription>
 			</CardHeader>
 
 			<CardContent>

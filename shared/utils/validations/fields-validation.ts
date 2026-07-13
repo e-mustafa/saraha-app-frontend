@@ -18,8 +18,8 @@ export const fieldsValidation = {
 		.toLowerCase(),
 	email: z.email(msgKey('forms.validation.email.invalid')).trim().toLowerCase(),
 
-	password: z.string().min(6, 'forms.validation.password.min'),
-	confirmPassword: z.string().min(6, 'forms.validation.password.mismatch'),
+	password: z.string().min(6, msgKey('forms.validation.password.min', { min: 6 })),
+	confirmPassword: z.string().min(6, msgKey('forms.validation.password.mismatch')),
 
 	gender: z.number().min(0).max(1),
 	birthdate: z.coerce
@@ -45,5 +45,5 @@ export const fieldsValidation = {
 
 	avatar: z.string().optional(),
 	covers: z.array(z.string()).optional(),
-	otp: z.string().min(6, 'forms.validation.otp.min'),
+	otp: z.string().min(6, msgKey('forms.validation.otp.min', { min: 6 })),
 };

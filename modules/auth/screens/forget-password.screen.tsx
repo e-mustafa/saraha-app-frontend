@@ -11,7 +11,7 @@ export default function ForgetPasswordScreen() {
 		<>
 			<CardHeader className='text-center'>
 				<CardTitle className='text-2xl'>{t('forgotPassword.title')}</CardTitle>
-				<CardDescription className='text-lg'>{t('forgotPassword.description')}</CardDescription>
+				<CardDescription>{t('forgotPassword.description')}</CardDescription>
 			</CardHeader>
 
 			<CardContent>

@@ -12,7 +12,7 @@ export default function RegisterScreen() {
 		<>
 			<CardHeader className='text-center'>
 				<CardTitle className='text-2xl'>{t('register.title')}</CardTitle>
-				{/* <CardDescription className='text-lg'>{t('register.description')}</CardDescription> */}
+				{/* <CardDescription>{t('register.description')}</CardDescription> */}
 			</CardHeader>
 
 			<CardContent>

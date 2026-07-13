@@ -17,7 +17,7 @@ export default function ChangeEmailScreen() {
 		<>
 			<CardHeader className='text-center'>
 				<CardTitle className='text-2xl'>{t('changeEmail.title')}</CardTitle>
-				<CardDescription className='text-lg'>{t('changeEmail.description')}</CardDescription>
+				<CardDescription>{t('changeEmail.description')}</CardDescription>
 			</CardHeader>
 
 			<CardContent>

@@ -7,7 +7,7 @@ export const defaultValuesVerifyAccount = {
 };
 
 export const verifyAccountSchema = z.object({
-	otp: z.string().min(6, 'forms.validation.otp_min'),
+	otp: fieldsValidation.otp,
 	email: fieldsValidation.email,
 });
 

@@ -6,7 +6,7 @@ import { Button } from '@/shared/components/ui/button';
 import { Checkbox } from '@/shared/components/ui/checkbox';
 import { Input } from '@/shared/components/ui/input';
 import { APP_ROUTES } from '@/shared/config/app-configs';
-import { FieldsError } from '@/shared/types/index.js';
+import { FieldsError } from '@/shared/types/index';
 import { apiClient } from '@/shared/utils/apiClient';
 import { ApiError } from '@/shared/utils/app-error';
 import { setFieldErrors } from '@/shared/utils/validations/field-errors';

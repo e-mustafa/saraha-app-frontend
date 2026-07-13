@@ -96,7 +96,8 @@
 			"verifyTitle": "التحقق من الحساب",
 			"verifyDescription": "أدخل رمز التحقق المرسل إلى بريدك الإلكتروني",
 			"verifyButton": "تحقق الآن",
-			"resendCode": "إعادة إرسال الرمز"
+			"resendCode": "إعادة إرسال الرمز",
+			"activeAccount": "تفعيل الحساب"
 		},
 		"forgotPassword": {
 			"title": "استعادة كلمة المرور",

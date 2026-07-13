@@ -13,7 +13,7 @@ export default function LoginScreen() {
 		<>
 			<CardHeader className='text-center'>
 				<CardTitle className='text-2xl'>{t('login.title')}</CardTitle>
-				<CardDescription className='text-lg'>{t('login.description')}</CardDescription>
+				<CardDescription>{t('login.description')}</CardDescription>
 			</CardHeader>
 
 			<CardContent>

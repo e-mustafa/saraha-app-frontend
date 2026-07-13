@@ -9,9 +9,10 @@ import { apiClient } from '@/shared/utils/apiClient';
 import { setFieldErrors } from '@/shared/utils/validations/field-errors';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
-import { MailIcon } from 'lucide-react';
+import { EyeIcon, EyeOffIcon, LockIcon, MailIcon } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import {
 	defaultValuesRChangeEmail,
@@ -22,6 +23,8 @@ import {
 export default function RequestChangeEmailForm() {
 	const t = useTranslations();
 	const router = useRouter();
+
+	const [showPassword, setShowPassword] = useState(false);
 
 	const form = useForm<RequestChangeEmailInput>({
 		resolver: zodResolver(requestChangeEmailSchema),
@@ -65,17 +68,27 @@ export default function RequestChangeEmailForm() {
 							<FieldLabel htmlFor='form-rhf-password'>{t('forms.labels.password')}</FieldLabel>
 							<div className='relative'>
 								<div className='absolute inset-y-0 inset-s-0 flex items-center ps-3 pointer-events-none'>
-									<MailIcon className='w-4 h-4 text-gray-500' />
+									<LockIcon className='w-4 h-4 text-gray-500' />
 								</div>
 								<Input
 									{...field}
 									id='form-rhf-password'
+									type={showPassword ? 'text' : 'password'}
 									aria-invalid={fieldState.invalid}
 									placeholder={t('forms.placeholders.password')}
 									autoComplete='current-password'
 									autoFocus
 									className='ps-10'
 								/>
+								<div className='absolute inset-y-0 inset-e-0 flex items-center cursor-pointer'>
+									<Button type='button' variant='ghost' size='icon' onClick={() => setShowPassword(!showPassword)}>
+										{showPassword ? (
+											<EyeOffIcon className='w-4 h-4 text-gray-500' />
+										) : (
+											<EyeIcon className='w-4 h-4 text-gray-500' />
+										)}
+									</Button>
+								</div>
 							</div>
 							{fieldState.invalid && <FieldError errors={[fieldState.error]} t={t} />}
 						</Field>

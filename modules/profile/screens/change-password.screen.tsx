@@ -15,7 +15,7 @@ export default function ChangePasswordScreen() {
 		<AuthCard>
 			<CardHeader className='text-center'>
 				<CardTitle className='text-2xl'>{t('changePassword.title')}</CardTitle>
-				{/* <CardDescription className='text-lg'>{t('changePassword.description')}</CardDescription> */}
+				{/* <CardDescription>{t('changePassword.description')}</CardDescription> */}
 			</CardHeader>
 
 			<CardContent>

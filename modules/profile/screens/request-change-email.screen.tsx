@@ -19,7 +19,7 @@ export default function RequestChangeEmailScreen() {
 		<AuthCard>
 			<CardHeader className='text-center'>
 				<CardTitle className='text-2xl'>{t('requestChangeEmail.title')}</CardTitle>
-				<CardDescription className='text-lg'>{t('requestChangeEmail.description')}</CardDescription>
+				<CardDescription>{t('requestChangeEmail.description')}</CardDescription>
 			</CardHeader>
 
 			<CardContent>
