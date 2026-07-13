@@ -12,11 +12,11 @@ export default function useMarkMessageFavorite() {
 			return response;
 		},
 		retry: 1,
-		onError: (error) => {
+		onError: () => {
 			// console.error('Error marking message as favorite:', error);
 			// toast.error(error.message || 'Failed to mark message as favorite');
 		},
-		onSuccess: (res) => {
+		onSuccess: () => {
 			// toast.success(res?.message || 'Message updated successfully');
 
 			// 3. عمل Invalidate لكل الكاش الذي يبدأ بكلمة 'messages'
