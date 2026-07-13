@@ -15,6 +15,35 @@
 		"copied": "Copied!",
 		"underDev": "Sorry, this section is under development"
 	},
+	"home": {
+		"badge": "Share candidly, connect deeply",
+		"heroTitle": "Get constructive and anonymous feedback from your friends",
+		"heroSubtitle": "Saraha Pro enables you to discover how others truly see you without any embarrassment. Create your personal link and start receiving anonymous messages now!",
+		"cta": {
+			"register": "Create Your Account Now",
+			"login": "Login"
+		},
+		"features": {
+			"title": "Why Choose Saraha Pro?",
+			"subtitle": "We provide you with a safe, interactive, and completely seamless communication experience",
+			"1": {
+				"title": "Send Anonymous Messages",
+				"desc": "Send anonymous messages"
+			},
+			"2": {
+				"title": "Get Honest Insights",
+				"desc": "Get honest insights"
+			},
+			"3": {
+				"title": "Safe & Respectful",
+				"desc": "Safe & respectful"
+			}
+		},
+		"stats": {
+			"users": "Registered Users",
+			"messages": "Sent Messages"
+		}
+	},
 	"navbar": {
 		"userMenu": {
 			"profile": "Profile",
