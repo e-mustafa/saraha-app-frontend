@@ -37,10 +37,7 @@ export const fieldsValidation = {
 		)
 		.optional(),
 
-	phone: z
-		.string()
-		.min(10, msgKey('forms.validation.phone.min', { min: 10 }))
-		.optional(),
+	phone: z.string().min(10, msgKey('forms.validation.phone.min', { min: 10 })),
 	bio: z
 		.string()
 		.max(160, msgKey('forms.validation.bio.max', { max: 160 }))

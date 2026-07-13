@@ -37,7 +37,13 @@ export default function ProfileForm({ initialData, onSuccess, onClose }: Profile
 
 	const form = useForm<ProfileInput>({
 		resolver: zodResolver(profileSchema) as Resolver<ProfileInput>,
-		values: initialData, // formattedInitialValues,
+		values: initialData
+			? Object.keys(defaultValuesProfile).reduce((acc, key) => {
+					(acc as Record<string, unknown>)[key] =
+						initialData?.[key as keyof ProfileInput] ?? defaultValuesProfile[key as keyof ProfileInput];
+					return acc;
+				}, {} as ProfileInput)
+			: defaultValuesProfile, // formattedInitialValues,
 		defaultValues: defaultValuesProfile,
 		mode: 'all',
 	});
@@ -82,6 +88,8 @@ export default function ProfileForm({ initialData, onSuccess, onClose }: Profile
 	// 		});
 	// 	});
 	// };
+
+	console.log('errors', form.formState.errors);
 
 	const onSubmit = (data: ProfileInput) => {
 		if (!form.formState.isDirty) {

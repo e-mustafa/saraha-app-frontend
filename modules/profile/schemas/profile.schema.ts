@@ -9,11 +9,11 @@ export const profileSchema = z.object({
 	gender: fieldsValidation.gender,
 	birthdate: fieldsValidation.birthdate,
 
-	phone: fieldsValidation.phone,
-	bio: fieldsValidation.bio,
+	phone: fieldsValidation.phone.optional(),
+	bio: fieldsValidation.bio.optional(),
 
-	avatar: fieldsValidation.avatar,
-	covers: fieldsValidation.covers,
+	// avatar: fieldsValidation.avatar,
+	// covers: fieldsValidation.covers,
 });
 
 export type ProfileInput = z.infer<typeof profileSchema>;
@@ -23,10 +23,9 @@ export const defaultValuesProfile: ProfileInput = {
 	lastName: '',
 	username: '',
 	email: '',
-	phone: '',
+	// phone: '',
 	gender: 0,
 	birthdate: undefined,
-	bio: '',
-	avatar: '',
-	covers: [],
+	// bio: '',
+
 };
