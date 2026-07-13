@@ -2,6 +2,16 @@
 
 import { useRouter } from '@/i18n/navigation';
 import { Button } from '@/shared/components/ui/button';
+import {
+	Dialog,
+	DialogClose,
+	DialogContent,
+	DialogDescription,
+	DialogFooter,
+	DialogHeader,
+	DialogTitle,
+	DialogTrigger,
+} from '@/shared/components/ui/dialog';
 import { APP_ROUTES, defaultImages } from '@/shared/config/app-configs';
 import { useFormatDate } from '@/shared/hooks/use-format-date';
 import { IResponse } from '@/shared/types/index';
@@ -169,20 +179,47 @@ export default function UserProfileComponent() {
 						</Button>
 					)}
 					{activeCoversCount > 0 && (
-						<Button
-							type='button'
-							size='icon'
-							variant='destructive'
-							className='backdrop-blur-md'
-							disabled={isDeletingCover}
-							onClick={() => removeCover(currentCoverIndex)}
-						>
-							{isDeletingCover ? (
-								<Loader2Icon className='w-4 h-4 animate-spin' />
-							) : (
-								<Trash2Icon className='w-4 h-4' />
-							)}
-						</Button>
+						<Dialog>
+							<DialogTrigger asChild>
+								<Button
+									type='button'
+									size='icon'
+									variant='destructive'
+									className='backdrop-blur-md'
+									disabled={isDeletingCover}
+								>
+									{isDeletingCover ? (
+										<Loader2Icon className='w-4 h-4 animate-spin' />
+									) : (
+										<Trash2Icon className='w-4 h-4' />
+									)}
+								</Button>
+							</DialogTrigger>
+							<DialogContent className='sm:max-w-sm bg-card-glass backdrop-blur-lg'>
+								<DialogHeader>
+									<DialogTitle>{t('messages.deleteDialog.title')}</DialogTitle>
+									<DialogDescription>{t('messages.deleteDialog.description')}</DialogDescription>
+								</DialogHeader>
+
+								<DialogFooter className='py-2'>
+									<DialogClose asChild>
+										<Button variant='outline'>{t('messages.deleteDialog.cancel')}</Button>
+									</DialogClose>
+									<Button
+										type='submit'
+										variant='destructive'
+										disabled={isDeletingCover}
+										onClick={() => removeCover(currentCoverIndex)}
+									>
+										{isDeletingCover ? (
+											<Loader2Icon className='w-4 h-4 animate-spin' />
+										) : (
+											t('messages.deleteDialog.confirm')
+										)}
+									</Button>
+								</DialogFooter>
+							</DialogContent>
+						</Dialog>
 					)}
 				</div>
 
@@ -205,9 +242,47 @@ export default function UserProfileComponent() {
 					<div className='absolute sm:relative -top-16 sm:top-0 left-1/2 sm:left-0 -translate-x-1/2 sm:translate-x-0 flex flex-col sm:flex-row items-center gap-4 text-center sm:text-start'>
 						<div className='relative -mt-32 z-20 w-44 h-44 rounded-2xl bg-black/50 border-4 border-primary/60 shadow-md group/avatar overflow-hidden'>
 							<div className='absolute z-100 inset-e-2 bottom-2 opacity-0 group-hover/avatar:opacity-100 transition-opacity duration-200'>
-								<Button type='button' variant='destructive' size='icon' onClick={() => deleteCover('')}>
-									<Trash2Icon className='' />
-								</Button>
+								<Dialog>
+									<DialogTrigger asChild>
+										<Button
+											type='button'
+											size='icon'
+											variant='destructive'
+											className='backdrop-blur-md'
+											disabled={isDeletingCover}
+										>
+											{isDeletingCover ? (
+												<Loader2Icon className='w-4 h-4 animate-spin' />
+											) : (
+												<Trash2Icon className='w-4 h-4' />
+											)}
+										</Button>
+									</DialogTrigger>
+									<DialogContent className='sm:max-w-sm bg-card-glass backdrop-blur-lg'>
+										<DialogHeader>
+											<DialogTitle>{t('messages.deleteDialog.title')}</DialogTitle>
+											<DialogDescription>{t('messages.deleteDialog.description')}</DialogDescription>
+										</DialogHeader>
+
+										<DialogFooter className='py-2'>
+											<DialogClose asChild>
+												<Button variant='outline'>{t('messages.deleteDialog.cancel')}</Button>
+											</DialogClose>
+											<Button
+												type='submit'
+												variant='destructive'
+												disabled={isDeletingCover}
+												onClick={() => deleteCover('')}
+											>
+												{isDeletingCover ? (
+													<Loader2Icon className='w-4 h-4 animate-spin' />
+												) : (
+													t('messages.deleteDialog.confirm')
+												)}
+											</Button>
+										</DialogFooter>
+									</DialogContent>
+								</Dialog>
 							</div>
 							<Image
 								src={avatar}

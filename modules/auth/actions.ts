@@ -12,11 +12,11 @@ import { deleteCookies, getCookiesTokens, setCookiesTokens } from './services/ma
 import { IResponse } from './types';
 
 const API_BASE_URL = configEnv.apiBaseUrl + '/auth';
-const t = await getTranslations('api.errors');
 
 export async function registerAction(data: RegisterInput) {
 	const validationResult = await ValidateFormAction(registerSchema, data);
 	if (!validationResult.success) {
+		const t = await getTranslations('api.errors');
 		return {
 			...validationResult, // return data to show in form
 			errors: { body: JSON.stringify(validationResult.errors) },
@@ -59,6 +59,7 @@ export async function registerAction(data: RegisterInput) {
 export async function verifyAccountAction(data: VerifyAccountInput & { email: string }): Promise<IResponse> {
 	const validationResult = await ValidateFormAction(verifyAccountSchema, data);
 	if (!validationResult.success) {
+		const t = await getTranslations('api.errors');
 		return {
 			...validationResult, // return data to show in form
 			errors: { body: JSON.stringify(validationResult.errors) },
@@ -102,6 +103,7 @@ export async function loginAction(data: LoginInput): Promise<IResponse> {
 	const validationResult = await ValidateFormAction(loginSchema, data);
 
 	if (!validationResult.success) {
+		const t = await getTranslations('api.errors');
 		return {
 			...validationResult,
 			errors: { body: JSON.stringify(validationResult.errors) },
@@ -168,6 +170,7 @@ export async function forgetPasswordAction(data: ForgetPasswordInput): Promise<I
 	const validationResult = await ValidateFormAction(forgetPasswordSchema, data);
 
 	if (!validationResult.success) {
+		const t = await getTranslations('api.errors');
 		return {
 			...validationResult,
 			errors: { body: JSON.stringify(validationResult.errors) },
@@ -211,6 +214,7 @@ export async function resetPasswordAction(data: ResetPasswordInput): Promise<IRe
 	const validationResult = await ValidateFormAction(resetPasswordSchema, data);
 
 	if (!validationResult.success) {
+		const t = await getTranslations('api.errors');
 		return {
 			...validationResult,
 			errors: { body: JSON.stringify(validationResult.errors) },
@@ -256,6 +260,7 @@ export async function resetPasswordAction(data: ResetPasswordInput): Promise<IRe
 // 	const validationResult = await ValidateFormAction(changePasswordSchema, data);
 
 // 	if (!validationResult.success) {
+//			const t = await getTranslations('api.errors');
 // 		return {
 // 			...validationResult,
 // 			errors: JSON.stringify(validationResult.errors),

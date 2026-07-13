@@ -107,7 +107,7 @@ export default function MessageCard({ message, tab, isAuthed }: { message: Messa
 								/>
 							</Button>
 							<Dialog>
-								<DialogTrigger>
+								<DialogTrigger asChild>
 									<Button
 										type='button'
 										// className='bg-transparent! hover:bg-transparent!'
