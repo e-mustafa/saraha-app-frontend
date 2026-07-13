@@ -1,10 +1,11 @@
 import createMiddleware from 'next-intl/middleware';
-import { NextRequest } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { routing } from './i18n/routing';
 import { TokensType } from './modules/auth/services/manage-cookies';
+import { APP_ROUTES } from './shared/config/app-configs';
 import { configEnv } from './shared/config/env';
 
-// create intl middleware
+// Create intl middleware
 const intlMiddleware = createMiddleware(routing);
 
 const accessTokenKey = configEnv.tokens.keys.accessToken;
@@ -39,42 +40,78 @@ export async function proxy(request: NextRequest) {
 		}
 	}
 
-	// pass request to intl middleware to generate response
-	const response = intlMiddleware(request);
+	// 1. Determine if the user has an active session (valid existing token or successfully refreshed)
+	const hasActiveSession = !!accessToken || (isRefreshed && !!newTokens?.accessToken);
 
-	// if refreshed successfully, set new cookies in response object directly
-	if (isRefreshed && newTokens) {
+	// 2. Extract locale and clean the pathname for safe matching
+	const pathname = request.nextUrl.pathname;
+	const segments = pathname.split('/');
+
+	// Check if the first segment is a supported locale (e.g., 'ar' or 'en')
+	const detectedLocale = routing.locales.includes(segments[1] as 'en' | 'ar') ? segments[1] : null;
+
+	// Strip the locale prefix for easy path matching (e.g., /ar/auth/login -> /auth/login)
+	const cleanPath = detectedLocale ? `/${segments.slice(2).join('/')}` : pathname;
+	const normalizedPath = cleanPath.replace(/\/$/, ''); // Remove trailing slash if present
+
+	// Define guest-only auth pages
+	const authPaths = ['/auth/login', '/auth/register'];
+	const isAuthPage = authPaths.includes(normalizedPath);
+
+	// Helper function to set cookies on a response object to keep code DRY
+	const applyCookiesToResponse = (resObj: NextResponse, tokens: TokensType) => {
 		const cookieOptions = {
 			httpOnly: true,
 			secure: true,
 			sameSite: 'strict' as const,
 		};
 
-		if (newTokens.accessToken) {
-			response.cookies.set(accessTokenKey, newTokens.accessToken, {
+		if (tokens.accessToken) {
+			resObj.cookies.set(accessTokenKey, tokens.accessToken, {
 				...cookieOptions,
-				maxAge: newTokens.accessExpiration || 60 * 15,
+				maxAge: tokens.accessExpiration || 60 * 15,
 			});
 
-			// update request object to see new token immediately without page refresh
-			request.cookies.set(accessTokenKey, newTokens.accessToken);
+			// Update request cookies to make the new token available server-side immediately without full reload
+			request.cookies.set(accessTokenKey, tokens.accessToken);
 		}
-		if (newTokens.refreshToken) {
-			response.cookies.set(refreshTokenKey, newTokens.refreshToken, {
+		if (tokens.refreshToken) {
+			resObj.cookies.set(refreshTokenKey, tokens.refreshToken, {
 				...cookieOptions,
-				maxAge: newTokens.refreshExpiration || 60 * 60 * 24 * 7,
+				maxAge: tokens.refreshExpiration || 60 * 60 * 24 * 7,
 			});
 		}
-		if (newTokens.tokenId) {
-			response.cookies.set(tokenIdKey, newTokens.tokenId, cookieOptions);
+		if (tokens.tokenId) {
+			resObj.cookies.set(tokenIdKey, tokens.tokenId, cookieOptions);
 		}
+	};
+
+	// 3. Redirect authenticated users away from guest-only pages
+	if (hasActiveSession && isAuthPage) {
+		const targetLocale = detectedLocale || routing.defaultLocale;
+		// Build redirect URL preserving the active locale
+		const redirectUrl = new URL(`/${targetLocale}${APP_ROUTES.messages}`, request.url);
+		const redirectResponse = NextResponse.redirect(redirectUrl);
+
+		// Crucial: If tokens were just refreshed, they must be attached to the redirect response to avoid session loss!
+		if (isRefreshed && newTokens) {
+			applyCookiesToResponse(redirectResponse, newTokens);
+		}
+
+		return redirectResponse;
+	}
+
+	// 4. Default path: pass request to the intl middleware
+	const response = intlMiddleware(request) as NextResponse;
+
+	// If tokens were refreshed and no redirect happened, apply cookies to the standard response
+	if (isRefreshed && newTokens) {
+		applyCookiesToResponse(response, newTokens);
 	}
 
 	return response;
 }
 
 export const config = {
-	// Matcher supports languages, pages, and excludes static files and API
-	// matcher: ['/', '/(ar|en)/:path*', '/((?!api|_next|_vercel|.*\\..*).*)'],
 	matcher: '/((?!api|_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico|css|js|woff2?|json)).*)',
 };

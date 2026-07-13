@@ -28,10 +28,10 @@ export default function RevertEmailForm() {
 		},
 		onError: (error) => {
 			console.error('Verify account error:', error);
-			toast.error(error.message || 'Failed to verify account');
+			// toast.error(error.message || 'Failed to verify account');
 		},
 		onSuccess: (res) => {
-			toast.success(res.message || 'Account verified successfully');
+			// toast.success(res.message || 'Account verified successfully');
 			router.push(APP_ROUTES.login);
 		},
 	});

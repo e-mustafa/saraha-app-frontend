@@ -45,7 +45,11 @@ export async function GET(req: Request) {
 		const backendData = await backendRes.json();
 
 		if (!backendRes.ok || !backendData.success) {
-			throw new ApiError(backendData.message || 'Failed to authenticate with backend', backendRes.status || 500);
+			throw new ApiError(
+				backendData.message || 'Failed to authenticate with backend',
+				backendRes.status || 500,
+				backendData.errors,
+			);
 		}
 
 		await setCookiesTokens(backendData.data);

@@ -1,4 +1,5 @@
 import { useRouter } from '@/i18n/navigation';
+import { useAuth } from '@/modules/auth/hooks/use-auth';
 import { UserProfile } from '@/modules/profile/types/database';
 import { Button } from '@/shared/components/ui/button';
 import { APP_ROUTES, defaultImages } from '@/shared/config/app-configs';
@@ -12,6 +13,8 @@ export default function UserSection({ user }: { user: Partial<UserProfile> }) {
 	const t = useTranslations();
 	const router = useRouter();
 	const [copied, setCopied] = useState(false);
+
+	const { user: authedUser, isAuthed } = useAuth();
 
 	const handleCopyUsername = async () => {
 		try {
@@ -50,7 +53,7 @@ export default function UserSection({ user }: { user: Partial<UserProfile> }) {
 					{user?.name || `${user?.firstName || ''} ${user?.lastName || ''}`}
 				</h1>
 				{/* شارة اسم المستخدم التفاعلية القابلة للنسخ */}
-				<div className='flex gap-4 items-center'>
+				<div className='flex gap-4 items-center justify-center'>
 					<button
 						type='button'
 						onClick={handleCopyUsername}
@@ -66,7 +69,7 @@ export default function UserSection({ user }: { user: Partial<UserProfile> }) {
 						)}
 					</button>
 
-					{!user?.verified && (
+					{authedUser && isAuthed && authedUser.username == user.username && !user?.verified && (
 						<Button
 							type='button'
 							variant='default'
