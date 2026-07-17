@@ -11,7 +11,8 @@ interface ShareButtonProps {
 export default function ShareButton({ username }: ShareButtonProps) {
 	const t = useTranslations('profile');
 	// Construct the direct profile URL
-	const shareUrl = `${configEnv.apiBaseUrl}/u/${username}`;
+	// const shareUrl = `${configEnv.apiBaseUrl}/u/${username}`;
+	const shareUrl = `${configEnv.appUrl}/u/${username}`;
 
 	const handleShare = async () => {
 		if (navigator.share) {

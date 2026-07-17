@@ -1,3 +1,4 @@
+// @/modules/auth/services/manage-cookies.ts
 import { tokenOptions } from '@/shared/config/app-configs';
 import { configEnv } from '@/shared/config/env';
 import { cookies } from 'next/headers';
@@ -18,73 +19,96 @@ export type CookiesTokens = {
 	tokenId: string;
 };
 
-export const getFromCookies = async (key = 'access-token'): Promise<string | undefined> => {
-	try {
-		const cookieStore = await cookies();
-		return cookieStore.get(key)?.value;
-	} catch (error) {
-		console.error('Error fetching cookie:', error);
-		return undefined;
-	}
-};
+// Standard cookie options interface matching Next.js native attributes structurally
+export interface CookieOptions {
+	httpOnly?: boolean;
+	secure?: boolean;
+	sameSite?: 'strict' | 'lax' | 'none' | boolean;
+	maxAge?: number;
+	path?: string;
+	domain?: string;
+	expires?: number | Date;
+}
 
-export const setCookiesTokens = async (data: TokensType, rememberMe = false) => {
-	'use server';
+// Structurally compatible interfaces with Next.js RequestCookies, ResponseCookies, and ReadonlyRequestCookies
+export interface WritableCookieStore {
+	set(name: string, value: string, options?: CookieOptions): unknown;
+	delete(name: string): unknown;
+}
+
+export interface ReadableCookieStore {
+	get(name: string): { value: string } | undefined;
+}
+
+/**
+ * Sets auth tokens into cookies. Supports custom cookie jars (like NextResponse.cookies for Middleware/Route Handlers).
+ */
+export const setCookiesTokens = async (
+	data: TokensType,
+	options?: { rememberMe?: boolean; store?: WritableCookieStore },
+) => {
+	const { rememberMe = false, store } = options || {};
 	const { refreshToken, refreshExpiration, accessToken, accessExpiration, tokenId } = data || {};
 	const cookiePeriod = refreshExpiration || configTokens.exp.refreshToken;
 
-	const cookieOptions = {
+	const defaultOptions: CookieOptions = {
 		httpOnly: true,
-		secure: true,
-		sameSite: 'strict' as const,
-		// maxAge: rememberMe ? cookiePeriod * 2 : cookiePeriod, // 14 days or 7 days
+		secure: process.env.NODE_ENV === 'production',
+		sameSite: 'lax' as const,
 	};
-	const options = {
-		...(tokenOptions || cookieOptions),
-		maxAge: rememberMe ? cookiePeriod * 2 : cookiePeriod, // 14 days or 7 days
+
+	const baseOptions: CookieOptions = {
+		...(tokenOptions || defaultOptions),
+		maxAge: rememberMe ? cookiePeriod * 2 : cookiePeriod,
 	};
 
 	try {
-		const cookiesStore = await cookies();
+		// Fallback to next/headers cookies() if no custom store is provided (Server Actions / Server Components)
+		const dataStore = store || (await cookies());
+
 		if (accessToken) {
-			cookiesStore.set(configTokens.keys.accessToken, accessToken, {
-				...options,
+			dataStore.set(configTokens.keys.accessToken, accessToken, {
+				...baseOptions,
 				maxAge: accessExpiration || configTokens.exp.accessToken,
 			});
 		}
 		if (refreshToken) {
-			cookiesStore.set(configTokens.keys.refreshToken, refreshToken, options);
+			dataStore.set(configTokens.keys.refreshToken, refreshToken, baseOptions);
 		}
 		if (tokenId) {
-			cookiesStore.set(configTokens.keys.tokenId, tokenId, options);
+			dataStore.set(configTokens.keys.tokenId, tokenId, baseOptions);
 		}
 	} catch (error) {
-		console.error('Error set cookies tokens', error);
+		console.error('Error setting cookie tokens:', error);
 	}
 };
 
-export async function deleteCookies(keys: string[] = Object.values(configTokens.keys)) {
-	'use server';
+/**
+ * Deletes auth cookies from the specified or default cookie store.
+ */
+export async function deleteCookies(keys: string[] = Object.values(configTokens.keys), store?: WritableCookieStore) {
 	try {
-		const cookiesStore = await cookies();
-		keys.forEach((key) => cookiesStore.delete(key));
+		const dataStore = store || (await cookies());
+		keys.forEach((key) => dataStore.delete(key));
 	} catch (error) {
-		console.error('Error delete cookie', error);
+		console.error('Error deleting cookies:', error);
 	}
 }
 
-export async function getCookiesTokens(): Promise<CookiesTokens> {
-	'use server';
+/**
+ * Retrieves all core auth tokens from the specified or default cookie store.
+ */
+export async function getCookiesTokens(store?: ReadableCookieStore): Promise<CookiesTokens> {
 	try {
-		const cookiesStore = await cookies();
+		const dataStore = store || (await cookies());
 
 		return {
-			accessToken: cookiesStore.get(configTokens.keys.accessToken)?.value || '',
-			refreshToken: cookiesStore.get(configTokens.keys.refreshToken)?.value || '',
-			tokenId: cookiesStore.get(configTokens.keys.tokenId)?.value || '',
+			accessToken: dataStore.get(configTokens.keys.accessToken)?.value || '',
+			refreshToken: dataStore.get(configTokens.keys.refreshToken)?.value || '',
+			tokenId: dataStore.get(configTokens.keys.tokenId)?.value || '',
 		};
 	} catch (error) {
-		console.error('Error get cookies tokens', error);
+		console.error('Error getting cookie tokens:', error);
 		return {
 			accessToken: '',
 			refreshToken: '',

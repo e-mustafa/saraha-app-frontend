@@ -29,7 +29,7 @@ export const APP_ROUTES = {
 export const tokenOptions = {
 	httpOnly: true,
 	secure: true,
-	sameSite: 'strict' as const,
+	sameSite: 'lax' as const,
 	maxAge: 60 * 60 * 15, // 15 minutes
 };
 

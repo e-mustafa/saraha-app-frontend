@@ -136,7 +136,7 @@ export async function loginAction(data: LoginInput): Promise<IResponse> {
 		};
 	}
 
-	await setCookiesTokens(resultData.data, (validationResult?.data || data).rememberMe);
+	await setCookiesTokens(resultData.data, { rememberMe: (validationResult?.data || data).rememberMe });
 
 	return {
 		success: true,
@@ -144,7 +144,7 @@ export async function loginAction(data: LoginInput): Promise<IResponse> {
 	};
 }
 
-export async function loginWithGoogleAction(redirectTo?: string): Promise<IResponse> {
+export async function loginWithGoogleAction(redirectTo?: string) {
 	const rootUrl = 'https://accounts.google.com/o/oauth2/v2/auth';
 	const currentLocale = await getLocale();
 
@@ -164,6 +164,7 @@ export async function loginWithGoogleAction(redirectTo?: string): Promise<IRespo
 
 	const query = new URLSearchParams(options).toString();
 	return redirect(`${rootUrl}?${query}`);
+	// return `${rootUrl}?${query}`;
 }
 
 export async function forgetPasswordAction(data: ForgetPasswordInput): Promise<IResponse> {

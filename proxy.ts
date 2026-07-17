@@ -2,7 +2,7 @@
 import createMiddleware from 'next-intl/middleware';
 import { NextRequest, NextResponse } from 'next/server';
 import { routing } from './i18n/routing';
-import { TokensType } from './modules/auth/services/manage-cookies';
+import { setCookiesTokens, TokensType } from './modules/auth/services/manage-cookies';
 import { APP_ROUTES } from './shared/config/app-configs';
 import { configEnv } from './shared/config/env';
 
@@ -70,30 +70,30 @@ export default async function proxy(request: NextRequest) {
 		normalizedPath === '/auth/change-email';
 
 	// Helper function to set cookies on a response object
-	const applyCookiesToResponse = (resObj: NextResponse, tokens: TokensType) => {
-		const cookieOptions = {
-			httpOnly: true,
-			secure: true,
-			sameSite: 'strict' as const,
-		};
+	// const applyCookiesToResponse = (resObj: NextResponse, tokens: TokensType) => {
+	// 	const cookieOptions = {
+	// 		httpOnly: true,
+	// 		secure: true,
+	// 		sameSite: 'strict' as const,
+	// 	};
 
-		if (tokens.accessToken) {
-			resObj.cookies.set(accessTokenKey, tokens.accessToken, {
-				...cookieOptions,
-				maxAge: tokens.accessExpiration || 60 * 15,
-			});
-			request.cookies.set(accessTokenKey, tokens.accessToken);
-		}
-		if (tokens.refreshToken) {
-			resObj.cookies.set(refreshTokenKey, tokens.refreshToken, {
-				...cookieOptions,
-				maxAge: tokens.refreshExpiration || 60 * 60 * 24 * 7,
-			});
-		}
-		if (tokens.tokenId) {
-			resObj.cookies.set(tokenIdKey, tokens.tokenId, cookieOptions);
-		}
-	};
+	// 	if (tokens.accessToken) {
+	// 		resObj.cookies.set(accessTokenKey, tokens.accessToken, {
+	// 			...cookieOptions,
+	// 			maxAge: tokens.accessExpiration || 60 * 15,
+	// 		});
+	// 		request.cookies.set(accessTokenKey, tokens.accessToken);
+	// 	}
+	// 	if (tokens.refreshToken) {
+	// 		resObj.cookies.set(refreshTokenKey, tokens.refreshToken, {
+	// 			...cookieOptions,
+	// 			maxAge: tokens.refreshExpiration || 60 * 60 * 24 * 7,
+	// 		});
+	// 	}
+	// 	if (tokens.tokenId) {
+	// 		resObj.cookies.set(tokenIdKey, tokens.tokenId, cookieOptions);
+	// 	}
+	// };
 
 	// --- Redirection Logic ---
 
@@ -109,7 +109,8 @@ export default async function proxy(request: NextRequest) {
 		const redirectResponse = NextResponse.redirect(redirectUrl);
 
 		if (isRefreshed && newTokens) {
-			applyCookiesToResponse(redirectResponse, newTokens);
+			// applyCookiesToResponse(redirectResponse, newTokens);
+			await setCookiesTokens(newTokens, { store: redirectResponse.cookies });
 		}
 
 		return redirectResponse;
@@ -120,7 +121,8 @@ export default async function proxy(request: NextRequest) {
 
 	// If tokens were refreshed during this cycle, apply them to the response
 	if (isRefreshed && newTokens) {
-		applyCookiesToResponse(response, newTokens);
+		// applyCookiesToResponse(response, newTokens);
+		await setCookiesTokens(newTokens, { store: response.cookies });
 	}
 
 	return response;

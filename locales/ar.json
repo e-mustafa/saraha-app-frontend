@@ -164,7 +164,8 @@
 			"noAccount": "ليس لديك حساب؟",
 			"hasAccount": "لديك حساب بالفعل؟",
 			"backToLogin": "العودة لتسجيل الدخول",
-			"backHome": "العودة للرئيسية"
+			"backHome": "العودة للرئيسية",
+			"redirectToGoogle": "جاري تحويلك لحسابات جوجل..."
 		}
 	},
 	"messages": {

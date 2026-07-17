@@ -9,21 +9,22 @@ import { loginWithGoogleAction } from '../actions';
 export function GoogleLoginButton() {
 	const t = useTranslations();
 
-	// const [isLoading, setIsLoading] = useState(false);
-
 	const [isLoading, startTransition] = useTransition();
 
 	const handleLogin = async () => {
 		startTransition(async () => {
+			toast.info(t('auth.navigation.redirectToGoogle'));
 			try {
 				// redirect user direct to google, when success redirect to messages
-				// await signIn('google', { redirectTo: '/dashboard' });
-
 				const result = await loginWithGoogleAction();
-				toast.success(result.message);
+
+				// const url = await loginWithGoogleAction();
+				// Smooth window navigation without NEXT_REDIRECT logs
+				// window.location.href = url;
+				// toast.success(result.message);
 			} catch (error: unknown) {
 				console.error('Login failed:', error);
-				toast.error((error as Error).message);
+				// toast.error((error as Error).message);
 			}
 		});
 	};
