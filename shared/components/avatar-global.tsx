@@ -29,7 +29,7 @@ const getFallback = (name: string) => {
 
 const AvatarGlobal = ({ src, alt = 'User Avatar', name, isLive = false, isAnonymous }: AvatarGlobalProps) => {
 	return (
-		<Avatar size='lg' className='min-w-16 min-h-16'>
+		<Avatar size='lg' className='min-w-14 min-h-14'>
 			{(isAnonymous || !name) ? (
 				<div className='size-full rounded-full grid place-items-center bg-brand-primary/30'>
 					<UserLockIcon className='size-10 text-muted-foreground' />

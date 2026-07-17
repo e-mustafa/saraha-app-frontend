@@ -141,6 +141,7 @@ export default function UserProfileComponent() {
 	return (
 		<div className='w-full mx-auto pb-16'>
 			{/* Top Identity Card and Covers */}
+
 			<div className='relative h-64 sm:h-80 w-full group overflow-hidden transition-all duration-200 shadow-md'>
 				<Image
 					src={covers[currentCoverIndex].url || defaultImages?.cover || ''}
@@ -254,169 +255,176 @@ export default function UserProfileComponent() {
 					</div>
 				)}
 			</div>
-
-			{/* Avatar and Profile Header Info */}
-			<div className='relative container mx-auto mt-4 bg-card-glass bg-linear-to-t from-brand-primary/10 via-transparent to-transparent rounded-3xl shadow-xl border border-border/40 transition-all duration-300'>
-				<div className='relative px-6 pb-6 pt-20 sm:pt-4 flex items-center gap-4'>
-					<div className='absolute sm:relative -top-16 sm:top-0 left-1/2 sm:left-0 -translate-x-1/2 sm:translate-x-0 flex flex-col sm:flex-row items-center gap-4 text-center sm:text-start'>
-						<div className='relative -mt-32 z-20 w-44 h-44 rounded-2xl bg-black/50 border-4 border-primary/60 shadow-md group/avatar overflow-hidden'>
-							<div className='absolute z-100 inset-e-2 bottom-2 opacity-0 group-hover/avatar:opacity-100 transition-opacity duration-200'>
-								{user?.avatar?.url && (
-									<Dialog>
-										<DialogTrigger asChild>
-											<Button
-												type='button'
-												size='icon'
-												variant='destructive'
-												className='backdrop-blur-md'
-												disabled={isDeletingCover}
-											>
-												{isDeletingCover ? (
-													<Loader2Icon className='w-4 h-4 animate-spin' />
-												) : (
-													<Trash2Icon className='w-4 h-4' />
-												)}
-											</Button>
-										</DialogTrigger>
-										<DialogContent className='sm:max-w-sm bg-card-glass backdrop-blur-lg'>
-											<DialogHeader>
-												<DialogTitle>{t('profile.deleteAvatarDialog.title')}</DialogTitle>
-												<DialogDescription>{t('profile.deleteAvatarDialog.description')}</DialogDescription>
-											</DialogHeader>
-
-											<DialogFooter className='py-2'>
-												<DialogClose asChild>
-													<Button variant='outline'>{t('profile.deleteAvatarDialog.cancel')}</Button>
-												</DialogClose>
+			
+			<div className='px-4'>
+				{/* Avatar and Profile Header Info */}
+				<div className='relative container mx-auto mt-4 bg-card-glass bg-linear-to-t from-brand-primary/10 via-transparent to-transparent rounded-3xl shadow-xl border border-border/40 transition-all duration-300'>
+					<div className='relative px-6 pb-6 pt-20 sm:pt-4 flex items-center gap-4'>
+						<div className='absolute sm:relative -top-16 sm:top-0 left-1/2 sm:left-0 -translate-x-1/2 sm:translate-x-0 flex flex-col sm:flex-row items-center gap-4 text-center sm:text-start'>
+							<div className='relative -mt-14 sm:-mt-32 z-20 w-44 h-44 rounded-2xl bg-black/50 border-4 border-primary/60 shadow-md group/avatar overflow-hidden'>
+								<div className='absolute z-100 inset-e-2 bottom-2 opacity-0 group-hover/avatar:opacity-100 transition-opacity duration-200'>
+									{user?.avatar?.url && (
+										<Dialog>
+											<DialogTrigger asChild>
 												<Button
-													type='submit'
+													type='button'
+													size='icon'
 													variant='destructive'
+													className='backdrop-blur-md'
 													disabled={isDeletingCover}
-													onClick={() => deleteCover('')}
 												>
 													{isDeletingCover ? (
 														<Loader2Icon className='w-4 h-4 animate-spin' />
 													) : (
-														t('profile.deleteAvatarDialog.confirm')
+														<Trash2Icon className='w-4 h-4' />
 													)}
 												</Button>
-											</DialogFooter>
-										</DialogContent>
-									</Dialog>
-								)}
+											</DialogTrigger>
+											<DialogContent className='sm:max-w-sm bg-card-glass backdrop-blur-lg'>
+												<DialogHeader>
+													<DialogTitle>{t('profile.deleteAvatarDialog.title')}</DialogTitle>
+													<DialogDescription>{t('profile.deleteAvatarDialog.description')}</DialogDescription>
+												</DialogHeader>
+
+												<DialogFooter className='py-2'>
+													<DialogClose asChild>
+														<Button variant='outline'>{t('profile.deleteAvatarDialog.cancel')}</Button>
+													</DialogClose>
+													<Button
+														type='submit'
+														variant='destructive'
+														disabled={isDeletingCover}
+														onClick={() => deleteCover('')}
+													>
+														{isDeletingCover ? (
+															<Loader2Icon className='w-4 h-4 animate-spin' />
+														) : (
+															t('profile.deleteAvatarDialog.confirm')
+														)}
+													</Button>
+												</DialogFooter>
+											</DialogContent>
+										</Dialog>
+									)}
+								</div>
+								<Image
+									src={avatar}
+									alt='Avatar'
+									width={176}
+									height={176}
+									className='w-full h-full object-cover rounded-xl'
+								/>
+								<button
+									type='button'
+									className='absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover/avatar:opacity-100 transition-opacity duration-200'
+									onClick={() => setUploadTarget('avatar')}
+								>
+									<CameraIcon className='w-6 h-6 text-white' />
+								</button>
 							</div>
-							<Image
-								src={avatar}
-								alt='Avatar'
-								width={176}
-								height={176}
-								className='w-full h-full object-cover rounded-xl'
-							/>
-							<button
-								type='button'
-								className='absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover/avatar:opacity-100 transition-opacity duration-200'
-								onClick={() => setUploadTarget('avatar')}
-							>
-								<CameraIcon className='w-6 h-6 text-white' />
-							</button>
 						</div>
-					</div>
-					<div className='flex gap-4 justify-between items-center flex-1'>
-						<div className='sm:mb-2'>
-							<h2 className='text-2xl font-bold text-foreground'>
-								{user?.firstName} {user?.lastName}
-							</h2>
-							<p className='text-sm text-muted-foreground'>@{user?.username || ''}</p>
+						<div className='flex gap-4 justify-between items-center flex-1'>
+							<div className='sm:mb-2'>
+								<h2 className='text-2xl font-bold text-foreground'>
+									{user?.firstName} {user?.lastName}
+								</h2>
+								<p className='text-sm text-muted-foreground'>@{user?.username || ''}</p>
+							</div>
+							<ShareButton username={user?.username || ''} />
 						</div>
-						<ShareButton username={user?.username || ''} />
 					</div>
 				</div>
-			</div>
 
-			{/* Form & Profile Details Area */}
-			<div className='container mx-auto mt-6 bg-linear-to-br from-accent/20 to-brand-secondary/20 rounded-3xl p-6 sm:p-8 shadow-lg border border-border/40'>
-				<div className='flex gap-2 justify-end pb-8'>
+				{/* Form & Profile Details Area */}
+				<div className='container mx-auto mt-6 bg-linear-to-br from-accent/20 to-brand-secondary/20 rounded-3xl p-4 sm:p-8 shadow-lg border border-border/40'>
+					<div className='flex gap-2 justify-end pb-8 flex-wrap'>
+						{!isEditMode ? (
+							<>
+								<Button type='button' variant='outline' onClick={() => setIsEditMode(true)}>
+									<Edit3Icon className='w-4 h-4 mr-2' /> {t('common.edit')}
+								</Button>
+								<Button
+									type='button'
+									variant='outline'
+									className='text-brand-primary'
+									onClick={() => router.push(APP_ROUTES.changePassword || '/user/change-password')}
+								>
+									<LockIcon className='w-4 h-4 mr-2' /> {t('auth.changePassword.title')}
+								</Button>
+								<Button
+									type='button'
+									variant='outline'
+									className='text-brand-primary'
+									onClick={() => router.push(APP_ROUTES.requestChangeEmail || '/user/request-change-email')}
+								>
+									<MailIcon className='w-4 h-4 mr-2' /> {t('auth.changeEmail.title')}
+								</Button>
+							</>
+						) : (
+							<Button type='button' variant='ghost' onClick={() => setIsEditMode(false)}>
+								<ArrowLeftIcon className='w-4 h-4 mr-2' /> {t('common.cancel')}
+							</Button>
+						)}
+					</div>
+
 					{!isEditMode ? (
-						<>
-							<Button type='button' variant='outline' onClick={() => setIsEditMode(true)}>
-								<Edit3Icon className='w-4 h-4 mr-2' /> {t('common.edit')}
-							</Button>
-							<Button
-								type='button'
-								variant='outline'
-								className='text-brand-primary'
-								onClick={() => router.push(APP_ROUTES.changePassword || '/user/change-password')}
-							>
-								<LockIcon className='w-4 h-4 mr-2' /> {t('auth.changePassword.title')}
-							</Button>
-							<Button
-								type='button'
-								variant='outline'
-								className='text-brand-primary'
-								onClick={() => router.push(APP_ROUTES.requestChangeEmail || '/user/request-change-email')}
-							>
-								<MailIcon className='w-4 h-4 mr-2' /> {t('auth.changeEmail.title')}
-							</Button>
-						</>
-					) : (
-						<Button type='button' variant='ghost' onClick={() => setIsEditMode(false)}>
-							<ArrowLeftIcon className='w-4 h-4 mr-2' /> {t('common.cancel')}
-						</Button>
-					)}
-				</div>
-
-				{!isEditMode ? (
-					<div className='grid grid-cols-1 sm:grid-cols-2 gap-6'>
-						<div className='p-3 rounded-xl bg-bg-main/50 border border-border/10'>
-							<span className='text-xs text-muted-foreground block'>{t('forms.labels.firstName')}</span>
-							<span className='text-base font-medium text-foreground'>{user?.firstName || '—'}</span>
-						</div>
-						<div className='p-3 rounded-xl bg-bg-main/50 border border-border/10'>
-							<span className='text-xs text-muted-foreground block'>{t('forms.labels.lastName')}</span>
-							<span className='text-base font-medium text-foreground'>{user?.lastName || '—'}</span>
-						</div>
-						<div className='p-3 rounded-xl bg-bg-main/50 border border-border/10'>
-							<span className='text-xs text-muted-foreground block'>{t('forms.labels.username')}</span>
-							<span className='text-base font-medium text-foreground'>@{user?.username || '—'}</span>
-						</div>
-						<div className='p-3 rounded-xl bg-bg-main/50 border border-border/10'>
-							<span className='text-xs text-muted-foreground block'>{t('forms.labels.email')}</span>
-							<span className='text-base font-medium text-foreground'>{user?.email || '—'}</span>
-						</div>
-						<div className='space-y-1 p-3 rounded-xl bg-bg-main/50 border border-border/10'>
-							<span className='text-xs text-muted-foreground block'>{t('forms.labels.phone')}</span>
-							<span className='text-base font-medium text-foreground truncate line-clamp-1'>
-								{user?.phone || '—'}
-							</span>
-						</div>
-						<div className='space-y-1 p-3 rounded-xl bg-bg-main/50 border border-border/10'>
-							<span className='text-xs text-muted-foreground block'>{t('forms.labels.gender')}</span>
-							<span className='text-base font-medium text-foreground'>
-								{user?.gender == 0 ? t('forms.labels.male') : t('forms.labels.female')}
-							</span>
-						</div>
-						<div className='space-y-1 p-3 rounded-xl bg-bg-main/50 border border-border/10 flex gab-2 justify-between'>
-							<div className=''>
-								<span className='text-xs text-muted-foreground block'>{t('forms.labels.birthdate')}</span>
-								<span className='text-base font-medium text-foreground'>
-									{user?.birthdate ? format(user?.birthdate) : '—'}
+						<div className='grid grid-cols-1 sm:grid-cols-2 gap-6'>
+							<div className='p-3 rounded-xl bg-bg-main/50 border border-border/10'>
+								<span className='text-xs text-muted-foreground block'>{t('forms.labels.firstName')}</span>
+								<span className='text-base font-medium text-foreground'>{user?.firstName || '—'}</span>
+							</div>
+							<div className='p-3 rounded-xl bg-bg-main/50 border border-border/10'>
+								<span className='text-xs text-muted-foreground block'>{t('forms.labels.lastName')}</span>
+								<span className='text-base font-medium text-foreground'>{user?.lastName || '—'}</span>
+							</div>
+							<div className='p-3 rounded-xl bg-bg-main/50 border border-border/10'>
+								<span className='text-xs text-muted-foreground block'>{t('forms.labels.username')}</span>
+								<span className='text-base font-medium text-foreground'>@{user?.username || '—'}</span>
+							</div>
+							<div className='p-3 rounded-xl bg-bg-main/50 border border-border/10'>
+								<span className='text-xs text-muted-foreground block'>{t('forms.labels.email')}</span>
+								<span className='text-base font-medium text-foreground'>{user?.email || '—'}</span>
+							</div>
+							<div className='space-y-1 p-3 rounded-xl bg-bg-main/50 border border-border/10'>
+								<span className='text-xs text-muted-foreground block'>{t('forms.labels.phone')}</span>
+								<span className='text-base font-medium text-foreground truncate line-clamp-1'>
+									{user?.phone || '—'}
 								</span>
 							</div>
-							<div className=''>
-								<span className='text-xs text-muted-foreground block'>{t('forms.labels.age')}</span>
-								<span className='text-base font-medium text-foreground'>{user?.age || '—'}</span>
+							<div className='space-y-1 p-3 rounded-xl bg-bg-main/50 border border-border/10'>
+								<span className='text-xs text-muted-foreground block'>{t('forms.labels.gender')}</span>
+								<span className='text-base font-medium text-foreground'>
+									{user?.gender == 0 ? t('forms.labels.male') : t('forms.labels.female')}
+								</span>
+							</div>
+							<div className='space-y-1 p-3 rounded-xl bg-bg-main/50 border border-border/10 flex gab-2 justify-between'>
+								<div className=''>
+									<span className='text-xs text-muted-foreground block'>{t('forms.labels.birthdate')}</span>
+									<span className='text-base font-medium text-foreground'>
+										{user?.birthdate ? format(user?.birthdate) : '—'}
+									</span>
+								</div>
+								<div className=''>
+									<span className='text-xs text-muted-foreground block'>{t('forms.labels.age')}</span>
+									<span className='text-base font-medium text-foreground'>{user?.age || '—'}</span>
+								</div>
+							</div>
+							<div className='space-y-1 p-3 rounded-xl bg-bg-main/50 border border-border/10'>
+								<span className='text-xs text-muted-foreground block'>{t('forms.labels.bio')}</span>
+								<span className='text-base font-medium text-foreground truncate line-clamp-1'>
+									{user?.bio || '—'}
+								</span>
 							</div>
 						</div>
-						<div className='space-y-1 p-3 rounded-xl bg-bg-main/50 border border-border/10'>
-							<span className='text-xs text-muted-foreground block'>{t('forms.labels.bio')}</span>
-							<span className='text-base font-medium text-foreground truncate line-clamp-1'>{user?.bio || '—'}</span>
-						</div>
-					</div>
-				) : (
-					<ProfileForm initialData={user} onClose={() => setIsEditMode(false)} onSuccess={() => setIsEditMode(false)} />
-				)}
+					) : (
+						<ProfileForm
+							initialData={user}
+							onClose={() => setIsEditMode(false)}
+							onSuccess={() => setIsEditMode(false)}
+						/>
+					)}
+				</div>
 			</div>
-
 			{/* Unified Image Upload Modal */}
 			<ImageUploadModal
 				isOpen={uploadTarget !== null}

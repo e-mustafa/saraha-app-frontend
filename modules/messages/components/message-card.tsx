@@ -166,10 +166,10 @@ export default function MessageCard({ message, tab, isAuthed }: { message: Messa
 	const isAnyActionPending = activeMutationsCount > 0;
 
 	return (
-		<Card className='overflow-hidden bg-card-blur rounded-xl border border-brand-primary/20 p-6 shadow-lg hover:shadow-xl transition-all duration-300 hover:border-brand-primary/40 animate-in slide-in-from-bottom-4'>
+		<Card className='overflow-hidden bg-card-blur rounded-xl border border-brand-primary/20 p-4 sm:p-6 shadow-lg hover:shadow-xl transition-all duration-300 hover:border-brand-primary/40 animate-in slide-in-from-bottom-4'>
 			<CardContent className='px-0 space-y-5'>
 				{/* Header: Sender info and controls */}
-				<div className='flex items-center justify-between'>
+				<div className='flex flex-col sm:flex-row sm:items-center justify-between'>
 					{id ? (
 						<div className='flex items-center gap-2'>
 							<Button
@@ -211,7 +211,7 @@ export default function MessageCard({ message, tab, isAuthed }: { message: Messa
 					)}
 
 					{isAuthed && (
-						<div className='flex items-center gap-1.5 text-xs text-muted-foreground'>
+						<div className='flex items-center justify-end gap-1.5 text-xs text-muted-foreground'>
 							{/* Favorite Button */}
 							<Button
 								className='bg-transparent hover:bg-transparent'

@@ -1,4 +1,4 @@
-import { useRouter } from '@/i18n/navigation';
+import { Link, useRouter } from '@/i18n/navigation';
 import { useAuth } from '@/modules/auth/hooks/use-auth';
 import { UserProfile } from '@/modules/profile/types/database';
 import { Button } from '@/shared/components/ui/button';
@@ -39,13 +39,15 @@ export default function UserSection({ user }: { user: Partial<UserProfile> }) {
 			{/* الصورة الشخصية بحواف عصرية ووهج خفيف */}
 
 			<div className='relative -mt-32 size-40 rounded-2xl border-2 border-brand-primary/30 p-1 shadow-lg group'>
-				<Image
-					src={user?.avatar?.url || defaultImages.avatarMale || ''}
-					alt={user?.name || user?.firstName || 'user avatar'}
-					width={112}
-					height={112}
-					className='w-full h-full object-cover rounded-xl transition-transform duration-300 group-hover:scale-105'
-				/>
+				<Link href={isAuthed ? APP_ROUTES.profile : ''}>
+					<Image
+						src={user?.avatar?.url || defaultImages.avatarMale || ''}
+						alt={user?.name || user?.firstName || 'user avatar'}
+						width={112}
+						height={112}
+						className='w-full h-full object-cover rounded-xl transition-transform duration-300 group-hover:scale-105'
+					/>
+				</Link>
 			</div>
 
 			{/* اسم المستخدم والمعلومات الشخصية */}
@@ -71,8 +73,6 @@ export default function UserSection({ user }: { user: Partial<UserProfile> }) {
 							)}
 						</button>
 
-						<ShareButton username={user?.username || ''} />
-
 						{!user?.verified && (
 							<Button
 								type='button'
@@ -91,12 +91,14 @@ export default function UserSection({ user }: { user: Partial<UserProfile> }) {
 				<p className='text-sm text-muted-foreground'>{user?.bio || t('public.defaultBio')}</p>
 			</div>
 
-			<div className='w-full flex gap-6 justify-start'>
+			<div className='w-full flex gap-6 justify-start items-center'>
 				{user?.visitCount && user?.visitCount > 0 ? (
 					<div className='p-2 border border-border bg-accent/70 rounded-lg text-sm text-muted-foreground'>
 						{`${t('profile.visitors')}: ${user?.visitCount || 0}`}
 					</div>
 				) : null}
+
+				<ShareButton username={user?.username || ''} />
 			</div>
 		</div>
 	);
