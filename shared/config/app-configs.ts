@@ -1,5 +1,5 @@
 export const APP_CONFIGS = {
-	name: 'Saraha',
+	name: 'Saraha App',
 	version: '1.0.0',
 	description: 'Saraha App Frontend',
 };
@@ -43,9 +43,13 @@ export const appConfig = {
 	messages: {
 		maxLength: 1000,
 		maxAttachmentsPer: 4,
-		maxAttachmentSize: 10 * 1024 * 1024, // 10MB
+		maxAttachmentSize: 2 * 1024 * 1024, // 10MB
 
 		maxMessagesPerMinute: 10,
+	},
+	user: {
+		coversMaxCount: 2,
+		coversMaxSize: 2 * 1024 * 1024, // 2MB
 	},
 	security: {
 		minPasswordLength: 8,

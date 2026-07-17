@@ -1,6 +1,7 @@
 'use client';
 
 import { useRouter } from '@/i18n/navigation';
+import ShareButton from '@/modules/messages/components/share-button';
 import { Button } from '@/shared/components/ui/button';
 import {
 	Dialog,
@@ -27,13 +28,14 @@ import {
 	LockIcon,
 	MailIcon,
 	PlusIcon,
+	ReplaceIcon,
 	Trash2Icon,
 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import { useState } from 'react';
 import { toast } from 'sonner';
-import { UserProfile } from '../types/database';
+import { UserImage, UserProfile } from '../types/database';
 import ImageUploadModal from './image-upload-modal';
 import ProfileForm from './profile-form';
 import UserProfileSkeleton from './user.profile-skeleton';
@@ -46,9 +48,10 @@ export default function UserProfileComponent() {
 
 	const [isEditMode, setIsEditMode] = useState(false);
 	const [currentCoverIndex, setCurrentCoverIndex] = useState(0);
+	const [replaceCover, setReplaceCover] = useState<string | null>(null);
 
 	// Manage modal state for both types (null means closed)
-	const [uploadTarget, setUploadTarget] = useState<'avatar' | 'cover' | null>(null);
+	const [uploadTarget, setUploadTarget] = useState<'avatar' | 'cover' | 'replace' | null>(null);
 
 	const {
 		data: user,
@@ -68,12 +71,9 @@ export default function UserProfileComponent() {
 
 	// 1. Mutation لحذف صورة الغلاف من الباك اند وتحديث الكاش
 	const { mutate: deleteCover, isPending: isDeletingCover } = useMutation({
-		mutationFn: async (coverUrl: string) => {
+		mutationFn: async (id: string) => {
 			// const body = coverUrl ? { image: coverUrl } : undefined;
-			const response = await apiClient.delete(
-				`/users/${coverUrl ? 'profile-covers' : 'profile-avatar'}`,
-				coverUrl ? { image: coverUrl } : {},
-			);
+			const response = await apiClient.delete(`/users/${id ? 'profile-covers' : 'profile-avatar'}`, id ? { id } : {});
 			return response as IResponse<Partial<UserProfile>>;
 		},
 		onSuccess: (res) => {
@@ -97,24 +97,36 @@ export default function UserProfileComponent() {
 		},
 	});
 
+	console.log('user?.avatar', user?.avatar);
 	// Derived State: Calculate avatar URL dynamically from the current query cache
-	const avatar = user?.avatar || (user?.gender === 0 ? defaultImages?.avatarMale || '' : defaultImages?.avatarFemale || '');
+	const avatar =
+		user?.avatar.url || (user?.gender === 0 ? defaultImages?.avatarMale || '' : defaultImages?.avatarFemale || '');
 
 	// Derived State: Calculate covers array dynamically from the current query cache
-	const covers = user?.covers && user.covers.length > 0 ? user.covers : [defaultImages?.cover || ''];
+	const covers =
+		user?.covers && user.covers.length > 0 ? user.covers : [{ id: 'default-cover', url: defaultImages?.cover || '' }];
 
-	const handleImageUploadSuccess = (urls: string | string[]) => {
-		if (uploadTarget === 'cover' && Array.isArray(urls)) {
+	const handleImageUploadSuccess = (userImage: UserImage | UserImage[]) => {
+		if (uploadTarget === 'cover' && Array.isArray(userImage)) {
 			// Snap the carousel to the newly added cover image
-			setCurrentCoverIndex(Math.max(0, urls.length - 1));
+			setCurrentCoverIndex(Math.max(0, userImage.length - 1));
 		}
 	};
 
-	const removeCover = (indexToRemove: number) => {
-		if (!user || !user.covers || !user.covers[indexToRemove]) return;
+	const handleReplaceCover = () => {
+		setUploadTarget('replace');
+		setReplaceCover(user?.covers[currentCoverIndex]?.id || '');
+	};
 
+	const removeCover = () => {
+		if (!user || !user.covers || !user.covers[currentCoverIndex]) return;
 		// تمرير رابط الصورة المراد حذفها للباك اند
-		deleteCover(user.covers[indexToRemove]);
+		deleteCover(user.covers[currentCoverIndex]?.id);
+	};
+
+	const handleClose = () => {
+		setUploadTarget(null);
+		setReplaceCover(null);
 	};
 
 	if (isLoading) return <UserProfileSkeleton />;
@@ -123,7 +135,7 @@ export default function UserProfileComponent() {
 	}
 
 	// Calculate remaining allowable covers based on derived state (Max limit is 2)
-	const activeCoversCount = covers.filter((c) => !c.includes('user-cover-placeholder.webp')).length;
+	const activeCoversCount = covers.filter((c) => !c.url.includes('user-cover-placeholder.webp')).length;
 	const remainingCoversAllowed = Math.max(0, 2 - activeCoversCount);
 
 	return (
@@ -131,7 +143,7 @@ export default function UserProfileComponent() {
 			{/* Top Identity Card and Covers */}
 			<div className='relative h-64 sm:h-80 w-full group overflow-hidden transition-all duration-200 shadow-md'>
 				<Image
-					src={covers[currentCoverIndex] || defaultImages?.cover || ''}
+					src={covers[currentCoverIndex].url || defaultImages?.cover || ''}
 					alt='Cover'
 					className='w-full h-full object-cover'
 					width={1200}
@@ -179,47 +191,54 @@ export default function UserProfileComponent() {
 						</Button>
 					)}
 					{activeCoversCount > 0 && (
-						<Dialog>
-							<DialogTrigger asChild>
-								<Button
-									type='button'
-									size='icon'
-									variant='destructive'
-									className='backdrop-blur-md'
-									disabled={isDeletingCover}
-								>
-									{isDeletingCover ? (
-										<Loader2Icon className='w-4 h-4 animate-spin' />
-									) : (
-										<Trash2Icon className='w-4 h-4' />
-									)}
-								</Button>
-							</DialogTrigger>
-							<DialogContent className='sm:max-w-sm bg-card-glass backdrop-blur-lg'>
-								<DialogHeader>
-									<DialogTitle>{t('messages.deleteDialog.title')}</DialogTitle>
-									<DialogDescription>{t('messages.deleteDialog.description')}</DialogDescription>
-								</DialogHeader>
+						<div className='flex gap-2 items-center'>
+							<Button
+								type='button'
+								size='sm'
+								variant='outline'
+								className='text-white/80 hover:bg-white backdrop-blur-md gap-1.5'
+								onClick={handleReplaceCover}
+							>
+								<ReplaceIcon className='w-4 h-4' /> <span>{t('forms.upload.replaceCover')}</span>
+							</Button>
 
-								<DialogFooter className='py-2'>
-									<DialogClose asChild>
-										<Button variant='outline'>{t('messages.deleteDialog.cancel')}</Button>
-									</DialogClose>
+							<Dialog>
+								<DialogTrigger asChild>
 									<Button
-										type='submit'
+										type='button'
+										size='icon'
 										variant='destructive'
+										className='backdrop-blur-md'
 										disabled={isDeletingCover}
-										onClick={() => removeCover(currentCoverIndex)}
 									>
 										{isDeletingCover ? (
 											<Loader2Icon className='w-4 h-4 animate-spin' />
 										) : (
-											t('messages.deleteDialog.confirm')
+											<Trash2Icon className='w-4 h-4' />
 										)}
 									</Button>
-								</DialogFooter>
-							</DialogContent>
-						</Dialog>
+								</DialogTrigger>
+								<DialogContent className='sm:max-w-sm bg-card-glass backdrop-blur-lg'>
+									<DialogHeader>
+										<DialogTitle>{t('profile.deleteCoverDialog.title')}</DialogTitle>
+										<DialogDescription>{t('profile.deleteCoverDialog.description')}</DialogDescription>
+									</DialogHeader>
+
+									<DialogFooter className='py-2'>
+										<DialogClose asChild>
+											<Button variant='outline'>{t('profile.deleteCoverDialog.cancel')}</Button>
+										</DialogClose>
+										<Button type='submit' variant='destructive' disabled={isDeletingCover} onClick={removeCover}>
+											{isDeletingCover ? (
+												<Loader2Icon className='w-4 h-4 animate-spin' />
+											) : (
+												t('profile.deleteCoverDialog.confirm')
+											)}
+										</Button>
+									</DialogFooter>
+								</DialogContent>
+							</Dialog>
+						</div>
 					)}
 				</div>
 
@@ -242,47 +261,49 @@ export default function UserProfileComponent() {
 					<div className='absolute sm:relative -top-16 sm:top-0 left-1/2 sm:left-0 -translate-x-1/2 sm:translate-x-0 flex flex-col sm:flex-row items-center gap-4 text-center sm:text-start'>
 						<div className='relative -mt-32 z-20 w-44 h-44 rounded-2xl bg-black/50 border-4 border-primary/60 shadow-md group/avatar overflow-hidden'>
 							<div className='absolute z-100 inset-e-2 bottom-2 opacity-0 group-hover/avatar:opacity-100 transition-opacity duration-200'>
-								<Dialog>
-									<DialogTrigger asChild>
-										<Button
-											type='button'
-											size='icon'
-											variant='destructive'
-											className='backdrop-blur-md'
-											disabled={isDeletingCover}
-										>
-											{isDeletingCover ? (
-												<Loader2Icon className='w-4 h-4 animate-spin' />
-											) : (
-												<Trash2Icon className='w-4 h-4' />
-											)}
-										</Button>
-									</DialogTrigger>
-									<DialogContent className='sm:max-w-sm bg-card-glass backdrop-blur-lg'>
-										<DialogHeader>
-											<DialogTitle>{t('messages.deleteDialog.title')}</DialogTitle>
-											<DialogDescription>{t('messages.deleteDialog.description')}</DialogDescription>
-										</DialogHeader>
-
-										<DialogFooter className='py-2'>
-											<DialogClose asChild>
-												<Button variant='outline'>{t('messages.deleteDialog.cancel')}</Button>
-											</DialogClose>
+								{user?.avatar?.url && (
+									<Dialog>
+										<DialogTrigger asChild>
 											<Button
-												type='submit'
+												type='button'
+												size='icon'
 												variant='destructive'
+												className='backdrop-blur-md'
 												disabled={isDeletingCover}
-												onClick={() => deleteCover('')}
 											>
 												{isDeletingCover ? (
 													<Loader2Icon className='w-4 h-4 animate-spin' />
 												) : (
-													t('messages.deleteDialog.confirm')
+													<Trash2Icon className='w-4 h-4' />
 												)}
 											</Button>
-										</DialogFooter>
-									</DialogContent>
-								</Dialog>
+										</DialogTrigger>
+										<DialogContent className='sm:max-w-sm bg-card-glass backdrop-blur-lg'>
+											<DialogHeader>
+												<DialogTitle>{t('profile.deleteAvatarDialog.title')}</DialogTitle>
+												<DialogDescription>{t('profile.deleteAvatarDialog.description')}</DialogDescription>
+											</DialogHeader>
+
+											<DialogFooter className='py-2'>
+												<DialogClose asChild>
+													<Button variant='outline'>{t('profile.deleteAvatarDialog.cancel')}</Button>
+												</DialogClose>
+												<Button
+													type='submit'
+													variant='destructive'
+													disabled={isDeletingCover}
+													onClick={() => deleteCover('')}
+												>
+													{isDeletingCover ? (
+														<Loader2Icon className='w-4 h-4 animate-spin' />
+													) : (
+														t('profile.deleteAvatarDialog.confirm')
+													)}
+												</Button>
+											</DialogFooter>
+										</DialogContent>
+									</Dialog>
+								)}
 							</div>
 							<Image
 								src={avatar}
@@ -300,11 +321,14 @@ export default function UserProfileComponent() {
 							</button>
 						</div>
 					</div>
-					<div className='sm:mb-2'>
-						<h2 className='text-2xl font-bold text-foreground'>
-							{user?.firstName} {user?.lastName}
-						</h2>
-						<p className='text-sm text-muted-foreground'>@{user?.username || ''}</p>
+					<div className='flex gap-4 justify-between items-center flex-1'>
+						<div className='sm:mb-2'>
+							<h2 className='text-2xl font-bold text-foreground'>
+								{user?.firstName} {user?.lastName}
+							</h2>
+							<p className='text-sm text-muted-foreground'>@{user?.username || ''}</p>
+						</div>
+						<ShareButton username={user?.username || ''} />
 					</div>
 				</div>
 			</div>
@@ -396,9 +420,10 @@ export default function UserProfileComponent() {
 			{/* Unified Image Upload Modal */}
 			<ImageUploadModal
 				isOpen={uploadTarget !== null}
-				mode={uploadTarget === 'avatar' ? 'avatar' : 'cover'}
-				maxFiles={uploadTarget === 'avatar' ? 1 : remainingCoversAllowed}
-				onClose={() => setUploadTarget(null)}
+				mode={uploadTarget!}
+				maxFiles={uploadTarget === 'cover' ? remainingCoversAllowed : 1}
+				onClose={handleClose}
+				replaceCover={replaceCover}
 				onUpload={handleImageUploadSuccess}
 			/>
 		</div>

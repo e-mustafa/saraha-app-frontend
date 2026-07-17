@@ -8,6 +8,7 @@ import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import { useState } from 'react';
 import { toast } from 'sonner';
+import ShareButton from './share-button';
 
 export default function UserSection({ user }: { user: Partial<UserProfile> }) {
 	const t = useTranslations();
@@ -39,7 +40,7 @@ export default function UserSection({ user }: { user: Partial<UserProfile> }) {
 
 			<div className='relative -mt-32 size-40 rounded-2xl border-2 border-brand-primary/30 p-1 shadow-lg group'>
 				<Image
-					src={user?.avatar || defaultImages.avatarMale}
+					src={user?.avatar?.url || defaultImages.avatarMale || ''}
 					alt={user?.name || user?.firstName || 'user avatar'}
 					width={112}
 					height={112}
@@ -53,34 +54,40 @@ export default function UserSection({ user }: { user: Partial<UserProfile> }) {
 					{user?.name || `${user?.firstName || ''} ${user?.lastName || ''}`}
 				</h1>
 				{/* شارة اسم المستخدم التفاعلية القابلة للنسخ */}
-				<div className='flex gap-4 items-center justify-center'>
-					<button
-						type='button'
-						onClick={handleCopyUsername}
-						className='inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold bg-secondary/60 hover:bg-secondary border border-border/60 transition-all duration-200 cursor-pointer active:scale-95 group'
-					>
-						<span className='text-muted-foreground group-hover:text-brand-primary transition-colors'>
-							@{user?.username}
-						</span>
-						{copied ? (
-							<CheckIcon className='w-3.5 h-3.5 text-emerald-500 animate-in zoom-in' />
-						) : (
-							<CopyIcon className='w-3.5 h-3.5 text-muted-foreground group-hover:text-foreground transition-colors' />
-						)}
-					</button>
-
-					{authedUser && isAuthed && authedUser.username == user.username && !user?.verified && (
-						<Button
+				{isAuthed && authedUser && authedUser?.username === user?.username ? (
+					<div className='flex gap-4 items-center justify-center'>
+						<button
 							type='button'
-							variant='default'
-							size='sm'
-							onClick={() => router.push(APP_ROUTES.verifyAccount)}
-							className=' bg-yellow-700/50 hover:bg-yellow-500/40 text-yellow-400 transition-all shadow-md'
+							onClick={handleCopyUsername}
+							className='inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold bg-secondary/60 hover:bg-secondary border border-border/60 transition-all duration-200 cursor-pointer active:scale-95 group'
 						>
-							{t('auth.steps.activeAccount')}
-						</Button>
-					)}
-				</div>
+							<span className='text-muted-foreground group-hover:text-brand-primary transition-colors'>
+								@{user?.username}
+							</span>
+							{copied ? (
+								<CheckIcon className='w-3.5 h-3.5 text-emerald-500 animate-in zoom-in' />
+							) : (
+								<CopyIcon className='w-3.5 h-3.5 text-muted-foreground group-hover:text-foreground transition-colors' />
+							)}
+						</button>
+
+						<ShareButton username={user?.username || ''} />
+
+						{!user?.verified && (
+							<Button
+								type='button'
+								variant='default'
+								size='sm'
+								onClick={() => router.push(APP_ROUTES.verifyAccount)}
+								className=' bg-yellow-700/50 hover:bg-yellow-500/40 text-yellow-400 transition-all shadow-md'
+							>
+								{t('auth.steps.activeAccount')}
+							</Button>
+						)}
+					</div>
+				) : (
+					<p className='text-sm text-muted-foreground'>@{user?.username}</p>
+				)}
 				<p className='text-sm text-muted-foreground'>{user?.bio || t('public.defaultBio')}</p>
 			</div>
 

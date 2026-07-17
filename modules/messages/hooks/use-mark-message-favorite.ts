@@ -2,12 +2,12 @@ import { IResponse } from '@/shared/types/index';
 import { apiClient } from '@/shared/utils/apiClient';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-export default function useMarkMessageFavorite() {
+export default function useMarkMessageFavorite(id: string) {
 	const queryClient = useQueryClient();
 
 	return useMutation({
-		mutationKey: ['messages', 'favorite'],
-		mutationFn: async (id: string) => {
+		mutationKey: ['messages', id, 'favorite'],
+		mutationFn: async () => {
 			const response = await apiClient.patch<IResponse<{ fromFavorite: boolean }>>(`/messages/${id}/favorite`, {});
 			return response;
 		},

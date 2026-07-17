@@ -8,7 +8,6 @@ export const fetchPublicProfile = async (username: string) => {
 	return response.data as Partial<UserProfile>;
 };
 
-// 2. الـ Custom Hook الاحترافي
 export const usePublicProfile = (username: string) => {
 	return useQuery({
 		queryKey: ['public-profile', username],

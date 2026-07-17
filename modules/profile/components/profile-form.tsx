@@ -89,7 +89,6 @@ export default function ProfileForm({ initialData, onSuccess, onClose }: Profile
 	// 	});
 	// };
 
-	console.log('errors', form.formState.errors);
 
 	const onSubmit = (data: ProfileInput) => {
 		if (!form.formState.isDirty) {

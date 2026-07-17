@@ -1,14 +1,15 @@
+import { UserImage } from '@/modules/profile/types/database';
 import { MessageTypeEnum } from '../enums';
 
 export interface MessageMedia {
 	id: string;
-	type: 'image' | 'video';
 	url: string;
+	fileType: 'image' | 'audio' | 'video';
 }
 
 export type Person = {
 	id: string;
-	avatar: string;
+	avatar: UserImage;
 	name: string;
 	username: string;
 	isLive: boolean;

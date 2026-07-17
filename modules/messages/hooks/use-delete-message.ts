@@ -2,12 +2,12 @@ import { IResponse } from '@/shared/types/index';
 import { apiClient } from '@/shared/utils/apiClient';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-export default function useDeleteMessage() {
+export default function useDeleteMessage(id: string) {
 	const queryClient = useQueryClient();
 
 	return useMutation({
-		mutationKey: ['messages', 'delete'],
-		mutationFn: async (id: string) => {
+		mutationKey: ['messages', id, 'delete'],
+		mutationFn: async () => {
 			const response = await apiClient.delete<IResponse<{ fromFavorite: boolean }>>(`/messages/${id}`);
 			return response;
 		},

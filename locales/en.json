@@ -7,41 +7,42 @@
 		"cancel": "Cancel",
 		"retry": "Retry",
 		"save": "Save",
-		"saveChanges": "Save Changes",
+		"saveChanges": "Save changes",
 		"delete": "Delete",
-		"clearAll": "Clear All",
+		"clearAll": "Clear all",
 		"edit": "Edit",
 		"close": "Close",
 		"copied": "Copied!",
-		"underDev": "Sorry, this section is under development"
+		"underDev": "Sorry, this part is under development",
+		"stop": "Stop"
 	},
 	"home": {
-		"badge": "Share candidly, connect deeply",
+		"badge": "Share honestly, connect deeply",
 		"heroTitle": "Get constructive and anonymous feedback from your friends",
-		"heroSubtitle": "Saraha Pro enables you to discover how others truly see you without any embarrassment. Create your personal link and start receiving anonymous messages now!",
+		"heroSubtitle": "Sarahah Pro enables you to know how others honestly see you without embarrassment. Create your personal link and start receiving anonymous messages now!",
 		"cta": {
-			"register": "Create Your Account Now",
-			"login": "Login"
+			"register": "Create your account now",
+			"login": "Log In"
 		},
 		"features": {
-			"title": "Why Choose Saraha Pro?",
-			"subtitle": "We provide you with a safe, interactive, and completely seamless communication experience",
+			"title": "Why choose Sarahah Pro?",
+			"subtitle": "We provide you with a completely safe, interactive, and seamless communication experience",
 			"1": {
-				"title": "Send Anonymous Messages",
+				"title": "Send anonymous messages",
 				"desc": "Send anonymous messages"
 			},
 			"2": {
-				"title": "Get Honest Insights",
+				"title": "Get honest insights",
 				"desc": "Get honest insights"
 			},
 			"3": {
-				"title": "Safe & Respectful",
-				"desc": "Safe & respectful"
+				"title": "Safe and respectful",
+				"desc": "Safe and respectful"
 			}
 		},
 		"stats": {
-			"users": "Registered Users",
-			"messages": "Sent Messages"
+			"users": "registered user",
+			"messages": "message sent"
 		}
 	},
 	"navbar": {
@@ -50,22 +51,22 @@
 			"messages": "Messages",
 			"settings": "Settings",
 			"logout": "Log Out",
-			"logoutFromAll": "Log Out from All Devices"
+			"logoutFromAll": "Log out from all devices"
 		},
 		"notifications": {
 			"title": "Notifications",
-			"count": "{count, plural, =0 {No notifications} one {One notification} other {{count} notifications}}",
+			"count": "{count, plural, =0 {No notifications} one {One notification} two {Two notifications} few {{count} notifications} many {{count} notifications} other {{count} notifications}}",
 			"empty": "No notifications"
 		}
 	},
 	"themes": {
 		"accentColor": "Accent Color",
 		"displayMode": "Display Mode",
-		"toggleTheme": "Toggle Theme",
+		"toggleTheme": "Toggle theme",
 		"modes": {
-			"light": "Light Mode",
-			"dark": "Dark Mode",
-			"system": "System Default"
+			"light": "Light mode",
+			"dark": "Dark mode",
+			"system": "System default"
 		},
 		"palettes": {
 			"violet": "Neon Violet",
@@ -81,40 +82,40 @@
 		"themeTitle": "Theme",
 		"accentColor": "Accent Color",
 		"displayMode": "Display Mode",
-		"notificationsToggle": "Enable Notifications",
+		"notificationsToggle": "Enable notifications",
 		"alerts": {
-			"themePaletteChanged": "Accent color changed to {theme}",
+			"themePaletteChanged": "Brand color changed to {theme}",
 			"displayModeSet": "Display mode set to {mode}",
 			"languageSet": "Language set to {language}"
 		}
 	},
 	"public": {
-		"defaultBio": "Send me a constructive critique or a secret message without knowing my identity!",
-		"notFoundTitle": "Account Not Found",
-		"notFoundDescription": "Sorry, the link you are trying to visit is incorrect or the account owner has changed their username.",
+		"defaultBio": "Send me constructive feedback or a secret message without me knowing your identity!",
+		"notFoundTitle": "Account not found",
+		"notFoundDescription": "Sorry, the link you are trying to visit is incorrect, or the account owner might have changed their username.",
 		"createNewAccount": "Create your own account"
 	},
 	"auth": {
 		"welcome": "Welcome to Sarahah 👋",
 		"logoutAll": "Log out from all devices",
 		"login": {
-			"title": "Welcome Back",
+			"title": "Welcome back",
 			"description": "Log in to your account to continue viewing your messages",
 			"button": "Log In",
-			"forgotPassword": "Forgot Password?",
-			"rememberMe": "Remember Me"
+			"forgotPassword": "Forgot password?",
+			"rememberMe": "Remember me"
 		},
 		"social": {
 			"orContinueWith": "Or continue with",
-			"facebookAccount": "Facebook Account",
-			"googleAccount": "Google Account"
+			"facebookAccount": "Facebook account",
+			"googleAccount": "Google account"
 		},
 		"logout": {
 			"success": "Logged out successfully",
 			"error": "Failed to log out"
 		},
 		"register": {
-			"title": "Create New Account",
+			"title": "Create a new account",
 			"description": "Create your account now and start receiving secret feedback",
 			"button": "Create Account"
 		},
@@ -122,21 +123,22 @@
 			"verifyTitle": "Account Verification",
 			"verifyDescription": "Enter the verification code sent to your email",
 			"verifyButton": "Verify Now",
-			"resendCode": "Resend Code"
+			"resendCode": "Resend code",
+			"activeAccount": "Activate Account"
 		},
 		"forgotPassword": {
 			"title": "Password Recovery",
 			"description": "Enter your email to send the reset link",
-			"button": "Send Reset Link"
+			"button": "Send Recovery Link"
 		},
 		"resetPassword": {
 			"title": "Reset Password",
-			"description": "Enter a strong new password for your account",
+			"description": "Enter a new strong password for your account",
 			"button": "Update Password"
 		},
 		"changePassword": {
 			"title": "Change Password",
-			"description": "Enter a strong new password for your account",
+			"description": "Enter a new strong password for your account",
 			"button": "Update Password",
 			"success": "Password changed successfully",
 			"error": "Failed to change password"
@@ -152,27 +154,29 @@
 		},
 		"revertEmail": {
 			"title": "Revert Email",
-			"description": "Are you sure you want to revert to your previous email?",
+			"description": "Are you sure you want to revert your email?",
 			"button": "Revert Email"
 		},
 		"navigation": {
 			"noAccount": "Don't have an account?",
 			"hasAccount": "Already have an account?",
-			"backToLogin": "Back to Login",
+			"backToLogin": "Back to Log In",
 			"backHome": "Back to Home"
 		}
 	},
 	"messages": {
 		"title": "Inbox",
-		"count": "{count, plural, =0 {No messages yet} one {One new message} other {{count} new messages}}",
+		"count": "{count, plural, =0 {No messages yet} one {One new message} two {Two new messages} few {{count} new messages} many {{count} new messages} other {{count} messages}}",
 		"receivedAt": "Received {time}",
 		"anonymousSender": "Anonymous",
-		"privateMessage": "Secret Message",
-		"revealIdentity": "Visible",
-		"writeMessage": "Write your honest message here...",
+		"privateMessage": "Secret message",
+		"revealIdentity": "Revealed",
+		"writeMessage": "Write your honest feedback here...",
 		"confidential": "Confidential",
-		"public": "Public Message",
-		"publicMessagesTitle": "Public messages listed on the account",
+		"public": "Public message",
+		"recording": "Recording...",
+		"voiceRecorded": "Recorded voice note",
+		"publicMessagesTitle": "Public messages listed on the profile",
 		"tabs": {
 			"inbox": "Inbox",
 			"sent": "Sent",
@@ -187,29 +191,30 @@
 		},
 		"actions": {
 			"favorite": "Favorite",
-			"unfavorite": "Remove from Favorites",
-			"shareAsImage": "Share as Image",
-			"report": "Report abusive content",
+			"unfavorite": "Unfavorite",
+			"shareAsImage": "Share as image",
+			"report": "Report offensive content",
 			"block": "Block this sender"
 		},
 		"send": {
 			"title": "Send a secret message to {name}",
-			"description": "Make your critique constructive and honest without anyone knowing your identity",
+			"description": "Make your feedback constructive and honest without anyone knowing your identity",
 			"placeholder": "Write your honest message here...",
 			"button": "Send Honestly",
 			"sending": "Sending...",
-			"success": "Your message has been sent successfully and with absolute confidentiality!"
+			"success": "Your message has been sent successfully and in complete secrecy!"
 		},
 		"attachments": {
 			"title": "Attached Files",
-			"dragAndDropText": "Drag and drop images/videos here or click to browse",
-			"dragAndDropLimit": "Maximum 4 files (media only)",
-			"textareaPlaceholder": "Write your message with complete honesty and sincerity..."
+			"dragAndDropText": "Drag and drop images/video here or click to browse",
+			"dragAndDropLimit": "Maximum of 4 files (media only)",
+			"textareaPlaceholder": "Write your message with absolute honesty..."
 		},
 		"errors": {
 			"emptyMessage": "You cannot send an empty message",
-			"maxFilesWarning": "You can upload up to 4 media files only",
-			"messageSent": "An error occurred while sending the message"
+			"maxFilesWarning": "You can only upload up to 4 media files",
+			"messageSent": "An error occurred while sending the message",
+			"micAccessDenied": "Your device does not allow microphone access"
 		},
 		"deleteDialog": {
 			"title": "Delete Message",
@@ -222,6 +227,7 @@
 		"shareTitle": "Your personal link to receive messages",
 		"shareDescription": "Share this link on your social media platforms to get secret and honest feedback",
 		"copyLink": "Copy Personal Link",
+		"share": "Share",
 		"deleteAccount": "Permanently Delete Account",
 		"deleteSuccess": "Account and data deleted successfully",
 		"copiedSuccess": "Your Sarahah link has been copied successfully!",
@@ -229,6 +235,22 @@
 		"visitors": "Visitors",
 		"images": {
 			"coverDeleted": "Cover photo deleted successfully"
+		},
+		"shareSheet": {
+			"title": "Share honest feedback or advice with me",
+			"description": "Send me a secret message without me knowing your identity!"
+		},
+		"deleteAvatarDialog": {
+			"title": "Delete Profile Picture",
+			"description": "Are you sure you want to delete your profile picture?",
+			"confirm": "Delete",
+			"cancel": "Cancel"
+		},
+		"deleteCoverDialog": {
+			"title": "Delete Cover Photo",
+			"description": "Are you sure you want to delete the cover photo?",
+			"confirm": "Delete",
+			"cancel": "Cancel"
 		}
 	},
 	"forms": {
@@ -254,9 +276,9 @@
 		"placeholders": {
 			"firstName": "Enter your first name...",
 			"lastName": "Enter your last name...",
-			"email": "Enter email e.g., name@example.com",
-			"newEmail": "Enter new email e.g., name@example.com",
-			"password": "Enter password",
+			"email": "Enter email like name@example.com",
+			"newEmail": "Enter new email like name@example.com",
+			"password": "Enter your password",
 			"oldPassword": "Enter current password",
 			"confirmPassword": "Re-enter password...",
 			"newPassword": "Enter new password...",
@@ -269,17 +291,20 @@
 			"editAvatar": "Edit Profile Picture",
 			"editCover": "Edit Cover Photo",
 			"addCover": "Add Cover",
-			"avatarSingleDesc": "You can upload only one image for your profile picture",
-			"coverSingleDesc": "You can upload only one image for your cover photo",
+			"replaceCover": "Replace",
+			"avatarSingleDesc": "You can only upload one photo for the profile picture",
+			"coverSingleDesc": "You can only upload one photo for the cover photo",
 			"clickOrDrag": "Click or drag file here to upload",
 			"allowedTypes": "Supported formats: JPG, PNG, WEBP, GIF",
-			"uploading": "Uploading file...",
+			"uploading": "Uploading...",
 			"failed": "Sorry, file upload failed",
-			"success": "File uploaded successfully"
+			"success": "File uploaded successfully",
+			"invalidType": "Unsupported file format",
+			"fileTooLarge": "File exceeds the maximum allowed size of {maxSize} MB"
 		},
 		"validation": {
 			"required": "This field is required",
-			"invalidUrl": "The entered URL is invalid",
+			"invalidUrl": "The entered link is invalid",
 			"firstName": {
 				"min": "First name is too short (minimum {min} characters)",
 				"minimum": "First name is too short (minimum {min} characters)",
@@ -295,18 +320,18 @@
 				"invalid": "Invalid email format"
 			},
 			"password": {
-				"min": "Password must be at least {min} characters long",
+				"min": "Password must be at least {min} characters",
 				"mismatch": "Passwords do not match"
 			},
 			"username": {
 				"min": "Username is too short (minimum {min} characters)",
-				"max": "Username exceeds the maximum limit ({max} characters)",
+				"max": "Username exceeds the limit ({max} characters)",
 				"taken": "This username is already taken"
 			},
 			"birthdate": {
 				"required": "Date of birth is required",
 				"max": "Date of birth cannot be in the future",
-				"underAge": "You must be 18 years old or older"
+				"underAge": "Age must be 18 years or older"
 			},
 			"message": {
 				"required": "Cannot send an empty message",
@@ -323,9 +348,14 @@
 			}
 		}
 	},
+	"api": {
+		"errors": {
+			"inputs_validation": "There is an error in the data, please correct it"
+		}
+	},
 	"notFoundPage": {
 		"title": "Sorry, this page does not exist",
-		"description": "The link you followed may be broken or the page has been moved",
+		"description": "The link you followed may be incorrect, or the page has been moved",
 		"backHome": "Back to Home"
 	}
 }
