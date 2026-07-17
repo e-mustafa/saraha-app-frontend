@@ -60,7 +60,7 @@ export default function UserMessages() {
 					setCurrentPage(1); // إعادة تصفير الترقيم عند التبديل
 				}}
 			>
-				<TabsList className='grid w-full min-h-fit grid-cols-4 p-1 bg-muted/50 rounded-2xl border border-border/40 backdrop-blur-md'>
+				<TabsList className='grid w-full min-h-16 grid-cols-4 p-1 bg-muted/50 rounded-2xl border border-border/40 backdrop-blur-md'>
 					<TabsTrigger
 						value={MessageTypeEnum.INBOX}
 						className='rounded-xl py-3 gap-2 text-sm font-medium transition-all data-[state=active]:bg-card data-[state=active]:shadow-sm'
