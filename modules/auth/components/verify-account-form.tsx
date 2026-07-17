@@ -8,70 +8,82 @@ import { APP_ROUTES } from '@/shared/config/app-configs';
 import { apiClient } from '@/shared/utils/apiClient';
 import { ApiError } from '@/shared/utils/app-error';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Loader2Icon, RefreshCwIcon } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useSearchParams } from 'next/navigation';
+import { useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { useAuth } from '../hooks/use-auth';
-import { ResendOtpInput, VerifyAccountInput, verifyAccountSchema } from '../schemas/verify-account.schema';
+import {
+	defaultValuesVerifyAccount,
+	ResendOtpInput,
+	VerifyAccountInput,
+	verifyAccountSchema,
+} from '../schemas/verify-account.schema';
 import { IResponse } from '../types';
 
 export default function VerifyAccountForm() {
 	const t = useTranslations();
 	const searchParams = useSearchParams();
 	const router = useRouter();
-	const email = searchParams.get('email') || '';
-	// const [isPendingVerify, startTransition] = useTransition(); // Server Action
+	const queryClient = useQueryClient();
+	const emailFromUrl = searchParams.get('email') || '';
 
 	const { user } = useAuth();
 
 	const form = useForm<VerifyAccountInput>({
 		resolver: zodResolver(verifyAccountSchema),
-		defaultValues: { otp: '', email: email || user?.email || '' },
+		defaultValues: defaultValuesVerifyAccount,
 		mode: 'all',
 	});
 
+	// Sync email from URL search params or authenticated user session into React Hook Form
+	useEffect(() => {
+		if (emailFromUrl) {
+			form.setValue('email', emailFromUrl);
+		} else if (user?.email) {
+			form.setValue('email', user.email);
+		}
+	}, [emailFromUrl, user, form]);
+
 	const { mutate: verifyAccount, isPending: isVerifying } = useMutation<IResponse<null>, ApiError, VerifyAccountInput>({
 		mutationFn: async (data) => {
-			return apiClient.post<IResponse<null>, VerifyAccountInput>('/auth/verify-account', data);
+			return apiClient.post<IResponse<null>>('/auth/verify-account', data);
 		},
 		onError: (error) => {
 			console.error('Verify account error:', error);
-			toast.error(error.message || 'Failed to verify account');
+			// toast.error(error.message || 'Failed to verify account');
 		},
-		onSuccess: (res) => {
-			toast.success(res.message || 'Account verified successfully');
-			router.push(APP_ROUTES.login);
+		onSuccess: () => {
+			// toast.success(res.message || 'Account verified successfully');
+			queryClient.invalidateQueries({ queryKey: ['profile', 'authUser'] });
+			if (user?.email) {
+				router.back();
+			} else {
+				router.push(APP_ROUTES.login);
+			}
 		},
 	});
 
 	const { mutate: resendOtp, isPending: isResending } = useMutation<IResponse<null>, ApiError, ResendOtpInput>({
-		mutationFn: async (data) => {
-			return apiClient.post<IResponse<null>, ResendOtpInput>('/auth/resend-otp', { email: email || user?.email || '' });
+		mutationFn: async () => {
+			const targetEmail = form.getValues('email') || emailFromUrl || user?.email || '';
+			return apiClient.post<IResponse<null>, ResendOtpInput>('/auth/resend-otp', { email: targetEmail });
 		},
 		onError: (error) => {
 			console.error('Resend OTP error:', error);
-			// toast.error(error.message || 'Failed to resend OTP');
 		},
 		onSuccess: (res) => {
-			// toast.success(res.message || 'OTP resent successfully');
+			toast.success(res.message || 'OTP resent successfully');
 		},
 	});
 
 	const onSubmit = async (data: VerifyAccountInput) => {
-		verifyAccount({ ...data, email });
-		// startTransition(async () => {
-		// 	const email = searchParams.get('email') || '';
-		// 	const result = await verifyAccountAction({ ...data, email });
-
-		// 	formResponse(result, form, {
-		// 		onSuccess: () => {
-		// 			router.push(`${APP_ROUTES.login}`);
-		// 		},
-		// 	});
-		// });
+		// Ensure email is attached from the form state or fallbacks
+		const targetEmail = data.email || emailFromUrl || user?.email || '';
+		verifyAccount({ ...data, email: targetEmail });
 	};
 
 	return (
@@ -81,9 +93,6 @@ export default function VerifyAccountForm() {
 				control={form.control}
 				render={({ field, fieldState }) => (
 					<Field data-invalid={fieldState.invalid}>
-						{/* <div className='flex items-center justify-between'>
-					<FieldLabel htmlFor='otp-verification'>Verification code</FieldLabel>
-				</div> */}
 						<div dir='ltr'>
 							<InputOTP
 								{...field}
@@ -121,7 +130,7 @@ export default function VerifyAccountForm() {
 					type='button'
 					variant='outline'
 					size='sm'
-					onClick={() => resendOtp({ email })}
+					onClick={() => resendOtp({ email: form.getValues('email') })}
 					disabled={isResending || isVerifying}
 					className='w-fit'
 				>
@@ -140,14 +149,7 @@ export default function VerifyAccountForm() {
 						t('auth.steps.verifyButton')
 					)}
 				</Button>
-				<Button
-					type='button'
-					variant='outline'
-					size='lg'
-					onClick={() => router.back()}
-					className='px-10 flex-1'
-					// className='bg-brand-primary flex hover:bg-brand-primary/90 text-white transition-all shadow-md'
-				>
+				<Button type='button' variant='outline' size='lg' onClick={() => router.back()} className='px-10 flex-1'>
 					{t('common.cancel') || 'Cancel'}
 				</Button>
 			</Field>
