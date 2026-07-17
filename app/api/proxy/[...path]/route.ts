@@ -3,9 +3,8 @@ import { configEnv } from '@/shared/config/env';
 import { NextRequest, NextResponse } from 'next/server';
 
 async function handleProxy(request: NextRequest, { params }: { params: Promise<{ path: string[] }> }) {
-	// const cookieStore = await cookies();
-	// const accessToken = cookieStore.get('access-token')?.value;
 	const { accessToken } = await getCookiesTokens();
+
 	// Resolve dynamic route parameters (Next.js 15+ async params)
 	const resolvedParams = await params;
 	const apiPath = resolvedParams.path.join('/');
@@ -23,6 +22,11 @@ async function handleProxy(request: NextRequest, { params }: { params: Promise<{
 
 	// Delete the host header to prevent CORS issues with the backend API
 	headers.delete('host');
+
+	// ⚡ Optimization: Tell the backend NOT to compress the response.
+	// Node's native fetch auto-decompresses anyway, so compressing/decompressing
+	// between proxy and backend is just wasted server CPU cycles.
+	headers.delete('accept-encoding');
 
 	// Check if the request method typically includes a payload body
 	const hasBody = ['POST', 'PUT', 'PATCH', 'DELETE'].includes(request.method);
@@ -42,10 +46,15 @@ async function handleProxy(request: NextRequest, { params }: { params: Promise<{
 			return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 		}
 
-		// Forward backend response headers (preserves Content-Type, Content-Length, etc.)
+		// Forward backend response headers
 		const responseHeaders = new Headers(response.headers);
 
-		// Directly stream the backend response body back to the client (supports JSON, Files, HTML, etc.)
+		// ⚠️ Fix: Since Node's fetch already decompressed the body, forwarding these headers
+		// will confuse the client browser, causing ERR_CONTENT_DECODING_FAILED.
+		responseHeaders.delete('content-encoding');
+		responseHeaders.delete('content-length');
+
+		// Directly stream the backend response body back to the client
 		return new NextResponse(response.body, {
 			status: response.status,
 			headers: responseHeaders,

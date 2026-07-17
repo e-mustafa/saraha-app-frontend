@@ -1,3 +1,4 @@
+// middleware.ts
 import createMiddleware from 'next-intl/middleware';
 import { NextRequest, NextResponse } from 'next/server';
 import { routing } from './i18n/routing';
@@ -12,7 +13,7 @@ const accessTokenKey = configEnv.tokens.keys.accessToken;
 const refreshTokenKey = configEnv.tokens.keys.refreshToken;
 const tokenIdKey = configEnv.tokens.keys.tokenId;
 
-export async function proxy(request: NextRequest) {
+export default async function proxy(request: NextRequest) {
 	const accessToken = request.cookies.get(accessTokenKey)?.value;
 	const refreshToken = request.cookies.get(refreshTokenKey)?.value;
 
@@ -40,7 +41,7 @@ export async function proxy(request: NextRequest) {
 		}
 	}
 
-	// 1. Determine if the user has an active session (valid existing token or successfully refreshed)
+	// 1. Determine if the user has an active session
 	const hasActiveSession = !!accessToken || (isRefreshed && !!newTokens?.accessToken);
 
 	// 2. Extract locale and clean the pathname for safe matching
@@ -50,15 +51,25 @@ export async function proxy(request: NextRequest) {
 	// Check if the first segment is a supported locale (e.g., 'ar' or 'en')
 	const detectedLocale = routing.locales.includes(segments[1] as 'en' | 'ar') ? segments[1] : null;
 
-	// Strip the locale prefix for easy path matching (e.g., /ar/auth/login -> /auth/login)
+	// Strip the locale prefix for easy path matching (e.g., /ar/user/profile -> /user/profile)
 	const cleanPath = detectedLocale ? `/${segments.slice(2).join('/')}` : pathname;
-	const normalizedPath = cleanPath.replace(/\/$/, ''); // Remove trailing slash if present
+	const normalizedPath = cleanPath.replace(/\/$/, '') || '/'; // Remove trailing slash, fallback to '/'
 
-	// Define guest-only auth pages
-	const authPaths = ['/auth/login', '/auth/register'];
-	const isAuthPage = authPaths.includes(normalizedPath);
+	// Target language for redirects
+	const targetLocale = detectedLocale || routing.defaultLocale;
 
-	// Helper function to set cookies on a response object to keep code DRY
+	// --- Route Classifications ---
+	// Guest-only pages (Should NOT be accessed by logged-in users)
+	const guestOnlyPaths = ['/auth/login', '/auth/register'];
+	const isGuestOnlyPage = guestOnlyPaths.includes(normalizedPath);
+
+	// Protected pages (Requires authentication)
+	const isProtectedPage =
+		normalizedPath.startsWith('/user') ||
+		normalizedPath === '/auth/change-password' ||
+		normalizedPath === '/auth/change-email';
+
+	// Helper function to set cookies on a response object
 	const applyCookiesToResponse = (resObj: NextResponse, tokens: TokensType) => {
 		const cookieOptions = {
 			httpOnly: true,
@@ -71,8 +82,6 @@ export async function proxy(request: NextRequest) {
 				...cookieOptions,
 				maxAge: tokens.accessExpiration || 60 * 15,
 			});
-
-			// Update request cookies to make the new token available server-side immediately without full reload
 			request.cookies.set(accessTokenKey, tokens.accessToken);
 		}
 		if (tokens.refreshToken) {
@@ -86,14 +95,19 @@ export async function proxy(request: NextRequest) {
 		}
 	};
 
-	// 3. Redirect authenticated users away from guest-only pages
-	if (hasActiveSession && isAuthPage) {
-		const targetLocale = detectedLocale || routing.defaultLocale;
-		// Build redirect URL preserving the active locale
+	// --- Redirection Logic ---
+
+	// Case A: Unauthenticated user trying to access a protected page -> Redirect to Login
+	if (!hasActiveSession && isProtectedPage) {
+		const redirectUrl = new URL(`/${targetLocale}${APP_ROUTES.login}`, request.url);
+		return NextResponse.redirect(redirectUrl);
+	}
+
+	// Case B: Authenticated user trying to access guest-only pages -> Redirect to messages/dashboard
+	if (hasActiveSession && isGuestOnlyPage) {
 		const redirectUrl = new URL(`/${targetLocale}${APP_ROUTES.messages}`, request.url);
 		const redirectResponse = NextResponse.redirect(redirectUrl);
 
-		// Crucial: If tokens were just refreshed, they must be attached to the redirect response to avoid session loss!
 		if (isRefreshed && newTokens) {
 			applyCookiesToResponse(redirectResponse, newTokens);
 		}
@@ -101,10 +115,10 @@ export async function proxy(request: NextRequest) {
 		return redirectResponse;
 	}
 
-	// 4. Default path: pass request to the intl middleware
+	// Default path: pass request to the next-intl middleware
 	const response = intlMiddleware(request) as NextResponse;
 
-	// If tokens were refreshed and no redirect happened, apply cookies to the standard response
+	// If tokens were refreshed during this cycle, apply them to the response
 	if (isRefreshed && newTokens) {
 		applyCookiesToResponse(response, newTokens);
 	}
@@ -113,5 +127,6 @@ export async function proxy(request: NextRequest) {
 }
 
 export const config = {
+	// Matcher covers all localized and unlocalized page routes, ignoring api and static assets
 	matcher: '/((?!api|_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico|css|js|woff2?|json)).*)',
 };

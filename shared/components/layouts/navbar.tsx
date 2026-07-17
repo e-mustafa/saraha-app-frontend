@@ -41,7 +41,7 @@ export function Navbar() {
 	const { user, isLoading, isAuthed, logout, isLoggingOut } = useAuth();
 
 	// حساب الصورة الافتراضية بناءً على الجنس في حال عدم رفع صورة
-	const avatarUrl = user?.avatar || (user?.gender === 1 ? defaultImages.avatarFemale : defaultImages.avatarMale);
+	const avatarUrl = user?.avatar.url || (user?.gender === 1 ? defaultImages.avatarFemale : defaultImages.avatarMale);
 
 	// محاكاة لقائمة الإشعارات التجريبية
 	// const notifications = [

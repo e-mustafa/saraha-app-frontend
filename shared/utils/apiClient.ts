@@ -1,5 +1,6 @@
 // utils/apiClient.ts
 import { APP_ROUTES } from '@/shared/config/app-configs';
+import { IResponse } from '../types/index';
 import { ApiError } from './app-error';
 
 interface RequestOptions extends RequestInit {
@@ -29,33 +30,72 @@ class ApiClient {
 			headers['Content-Type'] = 'application/json';
 		}
 
-		let response = await fetch(url, { ...options, headers });
+		let response: Response;
 
+		try {
+			response = await fetch(url, { ...options, headers });
+		} catch (error) {
+			// Catch network errors (e.g., completely offline or DNS failure)
+			throw new ApiError('Network error, please check your internet connection', 0);
+		}
+
+		// --- Actual 401 Handling Logic (Silent Refresh) ---
 		if (response.status === 401) {
 			console.warn('Access token expired. Triggering refresh handler...');
-			const refreshRes = await fetch('/api/auth/refresh', { method: 'POST' });
 
-			if (refreshRes.ok) {
-				response = await fetch(url, { ...options, headers });
-			} else {
-				if (typeof window !== 'undefined') {
-					const locale = this.getClientLocale();
-					// window.location.href = `/${locale}${APP_ROUTES.login}`;
-					if (window.location.pathname.includes('/user/')) {
-						window.location.href = `/${locale}${APP_ROUTES.login}`;
-					}
+			try {
+				const refreshRes = await fetch('/api/auth/refresh', { method: 'POST' });
+
+				if (refreshRes.ok) {
+					console.log('Token refreshed successfully. Retrying original request...');
+					// Retry the original request with the exact same options and headers
+					response = await fetch(url, { ...options, headers });
+				} else {
+					// If refresh failed, handle session expiration
+					this.handleSessionExpired();
+					throw new ApiError('SESSION_EXPIRED', 401);
 				}
-				throw new Error('SESSION_EXPIRED');
+			} catch (refreshError) {
+				this.handleSessionExpired();
+				throw new ApiError('SESSION_EXPIRED', 401);
 			}
 		}
 
+		// --- Error Handling (JSON or Plain Text) ---
 		if (!response.ok) {
-			const errorData = await response.json().catch(() => ({}));
-			// throw error with details by ApiError
-			throw new ApiError(errorData.message || `Error: ${response.status}`, response.status, errorData.errors);
+			let message = '';
+			let errorData: IResponse = { success: false };
+			const contentType = response.headers.get('content-type');
+
+			if (contentType && contentType.includes('application/json')) {
+				errorData = await response.json().catch(() => ({}));
+				message = errorData.message || '';
+			} else {
+				// Read fallback error message if the server returned plain text (like some Rate Limiters)
+				message = await response.text().catch(() => '');
+			}
+
+			// Explicitly handle 429 Too Many Requests
+			if (response.status === 429) {
+				message = message || errorData.message || 'Too Many Requests, Please try again later.';
+			}
+
+			throw new ApiError(message || `Error: ${response.status}`, response.status, errorData.errors);
 		}
 
 		return response.json() as Promise<TResponse>;
+	}
+
+	/**
+	 * Helper method to redirect users on session expiration
+	 */
+	private handleSessionExpired(): void {
+		if (typeof window !== 'undefined') {
+			const locale = this.getClientLocale();
+			if (window.location.pathname.includes('/user/')) {
+				window.location.href = `/${locale}${APP_ROUTES.login}`;
+			}
+		}
 	}
 
 	async get<TResponse>(endpoint: string, options?: RequestOptions): Promise<TResponse> {

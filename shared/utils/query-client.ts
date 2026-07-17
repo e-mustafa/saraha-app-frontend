@@ -24,19 +24,29 @@ export const createQueryClient = () => {
 			queries: {
 				staleTime: 1000 * 60 * 5,
 				refetchOnWindowFocus: false,
+				// Disable automatic refetching when network reconnects to avoid request spamming
+				refetchOnReconnect: false,
+
 				retry: (failureCount, error) => {
-					// Prevent retry if error is auth-related (401 or 403)
-					if (error instanceof ApiError && [401, 403].includes(error.status)) return false;
-					return failureCount < 1;
+					// Prevent retry if error is auth-related (401, 403) or rate-limited (429)
+					if (error instanceof ApiError && [401, 403, 429].includes(error.status)) {
+						return false;
+					}
+
+					// Retry up to 2 times for network errors (status 0) or server errors (50x)
+					return failureCount < 2;
 				},
+
+				// Implement Exponential Backoff: 1s -> 2s -> 4s
+				retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000),
 			},
 		},
 
 		queryCache: new QueryCache({
 			onError: (error, query) => {
-				// Check if the query intentionally prevents showing the toast
 				if (query.meta?.showErrorToast === false) return;
 
+				// Optional: Prevent spamming the UI with toasts for 429 errors if triggered globally
 				if (error instanceof ApiError) {
 					toast.error(error.message);
 				}
