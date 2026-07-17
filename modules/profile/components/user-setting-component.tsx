@@ -101,9 +101,9 @@ export default function UserSettingsComponent() {
 						<h2 className='text-xl font-semibold text-foreground mb-6 mt-8'>{t('settings.displayMode')}</h2>
 						<div className='grid grid-cols-3 sm:grid-cols-3 gap-4'>
 							{[
-								{ id: 'dark', value: 'dark', icon: '🌑', name: t('theme.modes.dark') },
-								{ id: 'light', value: 'light', icon: '☀️', name: t('theme.modes.light') },
-								{ id: 'system', value: 'system', icon: '💻', name: t('theme.modes.system') },
+								{ id: 'dark', value: 'dark', icon: '🌑', name: t('themes.modes.dark') },
+								{ id: 'light', value: 'light', icon: '☀️', name: t('themes.modes.light') },
+								{ id: 'system', value: 'system', icon: '💻', name: t('themes.modes.system') },
 							].map((mode) => {
 								// هنا نضمن تحديد الخيار الصحيح (داكن، فاتح، أو نظام) بشكل آمن تماماً
 								const isActive = displayMode === mode.id;
