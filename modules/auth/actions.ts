@@ -313,41 +313,47 @@ export async function resetPasswordAction(data: ResetPasswordInput): Promise<IRe
 
 export async function logoutAction(fromAll = false): Promise<IResponse> {
 	try {
-		// get cookies tokens and send to backend for authentication
 		const { accessToken, refreshToken } = await getCookiesTokens();
 
+		// Trigger server-side revocation
 		const result = await fetch(`${API_BASE_URL}/${fromAll ? 'logout-all' : 'logout'}`, {
 			method: 'PATCH',
 			headers: {
 				'Content-Type': 'application/json',
-				Authorization: `Bearer ${accessToken}`, // 👈 Send access token for authentication
-				cookie: `refreshToken=${refreshToken}`, // 👈 Send refresh token for session management
+				Authorization: `Bearer ${accessToken}`,
+				cookie: `refreshToken=${refreshToken}`,
 			},
 		});
 
-		// avoid crash if response is empty
 		const resultData = await result.json().catch(() => ({}));
+
+		// CRITICAL SAFEGUARD: Always wipe local cookies even if the backend node is down (500) or unreachable
+		await deleteCookies();
 
 		if (!result.ok || resultData.success === false) {
 			return {
 				success: false,
-				...resultData,
-				message: resultData.message || 'فشلت عملية تسجيل الخروج من السيرفر',
+				message: resultData.message || 'Server session clearing failed, local session destroyed successfully.',
 			};
 		}
 
-		// After successful deletion from the server, delete cookies locally
-		await deleteCookies();
-
 		return {
 			success: true,
-			message: resultData.message || 'تم تسجيل الخروج بنجاح',
+			message: resultData.message || 'Logged out successfully',
 		};
 	} catch (error: unknown) {
-		console.error('Logout Action Error:', error);
+		console.error('Logout Action Catastrophic Error:', error);
+
+		// Secondary fallback execution to guarantee local security clearance
+		try {
+			await deleteCookies();
+		} catch (cookieError) {
+			console.error('Failed to clear cookies in fallback node:', cookieError);
+		}
+
 		return {
 			success: false,
-			message: (error as Error).message || 'حدث خطأ غير متوقع أثناء تسجيل الخروج',
+			message: (error as Error).message || 'An unexpected error occurred during logout clearance',
 		};
 	}
 }
