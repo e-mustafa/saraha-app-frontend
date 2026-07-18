@@ -13,7 +13,7 @@ export default function PublicProfileNotFound() {
 	return (
 		<div className='w-full max-w-2xl mx-auto px-4 py-16 flex flex-col items-center justify-center min-h-[70vh]'>
 			{/* High-tech glassmorphic error container */}
-			<div className='relative w-full rounded-3xl border border-destructive/20 dark:border-destructive/10 bg-card-blur backdrop-blur-2xl p-8 sm:p-12 shadow-2xl flex flex-col items-center text-center space-y-6 animate-in fade-in zoom-in-95 duration-400'>
+			<div className='relative w-full overflow-hidden rounded-3xl border border-destructive/20 dark:border-destructive/10 bg-card-blur backdrop-blur-2xl p-8 sm:p-12 shadow-2xl flex flex-col items-center text-center space-y-6 animate-in fade-in zoom-in-95 duration-400'>
 				{/* Background styling blur effects */}
 				<div className='absolute -top-12 -left-12 w-48 h-48 bg-destructive/10 rounded-full blur-[80px] pointer-events-none' />
 				<div className='absolute -bottom-12 -right-12 w-48 h-48 bg-brand-primary/10 rounded-full blur-[80px] pointer-events-none' />

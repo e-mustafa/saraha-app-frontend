@@ -1,4 +1,3 @@
-// utils/apiClient.ts
 import { APP_ROUTES } from '@/shared/config/app-configs';
 import { IResponse } from '../types/index';
 import { ApiError } from './app-error';
@@ -12,6 +11,10 @@ interface RequestOptions extends RequestInit {
  */
 class ApiClient {
 	private baseUrl: string = '/api/proxy';
+
+	// Thread-safe locking mechanism for concurrent requests
+	private isRefreshing = false;
+	private refreshPromise: Promise<boolean> | null = null;
 
 	private getClientLocale(): string {
 		if (typeof window !== 'undefined') {
@@ -35,27 +38,41 @@ class ApiClient {
 		try {
 			response = await fetch(url, { ...options, headers });
 		} catch (error) {
-			// Catch network errors (e.g., completely offline or DNS failure)
 			throw new ApiError('Network error, please check your internet connection', 0);
 		}
 
-		// --- Actual 401 Handling Logic (Silent Refresh) ---
+		// --- Actual 401 Handling Logic (Thread-safe Silent Refresh) ---
 		if (response.status === 401) {
-			console.warn('Access token expired. Triggering refresh handler...');
+			// Prevent absolute infinite loops if the refresh call itself throws a 401
+			if (endpoint.includes('/auth/refresh')) {
+				throw new ApiError('SESSION_EXPIRED', 401);
+			}
 
-			try {
-				const refreshRes = await fetch('/api/auth/refresh', { method: 'POST' });
+			console.warn('Access token expired. Handling secure token refresh...');
 
-				if (refreshRes.ok) {
-					console.log('Token refreshed successfully. Retrying original request...');
-					// Retry the original request with the exact same options and headers
-					response = await fetch(url, { ...options, headers });
-				} else {
-					// If refresh failed, handle session expiration
-					this.handleSessionExpired();
-					throw new ApiError('SESSION_EXPIRED', 401);
-				}
-			} catch (refreshError) {
+			// Safeguard parallel requests by queuing them behind a single shared promise
+			if (!this.isRefreshing) {
+				this.isRefreshing = true;
+				this.refreshPromise = (async () => {
+					try {
+						const refreshRes = await fetch('/api/auth/refresh', { method: 'POST' });
+						return refreshRes.ok;
+					} catch {
+						return false;
+					} finally {
+						this.isRefreshing = false;
+						this.refreshPromise = null;
+					}
+				})();
+			}
+
+			const isRefreshed = await this.refreshPromise;
+
+			if (isRefreshed) {
+				console.log('Token refreshed successfully. Retrying original request...');
+				// Re-execute original request with updated cookie state
+				response = await fetch(url, { ...options, headers });
+			} else {
 				this.handleSessionExpired();
 				throw new ApiError('SESSION_EXPIRED', 401);
 			}
@@ -71,11 +88,9 @@ class ApiClient {
 				errorData = await response.json().catch(() => ({}));
 				message = errorData.message || '';
 			} else {
-				// Read fallback error message if the server returned plain text (like some Rate Limiters)
 				message = await response.text().catch(() => '');
 			}
 
-			// Explicitly handle 429 Too Many Requests
 			if (response.status === 429) {
 				message = message || errorData.message || 'Too Many Requests, Please try again later.';
 			}
@@ -87,11 +102,15 @@ class ApiClient {
 	}
 
 	/**
-	 * Helper method to redirect users on session expiration
+	 * Helper method to sync client auth states and redirect on session expiration
 	 */
 	private handleSessionExpired(): void {
 		if (typeof window !== 'undefined') {
+			// Notify Context/State Providers to globally clean user auth status
+			window.dispatchEvent(new CustomEvent('auth:session-expired'));
+
 			const locale = this.getClientLocale();
+			// Only redirect if within protected administrative routes
 			if (window.location.pathname.includes('/user/')) {
 				window.location.href = `/${locale}${APP_ROUTES.login}`;
 			}

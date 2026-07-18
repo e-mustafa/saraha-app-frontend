@@ -37,7 +37,7 @@ export default function PublicProfileSkeleton() {
 			</Card>
 
 			{/* ================= SKELETON: PUBLIC MESSAGES FEED ================= */}
-			<div className='space-y-4 pt-4'>
+			<div className='space-y-4 pt-4 overflow-hidden'>
 				<div className='flex items-center gap-2 border-b border-border/40 pb-3'>
 					<Skeleton className='h-4 w-1  rounded-full' />
 					<Skeleton className='h-6 w-48 rounded-md' />

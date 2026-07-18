@@ -11,7 +11,7 @@ export default function UserCardSkeleton() {
 			<Skeleton className='relative -mt-32 size-40 rounded-2xl /80 border-2 border-border/20 p-1 shadow-lg' />
 
 			{/* User Info Skeleton */}
-			<div className='space-y-3 flex flex-col items-center w-full'>
+			<div className='space-y-3 overflow-hidden flex flex-col items-center w-full max-w-full'>
 				{/* Name line */}
 				<Skeleton className='h-8 w-48 rounded-xl' />
 				{/* Username badge line */}

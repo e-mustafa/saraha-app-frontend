@@ -2,9 +2,10 @@
 
 import { useAuth } from '@/modules/auth/hooks/use-auth';
 import { usePublicProfile } from '@/modules/profile/hooks/use-public';
+import { UserProfile } from '@/modules/profile/types/database';
 import { IResponse } from '@/shared/types/index';
 import { apiClient } from '@/shared/utils/apiClient';
-import { useQuery } from '@tanstack/react-query';
+import { keepPreviousData, useQuery } from '@tanstack/react-query'; // Imported keepPreviousData
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { MessageTypeEnum } from '../enums';
@@ -26,12 +27,16 @@ export default function PublicProfile({ username }: PublicProfileProps) {
 	const t = useTranslations();
 	const [currentPage, setCurrentPage] = useState<number>(1);
 
-	// Fetch authentication state here (at the top level container)
+	// Fetch essential core states
 	const { user, isLoading: isAuthLoading } = useAuth();
 	const { data: targetUser, isLoading: isTargetUserLoading } = usePublicProfile(username || '');
 
-	// Fetch public messages with cache optimizations to prevent 429 spam
-	const { data, isLoading } = useQuery({
+	// Fetch paginated messages with query key tracking and structural placeholder
+	const {
+		data,
+		isLoading: isMessagesLoading,
+		isFetching,
+	} = useQuery({
 		queryKey: ['public-messages', username, currentPage],
 		queryFn: async () => {
 			const response = await apiClient.get<IResponse<Message[]>>(
@@ -40,16 +45,19 @@ export default function PublicProfile({ username }: PublicProfileProps) {
 			return response;
 		},
 		enabled: !!username,
-		staleTime: 1000 * 10, // Cache results for 10 seconds to avoid rapid refetching
+		staleTime: 1000 * 10,
+		placeholderData: keepPreviousData, // Keeps old page data visible during new page transit
 	});
 
-	const { data: messages, metadata } = data || {};
+	const messages = data?.data;
+	const metadata = data?.metadata;
 
-	// Global loading state (unified to avoid loading skeletons flickering)
-	if (isLoading || isAuthLoading || isTargetUserLoading) {
+	// Critical initial loading state (Only for profile identity shell)
+	if (isAuthLoading || isTargetUserLoading) {
 		return <PublicProfileSkeleton />;
 	}
 
+	// Handle non-existent profiles securely
 	if (!targetUser) {
 		return <PublicProfileNotFound />;
 	}
@@ -59,8 +67,8 @@ export default function PublicProfile({ username }: PublicProfileProps) {
 			{/* SECTION 1: TARGET USER IDENTITY CARD */}
 			<UserSection user={targetUser} />
 
-			{/* SECTION 2: SMART CONCEALED MESSAGING BOX - Pass the pre-loaded user state down */}
-			<SendMessageForm username={username} currentUser={user! || {}} />
+			{/* SECTION 2: SMART CONCEALED MESSAGING BOX */}
+			<SendMessageForm username={username} currentUser={user as UserProfile} />
 
 			{/* SECTION 3: PUBLIC TIMELINE FEED */}
 			<div className='space-y-4 pt-4'>
@@ -69,8 +77,11 @@ export default function PublicProfile({ username }: PublicProfileProps) {
 					<h2 className='text-lg font-bold tracking-tight'>{t('messages.publicMessagesTitle')}</h2>
 				</div>
 
-				<div className='space-y-4 min-h-[200px]'>
-					{isLoading ? (
+				{/* Added dynamic opacity to indicate network fetching while previous data is rendered */}
+				<div
+					className={`space-y-4 min-h-[200px] transition-opacity duration-200 ${isFetching && !isMessagesLoading ? 'opacity-60 pointer-events-none' : 'opacity-100'}`}
+				>
+					{isMessagesLoading ? (
 						Array.from({ length: 2 }).map((_, idx) => <MessageSkeletonCard key={idx} />)
 					) : messages && messages.length > 0 ? (
 						<>
@@ -85,7 +96,12 @@ export default function PublicProfile({ username }: PublicProfileProps) {
 
 							{/* SECTION 4: ADVANCED PAGINATION CONTROLS */}
 							{metadata && metadata.totalPages > 1 && (
-								<MessagesPagination {...{ metadata, currentPage, setCurrentPage, isFetching: isLoading }} />
+								<MessagesPagination
+									metadata={metadata}
+									currentPage={currentPage}
+									setCurrentPage={setCurrentPage}
+									isFetching={isFetching}
+								/>
 							)}
 						</>
 					) : (

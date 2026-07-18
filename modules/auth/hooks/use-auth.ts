@@ -4,30 +4,23 @@ import { APP_ROUTES } from '@/shared/config/app-configs';
 import { IResponse } from '@/shared/types/index';
 import { apiClient } from '@/shared/utils/apiClient';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useEffect } from 'react';
 import { logoutAction } from '../actions';
 
 export function useAuth() {
 	const queryClient = useQueryClient();
 	const router = useRouter();
 
-	const {
-		data: user,
-		isLoading,
-		// error,
-	} = useQuery({
+	const { data: user, isLoading } = useQuery({
 		queryKey: ['authUser', 'profile'],
 		queryFn: async () => {
-			// request will be sent through the proxy to include the Authorization header automatically
 			const response = await apiClient.get<IResponse<UserProfile>>('/users/profile');
 			return response.data as UserProfile;
 		},
 		meta: { showErrorToast: false },
-		// staleTime: 15 minutes - data is considered fresh for 15 minutes, no need to refetch while user navigates
-		// gcTime: 1 hour - keep data in cache for 1 hour even when not in use
-		// retry: false - don't retry on failure (e.g., 401) to avoid server pressure
-		staleTime: 1000 * 60 * 15,
-		gcTime: 1000 * 60 * 60,
-		retry: false,
+		staleTime: 1000 * 60 * 15, // 15 minutes of fresh data state
+		gcTime: 1000 * 60 * 60, // 1 hour garbage collection
+		retry: false, // Avoid hammering auth endpoints on 401s
 	});
 
 	// logout mutation function
@@ -37,22 +30,36 @@ export function useAuth() {
 		},
 		onSuccess: (res) => {
 			if (res.success) {
-				// ✨ clear all React Query cache to avoid data leakage
-				queryClient.clear();
-
+				// Target specific user data instead of aggressive clear to preserve public view caches
+				queryClient.setQueryData(['authUser', 'profile'], null);
 				// ✨ redirect to login page immediately
 				router.push(APP_ROUTES.login);
 
 				// ✨ refresh to update server components (Server Components) to feel the cookie deletion
 				router.refresh();
-			} else {
-				// toast.error(res.message);
 			}
 		},
-		// onError: () => {
-		// 	// toast.error('حدث خطأ أثناء محاولة تسجيل الخروج');
-		// },
 	});
+
+	useEffect(() => {
+		const handleLogout = () => {
+			console.log('Session expired event received. Client auth state synchronized.');
+
+			// Invalidate only the user profile state securely
+			queryClient.setQueryData(['authUser', 'profile'], null);
+
+			if (typeof window !== 'undefined') {
+				// CRITICAL: Only redirect if the user is currently navigating a protected route layout
+				if (window.location.pathname.includes('/user/')) {
+					router.push(APP_ROUTES.login);
+					router.refresh();
+				}
+			}
+		};
+
+		window.addEventListener('auth:session-expired', handleLogout);
+		return () => window.removeEventListener('auth:session-expired', handleLogout);
+	}, [router, queryClient]);
 
 	return {
 		user,
