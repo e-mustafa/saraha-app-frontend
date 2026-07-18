@@ -4,6 +4,16 @@
 		"title": "Saraha – Speak Candidly, Connect Deeply",
 		"description": "Unlock honest feedback with Saraha. Discover how others perceive you—without the awkwardness. Create your unique profile and start receiving anonymous messages today."
 	},
+	"profileMetadata": {
+		"siteName": "Saraha",
+		"notFound": "User Not Found",
+		"fallbackTitle": "Send an Anonymous Message",
+		"pageTitle": "Send a secret message to {name}",
+		"pageDescription": "Write a constructive critique or honest advice to {name} without them knowing who you are!",
+		"ogTitle": "Share your thoughts with {name}",
+		"ogDescription": "Click the link to send your anonymous honest message.",
+		"avatarAlt": "{name}'s profile picture"
+	},
 	"common": {
 		"appName": "Sarahah",
 		"loading": "Loading...",

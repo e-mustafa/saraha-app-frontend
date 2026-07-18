@@ -1,7 +1,7 @@
 import { routing } from '@/i18n/routing';
 import { AuthErrorWatcher } from '@/providers/auth-error-watcher';
 import { APP_CONFIGS } from '@/shared/config/app-configs';
-import { configEnv } from '@/shared/config/env.js';
+import { configEnv } from '@/shared/config/env';
 import { DirectionProvider } from '@radix-ui/react-direction';
 import { Metadata } from 'next';
 import { hasLocale, NextIntlClientProvider } from 'next-intl';
@@ -29,7 +29,7 @@ type Props = {
 	params: Promise<{ locale: string }>;
 };
 
-// 1. Dynamic metadata generator for the localized layout
+// Dynamic metadata generator for the localized layout
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
 	// Await the asynchronous params per Next.js 15+ standards
 	const { locale } = await params;
