@@ -1,4 +1,9 @@
 {
+	"metadata": {
+		"siteName": "Saraha",
+		"title": "Saraha – Speak Candidly, Connect Deeply",
+		"description": "Unlock honest feedback with Saraha. Discover how others perceive you—without the awkwardness. Create your unique profile and start receiving anonymous messages today."
+	},
 	"common": {
 		"appName": "Sarahah",
 		"loading": "Loading...",

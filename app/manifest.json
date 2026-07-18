@@ -1,0 +1,25 @@
+{
+	"name": "صراحة - شارك بصراحة، تواصل بعمق",
+	"short_name": "صراحة",
+	"description": "منصة صراحة تمكنك من معرفة كيف يراك الآخرون بكل صدق وبدون إحراج. أنشئ رابطك الخاص وابدأ في استقبال الرسائل المجهولة الآن!",
+	"start_url": "/",
+	"display": "standalone",
+	"background_color": "#0d1b2a",
+	"theme_color": "#38bdf8",
+	"orientation": "portrait",
+	"scope": "/",
+	"icons": [
+		{
+			"src": "/icons/icon-192x192.png",
+			"sizes": "192x192",
+			"type": "image/png",
+			"purpose": "maskable"
+		},
+		{
+			"src": "/icons/icon-512x512.png",
+			"sizes": "512x512",
+			"type": "image/png",
+			"purpose": "any"
+		}
+	]
+}

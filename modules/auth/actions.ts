@@ -14,46 +14,55 @@ import { IResponse } from './types';
 const API_BASE_URL = configEnv.apiBaseUrl + '/auth';
 
 export async function registerAction(data: RegisterInput) {
-	const validationResult = await ValidateFormAction(registerSchema, data);
-	if (!validationResult.success) {
-		const t = await getTranslations('api.errors');
-		return {
-			...validationResult, // return data to show in form
-			errors: { body: JSON.stringify(validationResult.errors) },
-			message: t('inputs_validation'),
-		};
-	}
+	try {
+		const validationResult = await ValidateFormAction(registerSchema, data);
+		if (!validationResult.success) {
+			const t = await getTranslations('api.errors');
+			return {
+				...validationResult, // return data to show in form
+				errors: { body: JSON.stringify(validationResult.errors) },
+				message: t('inputs_validation'),
+			};
+		}
 
-	const result = await fetch(`${API_BASE_URL}/signup`, {
-		method: 'POST',
-		headers: {
-			'Content-Type': 'application/json',
-		},
-		body: JSON.stringify(validationResult?.data || data),
-	});
+		const result = await fetch(`${API_BASE_URL}/signup`, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify(validationResult?.data || data),
+		});
 
-	const resultData = await result.json();
-	if (!result.ok) {
+		const resultData = await result.json();
+		if (!result.ok) {
+			return {
+				...resultData,
+				success: false,
+				message: resultData.message,
+			};
+		}
+
+		if (!resultData.success) {
+			return {
+				...resultData,
+				success: false,
+				message: resultData.message,
+			};
+		}
+
 		return {
 			...resultData,
-			success: false,
-			message: resultData.message,
+			success: true,
+			message: resultData.message || 'Register successful',
 		};
-	}
-
-	if (!resultData.success) {
+	} catch (error) {
+		console.error('Register action error:', error);
 		return {
-			...resultData,
 			success: false,
-			message: resultData.message,
+			...(error as Error),
+			message: error instanceof Error ? error.message : 'An error occurred during registration',
 		};
 	}
-
-	return {
-		...resultData,
-		success: true,
-		message: resultData.message || 'Register successful',
-	};
 }
 
 export async function verifyAccountAction(data: VerifyAccountInput & { email: string }): Promise<IResponse> {
