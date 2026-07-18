@@ -5,7 +5,7 @@ import { usePublicProfile } from '@/modules/profile/hooks/use-public';
 import { UserProfile } from '@/modules/profile/types/database';
 import { IResponse } from '@/shared/types/index';
 import { apiClient } from '@/shared/utils/apiClient';
-import { keepPreviousData, useQuery } from '@tanstack/react-query'; // Imported keepPreviousData
+import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { MessageTypeEnum } from '../enums';

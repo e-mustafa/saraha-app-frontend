@@ -4,7 +4,7 @@ import { useAuth } from '@/modules/auth/hooks/use-auth';
 import { Tabs, TabsList, TabsTrigger } from '@/shared/components/ui/tabs';
 import { IResponse } from '@/shared/types/index';
 import { apiClient } from '@/shared/utils/apiClient';
-import { useQuery } from '@tanstack/react-query';
+import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { HeartIcon, InboxIcon, SendIcon, UsersRound } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
@@ -39,6 +39,8 @@ export default function UserMessages() {
 			return response;
 		},
 		// staleTime: 1000 * 60 * 2, // دقيقتين لمنع التكرار غير الضروري
+		staleTime: 1000 * 10,
+		placeholderData: keepPreviousData, // Keeps old page data visible during new page transit
 	});
 
 	const { data: messages, metadata } = data || {};
@@ -92,21 +94,27 @@ export default function UserMessages() {
 				</TabsList>
 
 				{/* ================= SECTION 3: MESSAGES FEED AREA ================= */}
-				<div className='space-y-4 min-h-[400px]'>
-					{isLoading || isFetching ? (
+				<div className='space-y-4 min-h-[400px] relative'>
+					{/* Show skeleton ONLY during initial hard loading when no cached data exists */}
+					{isLoading && !messages ? (
 						Array.from({ length: 3 }).map((_, idx) => <MessageSkeletonCard key={idx} />)
-					) : messages && messages?.length > 0 ? (
-						// messages?.map((message: Message) => <MessageCard key={message.id} message={message} tab={activeTab} />)
-						messages?.map((message) => (
-							<MessageCard
-								key={(message as Message).id}
-								message={message as Message}
-								tab={activeTab}
-								isAuthed={isAuthed}
-							/>
-						))
+					) : messages && messages.length > 0 ? (
+						<>
+							{/* Optional: Visual indicator for background fetching without breaking layout */}
+							{isFetching && (
+								<div className='absolute top-2 right-4 text-xs text-brand-primary animate-pulse'>Updating...</div>
+							)}
+
+							{messages.map((message) => (
+								<MessageCard
+									key={(message as Message).id}
+									message={message as Message}
+									tab={activeTab}
+									isAuthed={isAuthed}
+								/>
+							))}
+						</>
 					) : (
-						// حالة عدم وجود رسائل
 						<EmptyMessages />
 					)}
 				</div>

@@ -23,7 +23,7 @@ export type backendErrors<T> = { [key: string]: FieldsError<T> };
 export interface IResponse<T = unknown> {
 	success: boolean;
 	message?: string;
-	data?: T | T[];
+	data?: T; // | T[];
 	// errors?: Record<string, string | string[]>;
 	errors?: backendErrors<T>; //| FieldsError<T>;
 	metadata?: IMetadata;

@@ -13,17 +13,7 @@ import {
 	DropdownMenuTrigger,
 } from '@/shared/components/ui/dropdown-menu';
 import { APP_CONFIGS, APP_ROUTES, defaultImages } from '@/shared/config/app-configs';
-import {
-	BellIcon,
-	GlobeIcon,
-	LogOutIcon,
-	MailIcon,
-	MessageSquareIcon,
-	PowerIcon,
-	SettingsIcon,
-	User2Icon,
-	UserIcon,
-} from 'lucide-react';
+import { GlobeIcon, LogOutIcon, MailIcon, MessageSquareIcon, PowerIcon, SettingsIcon, User2Icon } from 'lucide-react';
 import { useLocale, useTranslations } from 'next-intl';
 import Image from 'next/image';
 import { ThemeSwitcher } from '../theme-switcher';
@@ -165,7 +155,7 @@ export function Navbar() {
 								className='relative h-9 w-9 rounded-full ring-2 ring-offset-2 ring-brand-primary/10 hover:ring-brand-primary/30 transition-all p-0'
 							>
 								<Avatar className='h-9 w-9'>
-									{/* <AvatarImage src={avatarUrl} /> */}
+									<AvatarImage src={isAuthed ? avatarUrl : ''} />
 									<AvatarFallback className='bg-brand-primary/10 text-brand-primary text-xs font-bold'>
 										{user?.name ? user.name.substring(0, 2).toUpperCase() : <User2Icon className='h-4 w-4' />}
 									</AvatarFallback>
