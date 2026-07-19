@@ -3,7 +3,6 @@ import { APP_CONFIGS } from '@/shared/config/app-configs';
 import { configEnv } from '@/shared/config/env';
 import { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
-import { notFound } from 'next/navigation';
 
 interface Props {
 	params: Promise<{
@@ -26,12 +25,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 	const { locale, username } = await params;
 	const t = await getTranslations({ locale, namespace: 'profileMetadata' });
 	const siteUrl = configEnv.appUrl;
-	const fallbackImage = '/saraha-app.webp';
-
-	if (username === 'favicon.ico') {
-		// Immediately return non-found behavior without hitting the backend API
-		return notFound();
-	}
+	const fallbackImage = '/saraha-app.png';
 
 	try {
 		const res = await fetch(`${configEnv.apiBaseUrl}/users/visit/${username}`, {
