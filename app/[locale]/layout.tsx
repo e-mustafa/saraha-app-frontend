@@ -37,11 +37,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 	// Fetch server-side translations dynamically targeting a 'Metadata' namespace in your JSON
 	const t = await getTranslations({ locale, namespace: 'metadata' });
 	const siteUrl = configEnv.appUrl;
-
+	const imageUrl = '/saraha-app.webp';
 	return {
 		title: t('title'),
 		description: t('description'),
 		metadataBase: new URL(siteUrl),
+		icons: {
+			icon: '../favicon.ico', // Explicitly defining shortcut icons
+			apple: '../apple-touch-icon.png', // Optional: for iOS home screen bookmarks
+		},
 		openGraph: {
 			title: t('title'),
 			description: t('description'),
@@ -49,11 +53,20 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 			siteName: t('siteName'),
 			locale: locale === 'ar' ? 'ar_EG' : 'en_US',
 			type: 'website',
+			images: [
+				{
+					url: imageUrl,
+					width: 1200,
+					height: 630,
+					alt: t('title'), // Highly recommended for SEO accessibility
+				},
+			],
 		},
 		twitter: {
 			card: 'summary_large_image',
 			title: t('title'),
 			description: t('description'),
+			images: [imageUrl],
 		},
 	};
 }

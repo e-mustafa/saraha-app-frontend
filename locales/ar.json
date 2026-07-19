@@ -8,11 +8,11 @@
 		"siteName": "صراحة",
 		"notFound": "المستخدم غير موجود",
 		"fallbackTitle": "أرسل رسالة مجهولة",
-		"pageTitle": "أرسل رسالة سرية إلى {name}",
+		"pageTitle": "أرسل رسالة سرية إلى {name} ",
 		"pageDescription": "اكتب نقدًا بناءً أو نصيحة صادقة إلى {name} دون أن يعرف من أنت!",
-		"ogTitle": "شارك بأفكارك مع {name}",
+		"ogTitle": "شارك بأفكارك مع {name} ",
 		"ogDescription": "اضغط على الرابط لإرسال رسالتك الصادقة والمجهولة.",
-		"avatarAlt": "الصورة الشخصية لـ {name}"
+		"avatarAlt": "الصورة الشخصية لـ {name} "
 	},
 	"common": {
 		"appName": "صراحة",
