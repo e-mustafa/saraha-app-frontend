@@ -3,6 +3,7 @@ import { APP_CONFIGS } from '@/shared/config/app-configs';
 import { configEnv } from '@/shared/config/env';
 import { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
+import { notFound } from 'next/navigation';
 
 interface Props {
 	params: Promise<{
@@ -27,9 +28,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 	const siteUrl = configEnv.appUrl;
 	const fallbackImage = '/saraha-app.webp';
 
+	if (username === 'favicon.ico') {
+		// Immediately return non-found behavior without hitting the backend API
+		return notFound();
+	}
+
 	try {
 		const res = await fetch(`${configEnv.apiBaseUrl}/users/visit/${username}`, {
-			next: { revalidate: 120 }, // Cache profile metadata for 2 minutes
+			// next: { revalidate: 120 }, // Cache profile metadata for 2 minutes
+			cache: 'no-store', // Disable caching for profile metadata
 		});
 
 		if (!res.ok || !res) {
@@ -38,7 +45,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 			};
 		}
 
-		const { user } = await res.json();
+		const { data: user } = await res.json();
 
 		if (!user) {
 			return {
