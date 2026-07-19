@@ -43,8 +43,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 		description: t('description'),
 		metadataBase: new URL(siteUrl),
 		icons: {
-			icon: '../favicon.ico', // Explicitly defining shortcut icons
-			apple: '../apple-touch-icon.png', // Optional: for iOS home screen bookmarks
+			icon: '/favicon.ico', // Explicitly defining shortcut icons
+			apple: '/apple-touch-icon.png', // Optional: for iOS home screen bookmarks
 		},
 		openGraph: {
 			title: t('title'),
