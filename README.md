@@ -1,227 +1,629 @@
-# 🚀 Project Blueprint: Production-Ready "Saraha" Clone
+<div align="center">
 
-This is a comprehensive, production-grade architectural specification document for building a modern, vibrant, and multi-themed anonymous messaging platform using **Next.js 16** and **Tailwind CSS v4.1**.
+# 💬 Sarahah App Frontend
 
----
+A modern anonymous messaging platform built with **Next.js 16**, **React 19**, and **TypeScript**, focused on secure authentication, modular architecture, and a smooth user experience.
 
-## 🛠️ 1. Tech Stack Specs (2026 Production Standard)
+[![Next.js](https://img.shields.io/badge/Next.js-16-black?logo=nextdotjs)](https://nextjs.org/)
+[![React](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=black)](https://react.dev/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue?logo=typescript)](https://www.typescriptlang.org/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind-v4-38BDF8?logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
 
-- **Core Framework:** Next.js v16 (App Router, Server Actions, Strict Server/Client component isolation).
-- **Styling & UI:** Tailwind CSS v4.1 (Native CSS `@theme` config) + Shadcn UI.
-- **State Management:** Zustand (Store slicing, persistent middleware for preferences).
-- **Data Fetching:** TanStack React Query v5+ (Optimistic updates, aggressive caching strategy).
-- **Forms & Validation:** React Hook Form + Zod (Shared schemas for frontend/backend validation).
-- **Internationalization:** `next-intl` (Fully localized URL routing: `/ar` and `/en`).
-- **Theme Engine:** `next-themes` (Supporting Light/Dark + Multi-color themes via CSS Variables).
-- **Testing Suite:** Vitest + React Testing Library (Unit/Integration), Playwright (E2E).
+Frontend for the **Sarahah App** .
+
+</div>
 
 ---
 
-## 🎨 2. Theme & Visual Engineering (Tailwind v4.1 Dynamic Matrix)
+## 🔗 Links
 
-The application utilizes Next-Themes to inject a `data-theme` and `class` attributes into the `<html>` tag. You must configure the main CSS file using Tailwind v4.1 `@theme` syntax to map CSS variables dynamic paths:
+[![Frontend Repository](https://img.shields.io/badge/Frontend-Repository-181717?style=for-the-badge&logo=github)](https://github.com/e-mustafa/saraha-app-frontend)
 
-### Theme Configurations Matrix:
+[![Backend Repository](https://img.shields.io/badge/Backend-Repository-181717?style=for-the-badge&logo=github)](https://github.com/e-mustafa/saraha-app)
 
-1. **Neon Violet (Default):** High energy, vibrant mesh gradients.
-2. **Emerald Cyber:** Clean tech, dark deep green tones with neon green accents.
-3. **Sunset Glow:** Warm, elegant corporate luxury (Earthy oranges, deep burgundy, and gold accents).
-4. **Ocean Breeze:** Refreshing, deep royal blues mixed with cyan and ice-blue glassmorphism.
+[![Live Demo](https://img.shields.io/badge/Live-Demo-00C853?style=for-the-badge&logo=vercel&logoColor=white)](https://github.com/e-mustafa/saraha-app)
 
-### Tailwind v4.1 Theme Mapping Layout (`app/globals.css`):
+[![Backend API](https://img.shields.io/badge/API-Live-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://saraha-app-back.vercel.app/)
 
-```css
-@import "tailwindcss";
+---
 
-@theme {
-  --color-brand-primary: var(--brand-primary);
-  --color-brand-secondary: var(--brand-secondary);
-  --color-bg-main: var(--bg-main);
-  --color-card-glass: var(--card-glass);
-}
+# 📖 Overview
 
-/* Theme Variances */
-[data-theme="violet"] {
-  --brand-primary: #7c3aed; --brand-secondary: #db2777;
-  --bg-main: #090514; --card-glass: rgba(255, 255, 255, 0.03);
-}
-[data-theme="emerald"] {
-  --brand-primary: #059669; --brand-secondary: #10b981;
-  --bg-main: #022c22; --card-glass: rgba(5, 150, 105, 0.05);
-}
-/* Apply alternative configurations for Light Mode wrapper inside each theme */
-.light [data-theme="violet"] {
-  --bg-main: #f9f5ff; --card-glass: rgba(255, 255, 255, 0.7);
-}
+Sarahah App is a full-stack anonymous messaging platform that allows users to exchange anonymous or identified messages in a secure and user-friendly environment.
 
-🏗️ 3. Production Best Practices & Architecture
-To achieve a resilient Production Environment, enforce the following architectural patterns:
+This repository contains the frontend application built with **Next.js App Router**. It communicates with an Express.js backend through a secure proxy layer while using modern React patterns for state management, data fetching, and form handling.
 
-Separation of Concerns (Layered Architecture):
+The project focuses on:
 
-UI Layer (/components): Dumb, atomic, and presentation-focused components.
+- Clean and maintainable architecture
+- Secure authentication
+- Responsive user experience
+- Reusable UI components
+- Modern frontend best practices
 
-Service Layer (/services): Pure API Client functions using an abstracted wrapper. No direct fetch calls inside components.
+---
 
-Validation Layer (/lib/validations): Centralized Zod schemas shared across Client Forms and Server Actions.
+# ✨ Features
 
-Error Boundary & Resilience:
+| 🔐 Authentication     | Messaging             | User Experience        |
+| --------------------- | --------------------- | ---------------------- |
+| ✅ Email Login        | ✅ Anonymous Messages | ✅ Dark Mode           |
+| ✅ Google Login       | ✅ Public Messages    | ✅ RTL/LTR             |
+| ✅ OTP                | ✅ Favorites          | ✅ Responsive          |
+| ✅ Reset Password     | ✅ Image Upload       | ✅ Accessibility       |
+| ✅ Email Verification | ✅ Audio Recording    | ✅ Toast Notifications |
 
-Implement localized error.tsx boundaries for dashboard segments.
+---
 
-Global App monitoring via unified Response interceptors in the API client layer.
+## 💬 Messaging
 
-Performance Optimization:
+- Anonymous messages
+- Identified messages
+- Public messages
+- Private messages
+- Favorite messages
+- Sent messages
+- Received messages
+- Categorized inbox
 
-Mandatory loading.tsx skeletons for all asynchronous data states.
+---
 
-Dynamic imports (next/dynamic) for massive components (e.g., Theme Switchers, Complex charts).
+## 🎙️ Media
 
-Strict adherence to Layout shifting avoidance (CLS prevention).
+- Image upload
+- Audio recording
+- Audio playback
+- Media preview
 
+---
 
-📂 4. Scalable Directory Structure
-src/
-├── app/
-│   └── [locale]/
-│       ├── (auth)/
-│       │   ├── login/page.tsx          # Credentials + Google OAuth
-│       │   └── signup/page.tsx
-│       ├── (dashboard)/
-│       │   ├── dashboard/page.tsx      # Messages feeds (Glassmorphic cards)
-│       │   ├── profile/page.tsx        # Public link manager & configurations
-│       │   ├── settings/page.tsx       # Profile editor + Theme/Language switcher
-│       │   └── notifications/page.tsx  # Dynamic unread counts
-│       ├── u/[username]/page.tsx       # Anonymous message dispatch inbox
-│       ├── verify-email/page.tsx
-│       ├── layout.tsx                  # Injects dir(rtl/ltr), theme data, providers
-│       └── page.tsx                    # Vibrant landing page with mesh background
-├── components/                         # UI atomic elements (Shadcn extended)
-├── hooks/                              # React Query wrapped hooks (e.g., useMessages)
-├── lib/
-│   └── validations/                    # Zod absolute strict validation schemas
-├── messages/                           # i18n Dictionary mapping
-│   ├── ar.json                         # Strict Arabic translations (RTL alignment)
-│   └── en.json                         # Strict English translations (LTR alignment)
-├── services/                           # Backend API Layer Abstraction
-│   └── api-client.ts                   # Centralized Axios/Fetch Wrapper
-└── store/                              # Zustand Global States (Theme, Client Session)
+## 🌍 Internationalization
 
+- English
+- Arabic
+- RTL support
+- LTR support
+- Localized validation messages
 
-🔌 5. Backend Integration Readiness (Plug-and-Play Protocol)
-The frontend must be entirely agnostic of backend implementation details.
+---
 
-All API interactions must flow through src/services/api-client.ts.
+## 🎨 User Experience
 
-Use an environment variable NEXT_PUBLIC_API_BASE_URL for endpoints.
+- Responsive layout
+- Dark mode
+- Light mode
+- Deferent themes
+- Accessible UI components
+- Toast notifications
+- Modern form validation
 
-Provide a full set of Mock API Response configurations mimicking production behavior within the service files, allowing the app to run completely offline with mock data by switching a toggle NEXT_PUBLIC_ENABLE_MOCKS=true.
+---
 
-🧪 6. Mandatory Automation Testing Strategy
-You must build the test suites simultaneously with feature deployment:
+# 🛠 Tech Stack
 
-A. Unit & Integration Testing (Vitest + React Testing Library)
-Forms & Zod Guard: Validate that invalid emails/passwords/messages trigger localized Zod translation errors.
+| Category      | Technologies                         |
+| ------------- | ------------------------------------ |
+| Framework     | Next.js 16, React 19, TypeScript     |
+| Styling       | Tailwind CSS v4, Shadcn UI, Radix UI |
+| Forms         | React Hook Form, Zod                 |
+| Server State  | TanStack Query                       |
+| Client State  | Zustand                              |
+| Localization  | next-intl                            |
+| Icons         | Lucide React                         |
+| Notifications | Sonner                               |
 
-Theme & i18n Stores: Test state shifts when swapping between themes (violet -> emerald) and languages (ar -> en).
+<!-- ---
 
-Directionality (RTL/LTR): Assert layout adjustments apply dir="rtl" dynamically when navigating to Arabic views.
+# 📷 Screenshots
 
-B. End-to-End (E2E) Testing (Playwright)
-Authentications Pipeline: Test registration -> fake verification token -> dashboard initialization.
+| Home | Inbox |
+|------|------|
+| ![](docs/images/home.png) | ![](docs/images/inbox.png) |
 
-The Messaging Loop: Open anonymous link /u/mustafa -> Send message -> Log in as receiver -> Validate Real-time/Polled delivery with unread indicator badge on Notification tab.
+| Message | Profile |
+|------|------|
+| ![](docs/images/message.png) | ![](docs/images/profile.png) |
 
-🤖 AI Execution Directives (System Prompts)
-Execute the build sequentially: Phase 1 (Setup/Themes) -> Phase 2 (i18n & Layouts) -> Phase 3 (Auth/Forms) -> Phase 4 (Services Mock Layer) -> Phase 5 (Testing Suite Setup).
+| Settings | Dark Mode |
+|------|------|
+| ![](docs/images/settings.png) | ![](docs/images/dark.png) | -->
 
-CRITICAL CODE RULES:
+---
 
-Never use directional style tokens (pl-*, pr-*, right-*, left-*). Use logical equivalents exclusively (ps-*, pe-*, end-*, start-*) to satisfy RTL rendering perfectly.
+# 🎯 Design Goals
 
-Ensure all UI elements contain explicit semantic definitions for ARIA compliance.
+The frontend was designed with the following goals:
 
-Verify all code paths pass strict TypeScript compilation and compiler options.
+- Modular code organization
+- Reusable components
+- Type safety
+- Secure authentication flow
+- Responsive layouts
+- Scalable project structure
+- Maintainable codebase
+- Good developer experience
 
-Once implementation finishes, execute the full test suite (npm run test:all) to verify structural stability before finalizing the build.
+---
 
+# ⭐ Highlights
 
-Markdown
-## 🔗 7. Backend Schema Synchronization & Exact Data Mapping
+- Next.js App Router
+- React Server Components
+- Feature-based architecture
+- Secure authentication flow
+- Automatic token refresh
+- Type-safe API communication
+- RTL/LTR support
+- Dark mode
+- Responsive design
+- Modern React ecosystem
 
-To ensure seamless production integration, all frontend TypeScript interfaces and Zod schemas must explicitly match the database models (`userSchema` and `messageSchema`). 
+---
 
-### A. Strict TypeScript Data Models (`src/types/index.ts`)
+# 🏗 Project Architecture
 
-```typescript
-export enum ProvidersEnum {
-  LOCAL = 'LOCAL',
-  GOOGLE = 'GOOGLE'
-}
+The frontend follows a feature-based modular architecture that separates business logic, UI components, API communication, and shared utilities. This structure keeps features isolated, improves maintainability, and makes the application easier to scale.
 
-export enum UserRolesEnum {
-  USER = 'USER',
-  ADMIN = 'ADMIN'
-}
+```text
 
-export interface User {
-  id: string; // Maps to Mongoose _id
-  firstName: string;
-  lastName: string;
-  username: string;
-  email: string;
-  confirmedEmail: string | null; // Date string or null
-  isActive: boolean;
-  phone?: string;
-  gender: number; // Mapped to GENDERS enum
-  birthdate?: string; // Date string
-  avatar?: string;
-  description?: string;
-  role: UserRolesEnum;
-  provider: ProvidersEnum;
-  createdAt: string;
-  updatedAt: string;
-  // Virtuals
-  fullName: string;
-  age?: number;
-}
+src
+├── app                 # App Router pages, layouts and API routes
+│   ├── [locale]
+│   ├── api
+│   └── ...
+│
+├── modules
+│   ├── auth
+│   ├── messages
+│   ├── profile
+│   ├── settings
+│   └── shared
+│
+├── providers          # Global application providers
+├── shared
+│   ├── components
+│   ├── hooks
+│   ├── services
+│   ├── utils
+│   ├── config
+│   └── types
+│
+├── i18n              # Localization configuration
+└── proxy.ts          # Authentication & localization middleware
+```
 
-export interface Message {
-  id: string;
-  content: string;
-  image?: string;
-  from: string | Partial<User>; // ObjectId Reference
-  to: string | Partial<User>;   // ObjectId Reference
-  createdAt: string;
-}
+Each feature module contains its own components, hooks, validation schemas, services, API requests, and business logic to reduce coupling between features.
 
+---
 
-B. Zod Validation Alignment Strategy (src/lib/validations/)
-You must construct the Zod validation constraints to precisely mirror the backend limits and regex logic:
+# 🔐 Authentication Flow
 
-User Schema Constraints (auth.ts & profile.ts):
+Authentication is handled using **HTTP-only cookies** together with **JWT Access Tokens** and **Refresh Tokens**.
 
-firstName: z.string().min(3, t('errors.firstName_min')).max(30, t('errors.firstName_max')).trim()
+Instead of exposing access tokens to the browser, requests are forwarded through a Next.js proxy layer.
 
-lastName: z.string().min(2, t('errors.lastName_min')).max(30, t('errors.lastName_max')).trim()
+```text
+Browser
+      │
+      ▼
+Next.js Proxy Route
+      │
+      ▼
+Express API
+      │
+      ▼
+MongoDB
+```
 
-username: z.string().trim().toLowerCase()
+This approach keeps authentication tokens outside the client-side application and centralizes API communication.
 
-email: z.string().trim().toLowerCase().regex(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, t('errors.invalid_email'))
+---
 
-password: Conditional validation wrapper using .superRefine(). If provider === 'LOCAL', it must be .min(6, t('errors.password_min')).
+# 🔄 Automatic Token Refresh
 
-birthdate: Must validate that the calculated age is > 18 using a client-side date engine.
+When an access token expires, the frontend automatically refreshes the session without interrupting the user experience.
 
-Message Schema Constraints (message.ts):
+The refresh process is synchronized to prevent multiple simultaneous refresh requests.
 
-content: z.string().min(1, t('errors.message_required'))
+```text
+API Request
+      │
+      ▼
+401 Unauthorized
+      │
+      ▼
+Refresh Token Request
+      │
+      ▼
+Receive New Tokens
+      │
+      ▼
+Retry Original Request
+```
 
-image: z.string().url().optional()
+Only one refresh request is executed even if multiple API calls fail simultaneously.
 
-🤖 Directives for AI Implementation (Backend Binding Rules)
-Form Attribute Naming: When building the Edit Profile and Authentication forms using react-hook-form, bind the name attribute exactly to the camelCase properties defined in the schema above (firstName, lastName, birthdate, etc.).
+---
 
-Payload Interception: Ensure that when submitting a new message from /u/[username], the payload structurally maps to the Message interface, tracking the to parameter (Receiver User ID) and content.
+# 🌐 API Layer
 
-Mock Factory Updates: Update your Mock Service Layer (src/services/api-client.ts) to return JSON payloads containing these exact schema attributes, including the virtual properties (fullName, age) in the simulated responses.
+All communication with the backend is handled through a centralized API client.
+
+Features include:
+
+- Centralized request handling
+- Automatic JSON serialization
+- FormData support
+- Global error handling
+- Automatic token refresh
+- Request retry after successful refresh
+- Typed API responses
+- Custom API error objects
+
+This keeps API logic out of UI components and provides a consistent developer experience.
+
+---
+
+# 🔀 Next.js Proxy Layer
+
+The application uses internal Next.js API routes as a proxy between the browser and the backend API.
+
+Benefits include:
+
+- HTTP-only cookie support
+- No access token exposure
+- Simplified API calls
+- Unified request handling
+- Secure Authorization header injection
+
+---
+
+# 🛡 Route Protection
+
+Authentication is enforced using **Next.js Middleware**.
+
+The middleware is responsible for:
+
+- Locale detection
+- Protected route handling
+- Guest-only route protection
+- Automatic token refresh
+- Session validation
+- Authentication redirects
+
+---
+
+# 📦 State Management
+
+The application separates client state from server state.
+
+## Client State
+
+Managed using **Zustand** for lightweight global state such as UI state and client-side interactions.
+
+## Server State
+
+Managed using **TanStack Query**, providing:
+
+- Request caching
+- Automatic cache invalidation
+- Background refetching
+- Retry strategies
+- Mutation management
+
+This separation keeps application state predictable and easy to maintain.
+
+---
+
+# 🌍 Internationalization
+
+Localization is implemented using **next-intl**.
+
+Features include:
+
+- English
+- Arabic
+- RTL support
+- LTR support
+- Locale-aware routing
+- Localized validation messages
+
+---
+
+# ✅ Form Handling
+
+Forms are built using:
+
+- React Hook Form
+- Zod validation
+
+Benefits:
+
+- Type-safe validation
+- Reusable schemas
+- Better performance
+- Cleaner form components
+
+---
+
+# 🎨 UI System
+
+The interface is built using reusable UI components powered by:
+
+- Shadcn UI
+- Radix UI
+- Tailwind CSS
+
+The design system supports:
+
+- Dark mode
+- Responsive layouts
+- Accessible components
+- Consistent spacing
+- Reusable form controls
+
+---
+
+# ⚙ Error Handling
+
+The application provides centralized error handling through a custom API layer.
+
+Features include:
+
+- Global API errors
+- Toast notifications
+- Validation error support
+- Authentication error handling
+- Session expiration detection
+
+---
+
+# 🚀 Performance Optimizations
+
+Several techniques are used to improve performance and user experience.
+
+- React Server Components
+- App Router
+- Route-based code splitting
+- Lazy loading
+- Optimized API caching
+- Request deduplication
+- Automatic retry strategy
+- Exponential backoff
+- Efficient re-rendering with Zustand
+- Type-safe API communication
+
+---
+
+# 🚀 Getting Started
+
+## Prerequisites
+
+Make sure you have the following installed:
+
+- Node.js 20+
+- npm / pnpm / yarn
+- Running Sarahah App Backend
+
+---
+
+## Installation
+
+Clone the repository:
+
+```bash
+git clone https://github.com/e-mustafa/saraha-app-frontend.git
+```
+
+Navigate to the project:
+
+```bash
+cd saraha-app-frontend
+```
+
+Install dependencies:
+
+```bash
+npm install
+```
+
+or
+
+```bash
+pnpm install
+```
+
+---
+
+# ⚙ Environment Variables
+
+Create a `.env.local` file in the project root.
+
+Example:
+
+```env
+NEXT_PUBLIC_API_BASE_URL=http://localhost:5000
+```
+
+> Adjust the values according to your backend configuration.
+
+---
+
+# ▶ Running the Project
+
+Development
+
+```bash
+npm run dev
+```
+
+Production Build
+
+```bash
+npm run build
+```
+
+Start Production Server
+
+```bash
+npm run start
+```
+
+Lint
+
+```bash
+npm run lint
+```
+
+---
+
+# 📦 Deployment
+
+The frontend is designed to be deployed independently from the backend.
+
+Recommended platforms:
+
+- Vercel
+- Netlify
+- Self-hosted Node.js server
+
+The backend can be deployed separately and configured using environment variables.
+
+---
+
+# 🤝 Working with the Backend
+
+This frontend communicates with the dedicated Express.js backend.
+
+Repository:
+
+```
+https://github.com/e-mustafa/saraha-app
+```
+
+The backend provides:
+
+- Authentication
+- Google OAuth
+- JWT & Refresh Tokens
+- Anonymous Messaging
+- Public Messages
+- Image Uploads
+- Record Voice Note and Uploads
+- Email Verification
+- Password Reset
+- Change Email
+- Rate Limiting
+- Request Validation
+- Encryption
+- Redis Session Management
+
+---
+
+# 💡 Technical Decisions
+
+Several implementation choices were made to improve maintainability and security.
+
+### Why Next.js Proxy Routes?
+
+Instead of exposing backend endpoints directly to the browser, all requests pass through internal Next.js API routes.
+
+This allows:
+
+- HTTP-only cookie authentication
+- Authorization header injection
+- Centralized request handling
+- Simplified frontend API calls
+
+---
+
+### Why TanStack Query?
+
+Server state is managed separately from client state.
+
+Benefits include:
+
+- Request caching
+- Background refetching
+- Retry strategies
+- Mutation lifecycle management
+- Reduced boilerplate
+
+---
+
+### Why Zustand?
+
+Only client-side UI state is stored in Zustand.
+
+This keeps the global store lightweight while leaving server data to TanStack Query.
+
+---
+
+### Why Feature-Based Modules?
+
+Organizing the project by feature instead of file type makes it easier to:
+
+- Scale the application
+- Isolate business logic
+- Reuse components
+- Maintain large codebases
+
+---
+
+<!-- # 📄 Project Status
+
+This project is actively maintained and new features are continuously being added and improved.
+
+Future improvements may include:
+
+- Real-time messaging
+- Push notifications
+- Advanced search
+- User blocking
+- Message reactions
+- PWA support
+
+--- -->
+
+<!-- # 🤝 Contributing
+
+Contributions, suggestions, and feedback are welcome.
+
+If you find a bug or have an idea for improvement:
+
+1. Fork the repository
+2. Create a feature branch
+3. Commit your changes
+4. Open a Pull Request -->
+
+---
+
+# 👨‍💻 Author
+
+**Mustafa AbuTabl**
+
+Frontend Developer
+
+<p align="left">
+
+<a href="https://github.com/e-mustafa">
+<img src="https://img.shields.io/badge/GitHub-e--mustafa-181717?style=for-the-badge&logo=github">
+</a>
+
+<a href="https://linkedin.com/in/e-mustafa">
+<img src="https://img.shields.io/badge/LinkedIn-Mustafa_AbuTabl-0A66C2?style=for-the-badge&logo=linkedin">
+</a>
+
+<a href="https://e-mustafa.github.io/portfolio">
+<img src="https://img.shields.io/badge/Portfolio-Visit-5B21B6?style=for-the-badge&logo=googlechrome&logoColor=white">
+</a>
+
+<a href="mailto:eng.mustafa@hotmail.com">
+<img src="https://img.shields.io/badge/Email-Contact-EA4335?style=for-the-badge&logo=gmail&logoColor=white">
+</a>
+
+</p>
+
+---
+
+If you found this project useful or interesting, consider giving it a ⭐ on GitHub.
