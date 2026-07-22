@@ -14,7 +14,7 @@ import { toast } from 'sonner';
 import MessageInput from './message-input';
 
 interface SendMessageFormProps {
-	username: string;
+	userId: string;
 	currentUser: UserProfile;
 }
 
@@ -24,7 +24,7 @@ interface SendMessagePayload {
 	attachments: File[];
 }
 
-export default function SendMessageForm({ username, currentUser }: SendMessageFormProps) {
+export default function SendMessageForm({ userId, currentUser }: SendMessageFormProps) {
 	const t = useTranslations();
 	const queryClient = useQueryClient();
 
@@ -51,13 +51,13 @@ export default function SendMessageForm({ username, currentUser }: SendMessageFo
 				});
 			}
 
-			return await apiClient.post<IResponse<null>>(`/messages/public/${username}`, formData);
+			return await apiClient.post<IResponse<null>>(`/messages/public/${userId}`, formData);
 		},
 
 		onSuccess: () => {
 			setIsPublic(false);
 			// Refresh query data instantly
-			queryClient.invalidateQueries({ queryKey: ['public-messages', username] });
+			queryClient.invalidateQueries({ queryKey: ['public-messages', userId] });
 		},
 	});
 

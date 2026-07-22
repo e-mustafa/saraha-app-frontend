@@ -68,7 +68,7 @@ export default function PublicProfile({ username }: PublicProfileProps) {
 			<UserSection user={targetUser} />
 
 			{/* SECTION 2: SMART CONCEALED MESSAGING BOX */}
-			<SendMessageForm username={username} currentUser={user as UserProfile} />
+			<SendMessageForm userId={targetUser?.id || targetUser?._id || ''} currentUser={user as UserProfile} />
 
 			{/* SECTION 3: PUBLIC TIMELINE FEED */}
 			<div className='space-y-4 pt-4'>
