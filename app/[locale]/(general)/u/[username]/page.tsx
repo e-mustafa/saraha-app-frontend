@@ -11,21 +11,11 @@ interface Props {
 	}>;
 }
 
-// Strictly typed API response interface to avoid 'any'
-interface UserProfileResponse {
-	name?: string;
-	firstName?: string;
-	lastName?: string;
-	avatar?: {
-		url: string;
-	};
-}
-
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
 	const { locale, username } = await params;
 	const t = await getTranslations({ locale, namespace: 'profileMetadata' });
 	const siteUrl = configEnv.appUrl;
-	const fallbackImage = '/saraha-app.png';
+	const fallbackImage = `${siteUrl}/saraha-app.png`;
 
 	try {
 		const res = await fetch(`${configEnv.apiBaseUrl}/users/visit/${username}`, {
@@ -47,6 +37,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 			};
 		}
 
+		console.log('user', user);
+		console.log('user.avatar', user.avatar.url);
+
 		const displayName = user.name || `${user.firstName || ''} ${user.lastName || ''}`.trim() || username;
 
 		// FIXED: Verify if the API avatar URL is absolute or relative, prepending API base URL if needed
@@ -60,8 +53,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 			description: t('pageDescription', { name: displayName }),
 			metadataBase: new URL(siteUrl),
 			icons: {
-				icon: '/favicon.ico', // Explicitly defining shortcut icons
-				apple: '/apple-touch-icon.png', // Optional: for iOS home screen bookmarks
+				icon: `${siteUrl}/favicon.ico`, // Explicitly defining shortcut icons
+				apple: `${siteUrl}/apple-touch-icon.png`, // Optional: for iOS home screen bookmarks
 			},
 			openGraph: {
 				title: t('ogTitle', { name: displayName }),

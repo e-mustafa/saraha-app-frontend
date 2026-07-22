@@ -37,14 +37,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 	// Fetch server-side translations dynamically targeting a 'Metadata' namespace in your JSON
 	const t = await getTranslations({ locale, namespace: 'metadata' });
 	const siteUrl = configEnv.appUrl;
-	const imageUrl = '/saraha-app.png';
+	const imageUrl = `${siteUrl}/saraha-app.png`;
 	return {
 		title: t('title'),
 		description: t('description'),
 		metadataBase: new URL(siteUrl),
 		icons: {
-			icon: '/favicon.ico', // Explicitly defining shortcut icons
-			apple: '/apple-touch-icon.png', // Optional: for iOS home screen bookmarks
+			icon: `${siteUrl}/favicon.ico`, // Explicitly defining shortcut icons
+			apple: `${siteUrl}/apple-touch-icon.png`, // Optional: for iOS home screen bookmarks
 		},
 		openGraph: {
 			title: t('title'),
