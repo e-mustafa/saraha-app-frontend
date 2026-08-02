@@ -79,7 +79,7 @@ export default function PublicProfile({ username }: PublicProfileProps) {
 
 				{/* Added dynamic opacity to indicate network fetching while previous data is rendered */}
 				<div
-					className={`space-y-4 min-h-[200px] transition-opacity duration-200 ${isFetching && !isMessagesLoading ? 'opacity-60 pointer-events-none' : 'opacity-100'}`}
+					className={`space-y-4 min-h-50 transition-opacity duration-200 ${isFetching && !isMessagesLoading ? 'opacity-60 pointer-events-none' : 'opacity-100'}`}
 				>
 					{isMessagesLoading ? (
 						Array.from({ length: 2 }).map((_, idx) => <MessageSkeletonCard key={idx} />)

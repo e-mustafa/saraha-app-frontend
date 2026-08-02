@@ -127,12 +127,11 @@ export default function UserSection({ user }: UserSectionProps) {
 						</div>
 					) : null}
 
-					
 					<ShareButton username={user?.username || ''} />
 				</div>
 
 				{/* Block user trigger button (hidden on own profile) */}
-				{/* {isAuthed && authedUser && !isSelf && ( */}
+				{isAuthed && authedUser && !isSelf && (
 					<SmartTooltip>
 						<Button
 							type='button'
@@ -153,7 +152,7 @@ export default function UserSection({ user }: UserSectionProps) {
 							/>
 						</Button>
 					</SmartTooltip>
-				{/* )} */}
+				)}
 			</div>
 		</div>
 	);
