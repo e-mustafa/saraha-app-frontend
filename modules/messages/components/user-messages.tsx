@@ -1,6 +1,7 @@
 'use client';
 
 import { useAuth } from '@/modules/auth/hooks/use-auth';
+import UserCardSkeleton from '@/modules/profile/components/user-card-skeleton';
 import { Tabs, TabsList, TabsTrigger } from '@/shared/components/ui/tabs';
 import { IResponse } from '@/shared/types/index';
 import { apiClient } from '@/shared/utils/apiClient';
@@ -8,13 +9,13 @@ import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { HeartIcon, InboxIcon, SendIcon, UsersRound } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
+import UserSection from '../../profile/components/user-section';
 import { MessageTypeEnum } from '../enums';
 import { Message, MessageType } from '../types/index';
 import EmptyMessages from './empty-messages';
 import MessageCard from './message-card';
 import MessageSkeletonCard from './message-skeleton-card';
 import MessagesPagination from './messages-pagination';
-import UserSection from './user-section';
 
 export type TabType = MessageType;
 
@@ -27,7 +28,7 @@ export default function UserMessages() {
 	const [activeTab, setActiveTab] = useState<TabType>(MessageTypeEnum.INBOX);
 	const [currentPage, setCurrentPage] = useState<number>(1);
 
-	const { user, isAuthed } = useAuth();
+	const { user, isAuthed, isLoading: isAuthLoading } = useAuth();
 
 	// fetch messages dynamically using React Query based on the current tab and page
 	const { data, isLoading, isFetching } = useQuery({
@@ -51,7 +52,7 @@ export default function UserMessages() {
 	return (
 		<div className='w-full max-w-4xl mx-auto overflow-hidden px-4 py-8 space-y-8 direction-rtlxxx'>
 			{/* ================= SECTION 1: IDENTITY CARD (HIGH-TECH GLASS) ================= */}
-			<UserSection user={user || {}} />
+			{isAuthLoading ? <UserCardSkeleton /> : <UserSection user={user || {}} />}
 
 			{/* ================= SECTION 2: NAVIGATION TABS SYSTEM ================= */}
 			<Tabs

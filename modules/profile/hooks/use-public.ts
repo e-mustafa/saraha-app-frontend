@@ -5,7 +5,7 @@ import { UserProfile } from '../types/database';
 
 export const fetchPublicProfile = async (username: string) => {
 	const response = await apiClient.get<IResponse<Partial<UserProfile>>>(`/users/visit/${username}`);
-	return response.data as Partial<UserProfile>;
+	return response.data;
 };
 
 export const usePublicProfile = (username: string) => {

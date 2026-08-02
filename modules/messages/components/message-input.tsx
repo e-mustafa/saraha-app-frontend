@@ -1,5 +1,6 @@
 'use client';
 
+import { SmartTooltip } from '@/shared/components/custom-ui/smart-tooltip';
 import EmojiPicker from '@/shared/components/emoji-picker';
 import { Button } from '@/shared/components/ui/button';
 import { Textarea } from '@/shared/components/ui/textarea';
@@ -126,6 +127,7 @@ interface ActiveRecordingCardProps {
 }
 
 const ActiveRecordingCard = ({ recordingTime, onCancel, onStop }: ActiveRecordingCardProps) => {
+	const t = useTranslations();
 	return (
 		<div className='relative aspect-square rounded-xl overflow-hidden border-2 border-dashed border-rose-500/40 bg-rose-500/5 p-3 flex flex-col justify-between items-center shadow-sm animate-in zoom-in-95 duration-200'>
 			{/* Pulse badge indicating active capture */}
@@ -148,24 +150,30 @@ const ActiveRecordingCard = ({ recordingTime, onCancel, onStop }: ActiveRecordin
 				<span className='text-xs font-mono font-bold text-rose-600'>{formatTimeHelper(recordingTime)}</span>
 
 				<div className='flex gap-2 w-full justify-center'>
-					<Button
-						type='button'
-						variant='ghost'
-						size='icon'
-						onClick={onCancel}
-						className='size-8 rounded-full bg-rose-500/10 hover:bg-rose-500/20 text-rose-600'
-					>
-						<Trash2Icon className='size-4' />
-					</Button>
-					<Button
-						type='button'
-						variant='ghost'
-						size='icon'
-						onClick={onStop}
-						className='size-8 rounded-full bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-600'
-					>
-						<CheckIcon className='size-4' />
-					</Button>
+					<SmartTooltip>
+						<Button
+							type='button'
+							variant='ghost'
+							size='icon'
+							aria-label={t('messages.voiceRecording.cancel')}
+							onClick={onCancel}
+							className='size-8 rounded-full bg-rose-500/10 hover:bg-rose-500/20 text-rose-600'
+						>
+							<Trash2Icon className='size-4' />
+						</Button>
+					</SmartTooltip>
+					<SmartTooltip>
+						<Button
+							type='button'
+							variant='ghost'
+							size='icon'
+							aria-label={t('messages.voiceRecording.send')}
+							onClick={onStop}
+							className='size-8 rounded-full bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-600'
+						>
+							<CheckIcon className='size-4' />
+						</Button>
+					</SmartTooltip>
 				</div>
 			</div>
 		</div>
@@ -525,33 +533,39 @@ export default function MessageInput({ onSend, isLoading = false }: MessageInput
 							accept='image/*,audio/*'
 							className='hidden'
 						/>
-						<Button
-							type='button'
-							variant='ghost'
-							size='icon'
-							onClick={() => fileInputRef.current?.click()}
-							disabled={attachments.length >= 4 || isRecording || isLoading}
-							className='size-11 text-muted-foreground hover:text-foreground hover:bg-muted/50 rounded-xl transition-colors'
-						>
-							<Paperclip className='size-5' />
-						</Button>
+						<SmartTooltip>
+							<Button
+								type='button'
+								variant='ghost'
+								size='icon'
+								aria-label={t('messages.attachments.add')}
+								onClick={() => fileInputRef.current?.click()}
+								disabled={attachments.length >= 4 || isRecording || isLoading}
+								className='size-11 text-muted-foreground hover:text-foreground hover:bg-muted/50 rounded-xl transition-colors'
+							>
+								<Paperclip className='size-5' />
+							</Button>
+						</SmartTooltip>
 
-						<Button
-							type='button'
-							variant='outline'
-							onPointerDown={handlePointerDown}
-							onPointerUp={handlePointerUp}
-							size='icon'
-							disabled={isLoading || (attachments.length >= 4 && !isRecording)}
-							className={cn(
-								'rounded-xl size-11 transition-all shadow-md active:scale-95 cursor-pointer touch-none select-none border-0',
-								isRecording
-									? 'bg-rose-500 hover:bg-rose-600 scale-105 text-white animate-pulse'
-									: 'bg-brand-primary text-white hover:bg-brand-primary/90',
-							)}
-						>
-							<Mic className='size-5' />
-						</Button>
+						<SmartTooltip>
+							<Button
+								type='button'
+								variant='outline'
+								aria-label={t('messages.voiceRecording.start')}
+								onPointerDown={handlePointerDown}
+								onPointerUp={handlePointerUp}
+								size='icon'
+								disabled={isLoading || (attachments.length >= 4 && !isRecording)}
+								className={cn(
+									'rounded-xl size-11 transition-all shadow-md active:scale-95 cursor-pointer touch-none select-none border-0',
+									isRecording
+										? 'bg-rose-500 hover:bg-rose-600 scale-105 text-white animate-pulse'
+										: 'bg-brand-primary text-white hover:bg-brand-primary/90',
+								)}
+							>
+								<Mic className='size-5' />
+							</Button>
+						</SmartTooltip>
 					</div>
 				</div>
 

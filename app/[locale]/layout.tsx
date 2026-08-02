@@ -1,5 +1,6 @@
 import { routing } from '@/i18n/routing';
 import { AuthErrorWatcher } from '@/providers/auth-error-watcher';
+import { TooltipProvider } from '@/shared/components/custom-ui/tooltip';
 import { APP_CONFIGS } from '@/shared/config/app-configs';
 import { configEnv } from '@/shared/config/env';
 import { DirectionProvider } from '@radix-ui/react-direction';
@@ -125,7 +126,7 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
 				<RootProvider locale={locale} direction={direction}>
 					<NextIntlClientProvider messages={messages}>
 						<DirectionProvider dir={direction}>
-							{children}
+							<TooltipProvider>{children}</TooltipProvider>
 							<AuthErrorWatcher />
 						</DirectionProvider>
 					</NextIntlClientProvider>

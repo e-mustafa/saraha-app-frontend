@@ -5,6 +5,15 @@ export type UserImage = {
 	url: string;
 };
 
+export type BlockedUser = {
+	id: string;
+	_id: string;
+	firstName: string;
+	lastName: string;
+	username: string;
+	avatar: UserImage;
+};
+
 export type UserProfile = ProfileInput & {
 	_id?: string;
 	id: string;
@@ -14,4 +23,6 @@ export type UserProfile = ProfileInput & {
 	covers: UserImage[];
 	visitCount: number;
 	verified: null | Date;
+	
+	blockedUsers: BlockedUser[];
 };

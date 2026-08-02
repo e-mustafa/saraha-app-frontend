@@ -1,5 +1,3 @@
-import { Suspense } from 'react';
-import UserProfileSkeleton from '../../profile/components/user.profile-skeleton';
 import UserMessages from '../components/user-messages';
 
 export default function UserMessagesScreen() {
@@ -8,8 +6,8 @@ export default function UserMessagesScreen() {
 	// console.log('UserProfileScreen profile', profile);
 
 	return (
-		<Suspense fallback={<UserProfileSkeleton />}>
-			<UserMessages />
-		</Suspense>
+		// <Suspense fallback={<UserProfileSkeleton />}>
+		<UserMessages />
+		// </Suspense>
 	);
 }

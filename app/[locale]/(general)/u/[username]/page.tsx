@@ -1,4 +1,4 @@
-import PublicProfileScreen from '@/modules/messages/screens/public-profile-screen';
+import PublicProfileScreen from '@/modules/profile/screens/public-profile-screen';
 import { APP_CONFIGS } from '@/shared/config/app-configs';
 import { configEnv } from '@/shared/config/env';
 import { Metadata } from 'next';

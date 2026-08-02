@@ -2,6 +2,7 @@
 
 import { useRouter } from '@/i18n/navigation';
 import AvatarGlobal from '@/shared/components/avatar-global';
+import { SmartTooltip } from '@/shared/components/custom-ui/smart-tooltip';
 import { Button } from '@/shared/components/ui/button';
 import { Card, CardContent } from '@/shared/components/ui/card';
 import {
@@ -30,13 +31,13 @@ import { Message, Person } from '../types/index';
 import { TabType } from './user-messages';
 
 // Check if the URL belongs to an audio file
-const isAudioFile = (url: string) => {
+const isAudioFile = (url: string): boolean => {
 	const cleanUrl = url.split('?')[0].toLowerCase();
 	return ['.webm', '.mp3', '.wav', '.ogg', '.m4a', '.aac'].some((ext) => cleanUrl.endsWith(ext));
 };
 
 // Check if the URL belongs to a video file
-const isVideoFile = (url: string) => {
+const isVideoFile = (url: string): boolean => {
 	const cleanUrl = url.split('?')[0].toLowerCase();
 	return ['.mp4', '.mov', '.webm', '.ogg'].some((ext) => cleanUrl.endsWith(ext) && !isAudioFile(url));
 };
@@ -44,10 +45,14 @@ const isVideoFile = (url: string) => {
 /* ==========================================================================
    SQUARE AUDIO PLAYER COMPONENT
    ========================================================================== */
-const SquareAudioPlayer = ({ url }: { url: string }) => {
-	const [isPlaying, setIsPlaying] = useState(false);
+interface SquareAudioPlayerProps {
+	url: string;
+}
+
+const SquareAudioPlayer = ({ url }: SquareAudioPlayerProps) => {
+	const [isPlaying, setIsPlaying] = useState<boolean>(false);
 	const [duration, setDuration] = useState<number | null>(null);
-	const [currentTime, setCurrentTime] = useState(0);
+	const [currentTime, setCurrentTime] = useState<number>(0);
 
 	const audioRef = useRef<HTMLAudioElement | null>(null);
 
@@ -77,6 +82,7 @@ const SquareAudioPlayer = ({ url }: { url: string }) => {
 			audio.removeEventListener('loadedmetadata', handleLoadedMetadata);
 			audio.removeEventListener('timeupdate', handleTimeUpdate);
 			audio.removeEventListener('ended', handleEnded);
+			audioRef.current = null;
 		};
 	}, [url]);
 
@@ -90,11 +96,11 @@ const SquareAudioPlayer = ({ url }: { url: string }) => {
 			audioRef.current
 				.play()
 				.then(() => setIsPlaying(true))
-				.catch((err) => console.error('Audio playback block:', err));
+				.catch((err: unknown) => console.error('Audio playback block:', err));
 		}
 	};
 
-	const formatTime = (secs: number) => {
+	const formatTime = (secs: number): string => {
 		const mins = Math.floor(secs / 60);
 		const remainingSecs = Math.floor(secs % 60);
 		return `${mins}:${remainingSecs.toString().padStart(2, '0')}`;
@@ -145,7 +151,13 @@ const SquareAudioPlayer = ({ url }: { url: string }) => {
 /* ==========================================================================
    MAIN COMPONENT
    ========================================================================== */
-export default function MessageCard({ message, tab, isAuthed }: { message: Message; tab: TabType; isAuthed: boolean }) {
+interface MessageCardProps {
+	message: Message;
+	tab: TabType;
+	isAuthed: boolean;
+}
+
+export default function MessageCard({ message, tab, isAuthed }: MessageCardProps) {
 	const t = useTranslations('messages');
 	const router = useRouter();
 	const formatDate = useFormatDate();
@@ -153,8 +165,11 @@ export default function MessageCard({ message, tab, isAuthed }: { message: Messa
 	const attachments = message.attachments || [];
 	const hasAttachments = attachments.length > 0;
 
-	const person = tab === MessageTypeEnum.SENT ? 'to' : 'from';
-	const { id, avatar, name, username, isLive } = (message[person as keyof Message] as Person) || {};
+	const personKey = tab === MessageTypeEnum.SENT ? 'to' : 'from';
+	const { id, avatar, name, username, isLive } = (message[personKey as keyof Message] as Person) || {};
+
+	// English comment: Compute favorite status based on current tab view context
+	const isFavorite = tab === MessageTypeEnum.SENT ? Boolean(message.fromFavorite) : Boolean(message.toFavorite);
 
 	const { mutate: toggleFavorite } = useMarkMessageFavorite(message?.id);
 	const { mutate: togglePublic } = useMarkMessagePublic(message?.id);
@@ -212,51 +227,67 @@ export default function MessageCard({ message, tab, isAuthed }: { message: Messa
 
 					{isAuthed && (
 						<div className='flex items-center justify-end gap-1.5 text-xs text-muted-foreground'>
-							{/* Favorite Button */}
-							<Button
-								className='bg-transparent hover:bg-transparent'
-								variant='ghost'
-								size='icon'
-								disabled={isAnyActionPending}
-								onClick={() => toggleFavorite()}
-							>
-								<HeartIcon
-									className={cn(
-										'size-6 transition-all',
-										message.fromFavorite || message.toFavorite ? 'text-red-500 fill-red-500' : 'fill-none',
-										isAnyActionPending && 'opacity-50 scale-95',
-									)}
-								/>
-							</Button>
-
-							{/* Public/Private Switch */}
-							<div className='flex items-center gap-2 border-x border-border/60 px-3'>
-								<Label
-									htmlFor={`confidential-switch-${message.id}`}
-									className='text-xs text-muted-foreground cursor-pointer flex items-center gap-1'
-								>
-									{message.isPublic ? (
-										<UnlockIcon className='w-3.5 h-3.5' />
-									) : (
-										<LockIcon className='w-3.5 h-3.5 text-amber-500' />
-									)}
-									{t('public')}
-								</Label>
-								<Switch
-									id={`confidential-switch-${message.id}`}
+							{/* Favorite Button with Dynamic Tooltip and Accessibility */}
+							<SmartTooltip>
+								<Button
+									className='bg-transparent hover:bg-transparent'
+									variant='ghost'
+									size='icon'
+									aria-label={isFavorite ? t('actions.unfavorite') : t('actions.favorite')}
 									disabled={isAnyActionPending}
-									checked={message.isPublic}
-									onCheckedChange={() => togglePublic()}
-								/>
-							</div>
+									onClick={() => toggleFavorite()}
+								>
+									<HeartIcon
+										className={cn(
+											'size-6 transition-all',
+											isFavorite ? 'text-red-500 fill-red-500' : 'fill-none',
+											isAnyActionPending && 'opacity-50 scale-95',
+										)}
+									/>
+								</Button>
+							</SmartTooltip>
+
+							{/* Public/Private Switch with Dynamic Tooltip */}
+							<SmartTooltip>
+								<div
+									aria-label={t('actions.setPublic')}
+									className='flex items-center gap-2 border-x border-border/60 px-3'
+								>
+									<Label
+										htmlFor={`confidential-switch-${message.id}`}
+										className='text-xs text-muted-foreground cursor-pointer flex items-center gap-1'
+									>
+										{message.isPublic ? (
+											<UnlockIcon className='w-3.5 h-3.5' />
+										) : (
+											<LockIcon className='w-3.5 h-3.5 text-amber-500' />
+										)}
+										{t('public')}
+									</Label>
+									<Switch
+										id={`confidential-switch-${message.id}`}
+										disabled={isAnyActionPending}
+										checked={message.isPublic}
+										onCheckedChange={() => togglePublic()}
+									/>
+								</div>
+							</SmartTooltip>
 
 							{/* Delete Message Dialog */}
 							<Dialog>
-								<DialogTrigger asChild>
-									<Button type='button' variant='destructive' size='icon' disabled={isAnyActionPending}>
-										<Trash2Icon className={cn(isAnyActionPending && 'opacity-50 scale-95')} />
-									</Button>
-								</DialogTrigger>
+								<SmartTooltip>
+									<DialogTrigger asChild>
+										<Button
+											type='button'
+											variant='destructive'
+											size='icon'
+											aria-label={t('actions.deleteMessage')}
+											disabled={isAnyActionPending}
+										>
+											<Trash2Icon className={cn(isAnyActionPending && 'opacity-50 scale-95')} />
+										</Button>
+									</DialogTrigger>
+								</SmartTooltip>
 								<DialogContent className='sm:max-w-sm bg-card-glass backdrop-blur-lg'>
 									<DialogHeader>
 										<DialogTitle>{t('deleteDialog.title')}</DialogTitle>

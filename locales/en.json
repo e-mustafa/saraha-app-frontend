@@ -183,17 +183,19 @@
 	},
 	"messages": {
 		"title": "Inbox",
-		"count": "{count, plural, =0 {No messages yet} one {One new message} two {Two new messages} few {{count} new messages} many {{count} new messages} other {{count} messages}}",
+		"count": "{count, plural, =0 {No messages yet} one {1 new message} other {{count} new messages}}",
 		"receivedAt": "Received {time}",
 		"anonymousSender": "Anonymous",
-		"privateMessage": "Secret message",
-		"revealIdentity": "Revealed",
-		"writeMessage": "Write your honest feedback here...",
+		"anonymousSenderDesc": "Enable so your details are not shown to the recipient",
+		"privateMessage": "Private Message",
+		"revealIdentity": "Visible",
+		"revealIdentityDisc": "Disable so your details are shown to the recipient",
+		"writeMessage": "Write your honest message here...",
 		"confidential": "Confidential",
-		"public": "Public message",
+		"public": "Public Message",
 		"recording": "Recording...",
-		"voiceRecorded": "Recorded voice note",
-		"publicMessagesTitle": "Public messages listed on the profile",
+		"voiceRecorded": "Voice note recorded",
+		"publicMessagesTitle": "Public messages listed on account",
 		"tabs": {
 			"inbox": "Inbox",
 			"sent": "Sent",
@@ -207,29 +209,36 @@
 			"next": "Next"
 		},
 		"actions": {
-			"favorite": "Favorite",
-			"unfavorite": "Unfavorite",
+			"favorite": "Add to favorites",
+			"unfavorite": "Remove from favorites",
 			"shareAsImage": "Share as image",
-			"report": "Report offensive content",
-			"block": "Block this sender"
+			"report": "Report abusive content",
+			"deleteMessage": "Delete message",
+			"setPublic": "Enable to set as public message visible to visitors"
 		},
 		"send": {
 			"title": "Send a secret message to {name}",
-			"description": "Make your feedback constructive and honest without anyone knowing your identity",
+			"description": "Keep your feedback constructive and honest without anyone knowing your identity",
 			"placeholder": "Write your honest message here...",
 			"button": "Send Honestly",
 			"sending": "Sending...",
-			"success": "Your message has been sent successfully and in complete secrecy!"
+			"success": "Your message has been sent successfully and in total secrecy!"
 		},
 		"attachments": {
 			"title": "Attached Files",
+			"add": "Add images",
 			"dragAndDropText": "Drag and drop images/video here or click to browse",
-			"dragAndDropLimit": "Maximum of 4 files (media only)",
-			"textareaPlaceholder": "Write your message with absolute honesty..."
+			"dragAndDropLimit": "Maximum 4 files (media only)",
+			"textareaPlaceholder": "Write your message with complete honesty and sincerity..."
+		},
+		"voiceRecording": {
+			"start": "Start recording voice note",
+			"cancel": "Stop and delete recording",
+			"send": "Stop and add to attachments"
 		},
 		"errors": {
 			"emptyMessage": "You cannot send an empty message",
-			"maxFilesWarning": "You can only upload up to 4 media files",
+			"maxFilesWarning": "You can upload up to 4 media files only",
 			"messageSent": "An error occurred while sending the message",
 			"micAccessDenied": "Your device does not allow microphone access"
 		},
@@ -242,20 +251,20 @@
 	},
 	"profile": {
 		"shareTitle": "Your personal link to receive messages",
-		"shareDescription": "Share this link on your social media platforms to get secret and honest feedback",
-		"copyLink": "Copy Personal Link",
+		"shareDescription": "Share this link on your social media platforms to get honest, anonymous feedback",
+		"copyLink": "Copy personal link",
 		"share": "Share",
-		"deleteAccount": "Permanently Delete Account",
+		"deleteAccount": "Delete account permanently",
 		"deleteSuccess": "Account and data deleted successfully",
-		"copiedSuccess": "Your Sarahah link has been copied successfully!",
+		"copiedSuccess": "Your link was copied successfully!",
 		"copyFailed": "Failed to copy link",
 		"visitors": "Visitors",
 		"images": {
 			"coverDeleted": "Cover photo deleted successfully"
 		},
 		"shareSheet": {
-			"title": "Share honest feedback or advice with me",
-			"description": "Send me a secret message without me knowing your identity!"
+			"title": "Send me feedback or advice",
+			"description": "Send me a secret message without revealing your identity!"
 		},
 		"deleteAvatarDialog": {
 			"title": "Delete Profile Picture",
@@ -265,9 +274,16 @@
 		},
 		"deleteCoverDialog": {
 			"title": "Delete Cover Photo",
-			"description": "Are you sure you want to delete the cover photo?",
+			"description": "Are you sure you want to delete your cover photo?",
 			"confirm": "Delete",
 			"cancel": "Cancel"
+		},
+		"blockedUsers": {
+			"title": "Manage Block List",
+			"description": "Users you have blocked from messaging you",
+			"block": "Block sender",
+			"unblock": "Unblock sender",
+			"empty": "No blocked users currently"
 		}
 	},
 	"forms": {
@@ -372,6 +388,7 @@
 			"inputs_validation": "There is an error in the data, please correct it"
 		}
 	},
+
 	"notFoundPage": {
 		"title": "Sorry, this page does not exist",
 		"description": "The link you followed may be incorrect, or the page has been moved",

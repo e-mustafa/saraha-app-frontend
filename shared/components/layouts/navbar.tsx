@@ -66,11 +66,11 @@ export function Navbar() {
 					<Button
 						variant='ghost'
 						size='icon'
-						className='h-9 w-9 rounded-full text-muted-foreground hover:text-foreground'
+						className='h-9 w-9 rounded-full text-brand-primary hover:text-foreground'
 						onClick={toggleLanguage}
 						title={locale === 'ar' ? 'Switch to English' : 'التحويل للعربية'}
 					>
-						<GlobeIcon className='h-[1.1rem] w-[1.1rem]' />
+						<GlobeIcon className='size-5' />
 					</Button>
 
 					{/* 2. زر مظهر الألوان المخصص (Theme Switcher Component) */}
@@ -88,16 +88,16 @@ export function Navbar() {
 					</Button> */}
 
 					{/* خط فاصل أنيق */}
-					<span className='h-5 w-px bg-border/60 mx-1' />
+					{/* <span className='h-5 w-px bg-border/60 mx-1' /> */}
 
 					{/* 4. أيقونة الرسائل (تظهر دائماً كلينك سريع) */}
 					<Button
 						variant='ghost'
 						size='icon'
-						className='relative h-9 w-9 rounded-full text-muted-foreground hover:text-foreground'
+						className='h-9 w-9 rounded-full text-brand-primary hover:text-foreground'
 						onClick={() => router.push(APP_ROUTES.messages)}
 					>
-						<MessageSquareIcon className='h-[1.1rem] w-[1.1rem]' />
+						<MessageSquareIcon className='size-5' />
 					</Button>
 
 					{/* 5. أيقونة الإعدادات (تظهر دائماً كلينك سريع) */}
@@ -165,7 +165,7 @@ export function Navbar() {
 
 						<DropdownMenuContent
 							align='end'
-							className='w-60 mx-4 border-border/60 bg-background/95 backdrop-blur-md p-1.5 shadow-xl'
+							className='w-60 mx-4 border-border/60 bg-card-glass backdrop-blur-md p-1.5 shadow-lg shadow-brand-secondary/30'
 						>
 							{user ? (
 								<>
@@ -218,7 +218,7 @@ export function Navbar() {
 										disabled={isLoggingOut}
 										className='flex items-center gap-2 py-2 text-destructive focus:text-destructive focus:bg-destructive/10 cursor-pointer rounded-md'
 									>
-										<PowerIcon className='h-4 w-4' />
+										<LogOutIcon className='h-4 w-4' />
 										<span className='text-sm font-medium'>{t('navbar.userMenu.logout')}</span>
 									</DropdownMenuItem>
 
@@ -227,7 +227,7 @@ export function Navbar() {
 										disabled={isLoggingOut}
 										className='flex items-center gap-2 py-2 text-destructive focus:text-destructive focus:bg-destructive/10 cursor-pointer rounded-md'
 									>
-										<LogOutIcon className='h-4 w-4' />
+										<PowerIcon className='h-4 w-4' />
 										<span className='text-sm font-medium'>{t('navbar.userMenu.logoutFromAll')}</span>
 									</DropdownMenuItem>
 								</>

@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter } from '@/i18n/navigation';
-import ShareButton from '@/modules/messages/components/share-button';
+import ShareButton from '@/modules/profile/components/share-button';
 import { Button } from '@/shared/components/ui/button';
 import {
 	Dialog,
@@ -13,6 +13,12 @@ import {
 	DialogTitle,
 	DialogTrigger,
 } from '@/shared/components/ui/dialog';
+import {
+	DropdownMenu,
+	DropdownMenuContent,
+	DropdownMenuItem,
+	DropdownMenuTrigger,
+} from '@/shared/components/ui/dropdown-menu';
 import { APP_ROUTES, defaultImages } from '@/shared/config/app-configs';
 import { useFormatDate } from '@/shared/hooks/use-format-date';
 import { IResponse } from '@/shared/types/index';
@@ -20,6 +26,7 @@ import { apiClient } from '@/shared/utils/apiClient';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import {
 	ArrowLeftIcon,
+	BanIcon,
 	CameraIcon,
 	ChevronLeftIcon,
 	ChevronRightIcon,
@@ -27,18 +34,27 @@ import {
 	Loader2Icon,
 	LockIcon,
 	MailIcon,
+	MoreVerticalIcon,
 	PlusIcon,
 	ReplaceIcon,
 	Trash2Icon,
 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
+import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import { useState } from 'react';
 import { toast } from 'sonner';
 import { UserImage, UserProfile } from '../types/database';
-import ImageUploadModal from './image-upload-modal';
 import ProfileForm from './profile-form';
 import UserProfileSkeleton from './user.profile-skeleton';
+
+const ImageUploadModal = dynamic(() => import('./image-upload-modal'), {
+	// loading: () => <FormSectionSkeleton />,
+});
+
+const BlockedUsersModal = dynamic(() => import('./blocked-users-modal'), {
+	// loading: () => <FormSectionSkeleton />,
+});
 
 export default function UserProfileComponent() {
 	const t = useTranslations();
@@ -49,6 +65,7 @@ export default function UserProfileComponent() {
 	const [isEditMode, setIsEditMode] = useState(false);
 	const [currentCoverIndex, setCurrentCoverIndex] = useState(0);
 	const [replaceCover, setReplaceCover] = useState<string | null>(null);
+	const [isBlockedUsersOpen, setIsBlockedUsersOpen] = useState(false);
 
 	// Manage modal state for both types (null means closed)
 	const [uploadTarget, setUploadTarget] = useState<'avatar' | 'cover' | 'replace' | null>(null);
@@ -255,7 +272,7 @@ export default function UserProfileComponent() {
 					</div>
 				)}
 			</div>
-			
+
 			<div className='px-4'>
 				{/* Avatar and Profile Header Info */}
 				<div className='relative container mx-auto mt-4 bg-card-glass bg-linear-to-t from-brand-primary/10 via-transparent to-transparent rounded-3xl shadow-xl border border-border/40 transition-all duration-300'>
@@ -343,7 +360,7 @@ export default function UserProfileComponent() {
 								<Button type='button' variant='outline' onClick={() => setIsEditMode(true)}>
 									<Edit3Icon className='w-4 h-4 mr-2' /> {t('common.edit')}
 								</Button>
-								<Button
+								{/* <Button
 									type='button'
 									variant='outline'
 									className='text-brand-primary'
@@ -358,7 +375,34 @@ export default function UserProfileComponent() {
 									onClick={() => router.push(APP_ROUTES.requestChangeEmail || '/user/request-change-email')}
 								>
 									<MailIcon className='w-4 h-4 mr-2' /> {t('auth.changeEmail.title')}
-								</Button>
+								</Button> */}
+
+								{/* Dropdown Menu for Secondary Account & Privacy Actions */}
+								<DropdownMenu>
+									<DropdownMenuTrigger asChild>
+										<Button type='button' variant='outline' size='icon'>
+											<MoreVerticalIcon className='w-4 h-4' />
+										</Button>
+									</DropdownMenuTrigger>
+									<DropdownMenuContent align='end' className='w-56 bg-card-glass backdrop-blur-md'>
+										<DropdownMenuItem
+											onClick={() => router.push(APP_ROUTES.changePassword || '/user/change-password')}
+										>
+											<LockIcon className='w-4 h-4 mr-2 text-brand-primary' />
+											<span>{t('auth.changePassword.title')}</span>
+										</DropdownMenuItem>
+										<DropdownMenuItem
+											onClick={() => router.push(APP_ROUTES.requestChangeEmail || '/user/request-change-email')}
+										>
+											<MailIcon className='w-4 h-4 mr-2 text-brand-primary' />
+											<span>{t('auth.changeEmail.title')}</span>
+										</DropdownMenuItem>
+										<DropdownMenuItem onClick={() => setIsBlockedUsersOpen(true)}>
+											<BanIcon className='w-4 h-4 mr-2 text-destructive' />
+											<span>{t('profile.blockedUsers.title') || 'Blocked Users'}</span>
+										</DropdownMenuItem>
+									</DropdownMenuContent>
+								</DropdownMenu>
 							</>
 						) : (
 							<Button type='button' variant='ghost' onClick={() => setIsEditMode(false)}>
@@ -434,6 +478,7 @@ export default function UserProfileComponent() {
 				replaceCover={replaceCover}
 				onUpload={handleImageUploadSuccess}
 			/>
+			<BlockedUsersModal isOpen={isBlockedUsersOpen} onClose={() => setIsBlockedUsersOpen(false)} />
 		</div>
 	);
 }

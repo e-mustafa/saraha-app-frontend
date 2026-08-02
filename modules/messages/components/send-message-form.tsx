@@ -1,6 +1,7 @@
 'use client';
 
 import { UserProfile } from '@/modules/profile/types/database';
+import { SmartTooltip } from '@/shared/components/custom-ui/smart-tooltip';
 import { Card, CardContent } from '@/shared/components/ui/card';
 import { Label } from '@/shared/components/ui/label';
 import { Switch } from '@/shared/components/ui/switch';
@@ -86,12 +87,17 @@ export default function SendMessageForm({ userId, currentUser }: SendMessageForm
 					{/* Render options only if user is logged in */}
 					{currentUser && (
 						<div className='w-full sm:w-fit flex justify-between items-center gap-4'>
-							<div className='flex items-center gap-2'>
-								<Label htmlFor='anon-switch' className='text-xs text-muted-foreground cursor-pointer'>
-									{isAnonymous ? t('messages.anonymousSender') : t('messages.revealIdentity')}
-								</Label>
-								<Switch id='anon-switch' checked={isAnonymous} onCheckedChange={setIsAnonymous} />
-							</div>
+							<SmartTooltip>
+								<div
+									aria-label={isAnonymous ? t('messages.anonymousSenderDesc') : t('messages.revealIdentityDisc')}
+									className='flex items-center gap-2'
+								>
+									<Label htmlFor='anon-switch' className='text-xs text-muted-foreground cursor-pointer'>
+										{isAnonymous ? t('messages.anonymousSender') : t('messages.revealIdentity')}
+									</Label>
+									<Switch id='anon-switch' checked={isAnonymous} onCheckedChange={setIsAnonymous} />
+								</div>
+							</SmartTooltip>
 
 							{/* <div className='flex items-center gap-2 border-s border-border/60 ps-4'>
 								<Label

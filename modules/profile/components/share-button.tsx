@@ -1,3 +1,4 @@
+import { SmartTooltip } from '@/shared/components/custom-ui/smart-tooltip';
 import { Button } from '@/shared/components/ui/button';
 import { configEnv } from '@/shared/config/env';
 import { Share2Icon } from 'lucide-react';
@@ -38,8 +39,10 @@ export default function ShareButton({ username }: ShareButtonProps) {
 	};
 
 	return (
-		<Button variant='outline' title={t('share')} onClick={handleShare}>
-			<Share2Icon className='w-5 h-5' />
-		</Button>
+		<SmartTooltip>
+			<Button variant='outline' aria-label={t('share')} onClick={handleShare}>
+				<Share2Icon className='w-5 h-5' />
+			</Button>
+		</SmartTooltip>
 	);
 }

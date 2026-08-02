@@ -30,17 +30,13 @@ export function ThemeSwitcher() {
 	return (
 		<DropdownMenu>
 			<DropdownMenuTrigger asChild>
-				<Button
-					variant='ghost'
-					size='icon'
-					className='h-9 w-9 rounded-full text-muted-foreground hover:text-foreground transition-all duration-300'
-				>
-					<Palette className='h-[1.15rem] w-[1.15rem] text-brand-primary transition-transform duration-300 hover:rotate-12' />
+				<Button variant='ghost' size='icon' className='h-9 w-9 rounded-full text-brand-primary hover:text-foreground'>
+					<Palette className='size-5' />
 					<span className='sr-only'>{t('toggleTheme')}</span>
 				</Button>
 			</DropdownMenuTrigger>
 
-			<DropdownMenuContent align='end' className='w-56 border-border/60 bg-background/95 backdrop-blur-md'>
+			<DropdownMenuContent align='end' className='w-56 border-border/60 bg-card-glass backdrop-blur-md shadow-lg shadow-brand-secondary/30'>
 				<DropdownMenuLabel className='text-xs font-medium text-muted-foreground/80'>
 					{t('accentColor')}
 				</DropdownMenuLabel>

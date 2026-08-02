@@ -8,15 +8,15 @@ import { apiClient } from '@/shared/utils/apiClient';
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
-import { MessageTypeEnum } from '../enums';
-import { Message } from '../types/index';
-import EmptyMessages from './empty-messages';
-import MessageCard from './message-card';
-import MessageSkeletonCard from './message-skeleton-card';
-import MessagesPagination from './messages-pagination';
+import EmptyMessages from '../../messages/components/empty-messages';
+import MessageCard from '../../messages/components/message-card';
+import MessageSkeletonCard from '../../messages/components/message-skeleton-card';
+import MessagesPagination from '../../messages/components/messages-pagination';
+import SendMessageForm from '../../messages/components/send-message-form';
+import { MessageTypeEnum } from '../../messages/enums';
+import { Message } from '../../messages/types/index';
 import PublicProfileNotFound from './public-profile-not-found';
 import PublicProfileSkeleton from './public-profile-skeleton';
-import SendMessageForm from './send-message-form';
 import UserSection from './user-section';
 
 interface PublicProfileProps {

@@ -190,8 +190,10 @@
 		"count": "{count, plural, =0 {لا توجد رسائل بعد} one {رسالة واحدة جديدة} two {رسالتان جديدتان} few {{count} رسائل جديدة} many {{count} رسالة جديدة} other {{count} رسالة}}",
 		"receivedAt": "استلمت {time}",
 		"anonymousSender": "مجهول الهوية",
+		"anonymousSenderDesc": "تفعيل لكي لا يتم اظهار بياناتك لمستقبل الرسالة",
 		"privateMessage": "رسالة سرية",
 		"revealIdentity": "ظاهر",
+		"revealIdentityDisc": "تعطيل لكي يتم اظهار بياناتك لمستقبل الرسالة",
 		"writeMessage": "اكتب صراحتك هُنا...",
 		"confidential": "سرية",
 		"public": "رسالة عامة",
@@ -211,11 +213,12 @@
 			"next": "التالي"
 		},
 		"actions": {
-			"favorite": "تفضيل",
+			"favorite": "اضافة للمفضلة",
 			"unfavorite": "إزالة من المفضلة",
 			"shareAsImage": "مشاركة كصورة",
 			"report": "إبلاغ عن محتوى مسيء",
-			"block": "حظر هذا المرسل"
+			"deleteMessage": "حذف الرسالة",
+			"setPublic": "تفعيل، للتعيين كرسالة عامة، تظهر للزوار"
 		},
 		"send": {
 			"title": "أرسل رسالة سرية إلى {name}",
@@ -225,12 +228,17 @@
 			"sending": "جاري الإرسال...",
 			"success": "تم إرسال رسالتك بنجاح وبسرية تامة!"
 		},
-
 		"attachments": {
 			"title": "الملفات المرفقة",
+			"add": "إضافة صور",
 			"dragAndDropText": "اسحب وأفلت الصور/الفيديو هنا أو اضغط للتصفح",
 			"dragAndDropLimit": "الحد الأقصى 4 ملفات (ميديا فقط)",
 			"textareaPlaceholder": "اكتب رسالتك بكل صراحة وأمانة..."
+		},
+		"voiceRecording":{
+			"start": "بدء تسجيل ملاحظة صوتية",
+			"cancel": "ايقاف التسجيل وحذفه",
+			"send": "ايقاف واضافة للمرفقات"
 		},
 		"errors": {
 			"emptyMessage": "لا يمكنك إرسال رسالة فارغة",
@@ -273,6 +281,13 @@
 			"description": "هل أنت متأكد من حذف صورة الغلاف؟",
 			"confirm": "حذف",
 			"cancel": "إلغاء"
+		},
+		"blockedUsers": {
+			"title": "تعديل قائمة الحظر",
+			"description": "المستخدمون الذين قمت بمنعهم من مراسلتك",
+			"block": "حظر هذا المرسل",
+			"unblock": "إلغاء حظر هذا المرسل",
+			"empty": "لا يوجد مستخدمين محضورين حالياً"
 		}
 	},
 	"forms": {
