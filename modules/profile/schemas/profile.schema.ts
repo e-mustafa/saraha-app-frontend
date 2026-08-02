@@ -12,6 +12,8 @@ export const profileSchema = z.object({
 	phone: fieldsValidation.phone.optional(),
 	bio: fieldsValidation.bio.optional(),
 
+	allowAnonymousUsers: z.boolean().optional(),
+
 	// avatar: fieldsValidation.avatar,
 	// covers: fieldsValidation.covers,
 });
@@ -27,5 +29,5 @@ export const defaultValuesProfile: ProfileInput = {
 	gender: 0,
 	birthdate: undefined,
 	// bio: '',
-
+	allowAnonymousUsers: true,
 };

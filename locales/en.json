@@ -288,7 +288,8 @@
 			"phone": "Phone Number",
 			"birthdate": "Date of Birth",
 			"otp": "Verification Code",
-			"age": "Age"
+			"age": "Age",
+			"allowAnonymousUsers": "Allow Anonymous Users"
 		},
 		"placeholders": {
 			"firstName": "Enter your first name...",
@@ -302,7 +303,8 @@
 			"username": "Enter username",
 			"bio": "Write something about yourself...",
 			"phone": "Enter phone number 01xx xxx xxxx",
-			"birthdate": "Select date of birth"
+			"birthdate": "Select date of birth",
+			"allowAnonymousUsers": "Allow anonymous users to send you messages"
 		},
 		"upload": {
 			"editAvatar": "Edit Profile Picture",

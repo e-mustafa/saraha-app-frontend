@@ -37,9 +37,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 			};
 		}
 
-		console.log('user', user);
-		console.log('user.avatar', user.avatar.url);
-
 		const displayName = user.name || `${user.firstName || ''} ${user.lastName || ''}`.trim() || username;
 
 		// FIXED: Verify if the API avatar URL is absolute or relative, prepending API base URL if needed

@@ -41,7 +41,7 @@ export default function UserSection({ user }: { user: Partial<UserProfile> }) {
 			<div className='relative -mt-32 size-40 rounded-2xl border-2 border-brand-primary/30 p-1 shadow-lg group'>
 				<Link href={isAuthed ? APP_ROUTES.profile : ''}>
 					<Image
-						src={user?.avatar?.url || defaultImages.avatarMale || ''}
+						src={user?.avatar?.url || (user.gender ? defaultImages.avatarFemale : defaultImages.avatarMale) || ''}
 						alt={user?.name || user?.firstName || 'user avatar'}
 						width={112}
 						height={112}

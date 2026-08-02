@@ -1,8 +1,17 @@
 'use client';
 
-import { Field, FieldContent, FieldError, FieldLabel, FieldSet, FieldTitle } from '@/shared/components/custom-ui/field';
+import {
+	Field,
+	FieldContent,
+	FieldDescription,
+	FieldError,
+	FieldLabel,
+	FieldSet,
+	FieldTitle,
+} from '@/shared/components/custom-ui/field';
 import { DatePicker } from '@/shared/components/date-picker';
 import { Button } from '@/shared/components/ui/button';
+import { Checkbox } from '@/shared/components/ui/checkbox';
 import { Input } from '@/shared/components/ui/input';
 import { RadioGroup, RadioGroupItem } from '@/shared/components/ui/radio-group';
 import { Textarea } from '@/shared/components/ui/textarea';
@@ -88,7 +97,6 @@ export default function ProfileForm({ initialData, onSuccess, onClose }: Profile
 	// 		});
 	// 	});
 	// };
-
 
 	const onSubmit = (data: ProfileInput) => {
 		if (!form.formState.isDirty) {
@@ -281,6 +289,31 @@ export default function ProfileForm({ initialData, onSuccess, onClose }: Profile
 								placeholder={t('forms.placeholders.bio')}
 								className='resize-none'
 							/>
+							{fieldState.invalid && <FieldError errors={[fieldState.error]} t={t} />}
+						</Field>
+					)}
+				/>
+
+				<Controller
+					name='allowAnonymousUsers'
+					control={form.control}
+					render={({ field, fieldState }) => (
+						<Field orientation='vertical' data-invalid={fieldState.invalid}>
+							<Field orientation='horizontal'>
+								<Checkbox
+									id='form-rhf-checkbox-allowAnonymousUsers'
+									name='allowAnonymousUsers'
+									aria-invalid={fieldState.invalid}
+									checked={field.value}
+									onCheckedChange={field.onChange}
+								/>
+								<FieldLabel htmlFor='form-rhf-checkbox-allowAnonymousUsers' className='font-normal'>
+									{t('forms.labels.allowAnonymousUsers')}
+								</FieldLabel>
+							</Field>
+							<FieldDescription className='text-start'>
+								{t('forms.placeholders.allowAnonymousUsers')}
+							</FieldDescription>
 							{fieldState.invalid && <FieldError errors={[fieldState.error]} t={t} />}
 						</Field>
 					)}
